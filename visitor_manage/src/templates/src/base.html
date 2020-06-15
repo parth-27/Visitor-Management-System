@@ -1,0 +1,20 @@
+<html>
+<head>
+    {% load static %}
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
+ <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}">
+</head>
+<body>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="/superAdmin">SUPER ADMIN</a>
+      <a class="navbar-brand" href="/adminuser">ADMIN</a>
+      <a class="navbar-brand" href="/user">USER</a>
+      
+  </nav>
+<div class="container">
+    {% block content %}
+    
+    {% endblock %}
+</div>
+</body>
+</html>
