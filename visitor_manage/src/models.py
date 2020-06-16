@@ -6,7 +6,7 @@ GENDER= [
     ('female', 'Female'),
     ('other', 'Other'),
     ]
-class user(models.Model):
+class User(models.Model):
     username=models.CharField(max_length=50, unique=True)
     name=models.CharField(max_length=100)
     password=models.CharField(max_length=12)
@@ -14,3 +14,6 @@ class user(models.Model):
     contact=models.IntegerField()
     gender=models.CharField(max_length=10 ,choices=GENDER)
     photo=models.ImageField()
+
+    def __str__(self):
+        return self.username
