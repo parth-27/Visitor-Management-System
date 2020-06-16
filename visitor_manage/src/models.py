@@ -41,7 +41,7 @@ class User(models.Model):
     contact = models.IntegerField()
     gender = models.CharField(max_length=10, choices=GENDER)
     photo = models.ImageField()
-    bdate = models.DateField()
+    bdate = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.username
