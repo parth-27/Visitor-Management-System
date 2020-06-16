@@ -1,9 +1,18 @@
 {% extends "src/base.html" %}
-
 {% block content %}
+<h6>Don't have a account?....</h6>
+<h6><a href="/userRegister">sign Up</a></h6><br>
+<h3>Sign-In</h3>
+    
     <form method="POST" class="form-group">
-        {{form}}
-        <button type="submit" class ="btn btn-success">Login</button>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password">
+            
+          <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
 {% endblock%}

@@ -1,0 +1,52 @@
+{% extends "src/base.html" %}
+
+{% block content %}
+<h6>Already have a account?....</h6>
+<h6><a href="/user/">sign in</a></h6><br>
+<h3>Register</h3>
+
+    <form method="POST" class="form-group">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username">
+            <label for="name">Full name</label>
+            <input type="name" class="form-control" id="name">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+
+            <label for="contact">Contact</label>
+            <input type="contact" class="form-control" id="contact">
+            <label for="gender">Gender</label>
+
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="male" name="gender">
+                <label class="custom-control-label" for="male">Male</label>
+              </div>
+              
+              <!-- Group of default radios - option 2 -->
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="female" name="gender" checked>
+                <label class="custom-control-label" for="female">Female</label>
+              </div>
+              
+              <!-- Group of default radios - option 3 -->
+              <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" id="other" name="gender">
+                <label class="custom-control-label" for="other">Other</label>
+              </div><br>
+
+            <!---  <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
+                <label for="example">Birthdate...</label>
+                <input placeholder="Select date" type="text" id="example" class="form-control">
+                
+                <i class="fas fa-calendar input-prefix"></i>
+              </div>-->
+            <label for="image">Profile Photo</label>
+
+            <input type="file" class="form-control-file" id="image"><br>
+          <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock%}
