@@ -2,22 +2,23 @@
 
 {% block content %}
 <h6>Already have a account?....</h6>
-<h6><a href="/user/">sign in</a></h6><br>
+<h6><a href="/userLogin/">sign in</a></h6><br>
 <h3>Register</h3>
 
     <form method="POST" class="form-group">
+        {% csrf_token %}
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username">
+            <input type="text" class="form-control" id="username" name="username">
             <label for="name">Full name</label>
-            <input type="name" class="form-control" id="name">
+            <input type="name" class="form-control" id="name" name="name">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password">
-            <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            <input type="password" class="form-control" id="password" name="password">
+            <label for="mail">Email address</label>
+            <input type="mail" class="form-control" id="mail" aria-describedby="emailHelp" name="mail">
 
             <label for="contact">Contact</label>
-            <input type="contact" class="form-control" id="contact">
+            <input type="contact" class="form-control" id="contact" name="contact">
             <label for="gender">Gender</label>
 
             <div class="custom-control custom-radio">
@@ -43,9 +44,9 @@
                 
                 <i class="fas fa-calendar input-prefix"></i>
               </div>-->
-            <label for="image">Profile Photo</label>
+            <label for="photo">Profile Photo</label>
 
-            <input type="file" class="form-control-file" id="image"><br>
+            <input type="file" class="form-control-file" id="photo" name="photo"><br>
           <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
