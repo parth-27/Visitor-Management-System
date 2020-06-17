@@ -1,3 +1,19 @@
-{% extends "src/base.html" %} {% block content %} 
-<h3>You don't have any get pass... want to <a href="gatepass">create</a></h3>
-{% endblock%}
+<html>
+<head>
+    {% load static %}
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
+ <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}">
+</head>
+<body>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="/superAdmin">{{ username }}_</a>
+      
+      
+  </nav>
+<div class="container">
+    <h3>You don't have any get pass... want to <a href="gatepass">create</a></h3>
+</div>
+</body>
+</html> 
+
+
