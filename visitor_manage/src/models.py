@@ -7,13 +7,6 @@ GENDER = [
     ('other', 'Other'),
 ]
 
-VISITING_HOURS = [
-    (1),
-    (2),
-    (3),
-    ("More than 3"),
-]
-
 
 class SuperAdmin(models.Model):
     username = models.CharField(max_length=200)
@@ -41,7 +34,7 @@ class User(models.Model):
     contact = models.IntegerField()
     gender = models.CharField(max_length=10, choices=GENDER)
     photo = models.ImageField()
-    bdate = models.DateField(auto_now_add=True)
+    #bdate = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -54,4 +47,6 @@ class Visitor(models.Model):
     checkin = models.DateTimeField()
     checkout = models.DateTimeField()
     feedback = models.TextField()
+    visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
+
