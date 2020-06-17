@@ -1,0 +1,81 @@
+{% extends 'src/index.html' %} {% block content %}
+<div class="d-flex justify-content-center h-100">
+  <div class="card">
+    <div class="card-header">
+      <h3>Gate Pass</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Gate Number" name="gateId" id="gateId" />
+        </div>
+
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="one">1 </label>
+          <input type="radio" class="form-control" placeholder="one" id="one" name="visiting_hour"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="two">2 </label>
+          <input type="radio" class="form-control" placeholder="two" id="two" name="visiting_hour"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="three">3 </label>
+          <input type="radio" class="form-control" placeholder="three" id="three" name="visiting_hour"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="more">More </label>
+          <input type="radio" class="form-control" placeholder="more" id="more" name="visiting_hour"/>
+        </div>
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Reason for visit" name="reason" id="reason" />
+        </div>        
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Date" name="visitDate" id="visitDate" />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="submit"
+            value="Make Pass"
+            class="btn float-right login_btn"
+            id="lg_bt"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-center links">
+        Don't have an account?<a href="/userRegister/">Sign Up</a>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="#">Forgot your password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

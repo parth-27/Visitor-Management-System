@@ -1,53 +1,96 @@
-{% extends "src/base.html" %}
-
+{% extends 'src/index.html' %} 
 {% block content %}
-<h6>Already have a account?....</h6>
-<h6><a href="/userLogin/">sign in</a></h6><br>
-<h3>Register</h3>
-
-    <form method="POST" class="form-group">
+<div class="d-flex justify-content-center h-100">
+  <div class="card">
+    <div class="card-header">
+      <h3>Sign Up</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">
         {% csrf_token %}
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Username" id="username" name="username"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="Name" id="name" name="name"/>
+        </div>
+
+        <div class="input-group form-group">
+
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+          </div>
+          <input type="password" class="form-control" placeholder="Password" name="password"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="email" class="form-control" placeholder="Mail Id" id="mail" name="mail"/>
+        </div>
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="Male">Male </label>
+          <input type="radio" class="form-control" placeholder="Male  " id="male" name="gender"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="Female">Female </label>
+          <input type="radio" class="form-control" placeholder="Female" id="female" name="gender"/>
+        </div>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <label class="custom-control-label" for="Other">Other  </label>
+          <input type="radio" class="form-control" placeholder="Other " id="other" name="gender"/>
+        </div>
+        
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="file" class="form-control" placeholder="photo" id="photo" name="photo"/>
+        </div>
+
+        
         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username">
-            <label for="name">Full name</label>
-            <input type="name" class="form-control" id="name" name="name">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
-            <label for="mail">Email address</label>
-            <input type="mail" class="form-control" id="mail" aria-describedby="emailHelp" name="mail">
+          <input
+            type="submit"
+            value="SignUp"
+            class="btn float-right login_btn"
+            id="lg_bt"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-center links">
+        Don't have an account?<a href="/userLogin/">Sign In</a>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="#">Forgot your password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
-            <label for="contact">Contact</label>
-            <input type="contact" class="form-control" id="contact" name="contact">
-            <label for="gender">Gender</label>
-
-            <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="male" name="gender">
-                <label class="custom-control-label" for="male">Male</label>
-              </div>
-              
-              <!-- Group of default radios - option 2 -->
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="female" name="gender" checked>
-                <label class="custom-control-label" for="female">Female</label>
-              </div>
-              
-              <!-- Group of default radios - option 3 -->
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" id="other" name="gender">
-                <label class="custom-control-label" for="other">Other</label>
-              </div><br>
-
-            <!---  <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
-                <label for="example">Birthdate...</label>
-                <input placeholder="Select date" type="text" id="example" class="form-control">
-                
-                <i class="fas fa-calendar input-prefix"></i>
-              </div>-->
-            <label for="photo">Profile Photo</label>
-
-            <input type="file" class="form-control-file" id="photo" name="photo"><br>
-          <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-{% endblock%}

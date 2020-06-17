@@ -7,8 +7,18 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
+userid=-1
+
 def index(request):
     return render(request , 'src/index.html')
+
+def login(id):
+    global userid
+    userid=id
+
+def logout():
+    global userid
+    userid=-1
 
 def userLogin(request):
     if request.method == "POST":
@@ -26,7 +36,12 @@ def userLogin(request):
         elif not user_admin_obj.password == password:
             errors = "Username and password didn't match"
             return render(request, "src/userLogin.html", {"error": errors})
-        return render(request, "src/userDash.html")
+        context = {
+            'username':username,
+        }
+        login(user_admin_obj.id)
+        print(userid)
+        return render(request,'src/userDash.html',context)
     return render(request, "src/userLogin.html")
     
 def userRegister(request):
@@ -37,12 +52,17 @@ def userRegister(request):
         mail=request.POST.get('mail')
         contact=request.POST.get('contact')
         gender=request.POST.get('gender')
+        print(gender)
         photo=request.POST.get('photo')
-        print(username, name,password,mail,contact)
+        #print(username, name,password,mail,contact)
         user = User(username=username, name=name, password=password, mail=mail, contact=contact, gender=gender, photo=photo)
         try: 
             user.save()
-            return render(request,'src/userLogin.html')
+            context = {
+                'username':username,
+            }
+            login(user.id)
+            return render(request,'src/userDash.html',context)
         except Exception as e:
             print(e)
             return render(request,'src/userRegister.html')
@@ -51,22 +71,21 @@ def userRegister(request):
 
 def gatepass(request):
     if request.method =='POST':
-        username=request.POST.get('username')
-        name=request.POST.get('name')
-        password=request.POST.get('password')
-        mail=request.POST.get('mail')
-        contact=request.POST.get('contact')
-        gender=request.POST.get('gender')
-        photo=request.POST.get('photo')
+        gateId = request.POST.get('gateId')
+        userId =userid
+        visitDate = request.POST.get('visitDate')
+        visiting_hour = models.CharField(max_length=20, default=1)
+        reason = request.POST.get('reason')
+
         #print(username, name,password,mail,contact)
-        user = User(username=username, name=name, password=password, mail=mail, contact=contact, gender=gender, photo=photo)
+        visitor = Visitor(gateId=gateId, userId=userId, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
         try: 
-            user.save()
-            return render(request,'src/userLogin.html')
+            visitor.save()
+            return render(request,'src/userDash.html')
         except Exception as e:
             print(e)
-            return render(request,'src/userRegister.html')
+            return render(request,'src/gatepass.html')
 
-    return render(request,'src/userRegister.html')
+    return render(request,'src/gatepass.html')
 
 
