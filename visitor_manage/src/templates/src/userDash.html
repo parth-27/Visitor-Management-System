@@ -1,35 +1,56 @@
 <html>
-<head>
+  <head>
     {% load static %}
-<link rel="stylesheet" href="{% static '/css/style.css' %}">
- <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}">
-</head>
-<body>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+  </head>
+  <body>
+    {% include "src/navbar.html" %}
+
+    <!-- <nav class="navbar navbar-expand navbar-dark bg-dark">
       <a class="navbar-brand" href="/superAdmin">{{ username }}_</a>
-      
-      
-  </nav>
-<div class="container">
-    {% if obj == 1 %}
-    <h3>Ahmedabad University</h3>
-    Photo:<img src="{{ user_admin_obj.photo.url }}" /><br>
-    <h3>Name: {{user_admin_obj.name}}</h3>
-    Gender: {{user_admin_obj.gender}}<br>
-    Date Of Visit: {{visiter_obj.visitDate}}<br>
-    Reason of visit: {{visiter_obj.reason}}<br>
-    Time validity: {{visiter_obj.visiting_hour}}<br>
-    Gate Number: {{visiter_obj.gateId}}
-    {{visiter_obj.userId}}
-
-
-
-    
-    {% else %}
-    <h3>You don't have any get pass... want to <a href="gatepass">create</a></h3>
-    {% endif %}
-</div>
-</body>
-</html> 
-
-
+    </nav> -->
+    <div class="page-content p-5" id="content">
+      <div class="container">
+        {% if obj == 1 %}
+        <h3>Ahmedabad University</h3>
+        Photo:<img src="{{ user_admin_obj.photo.url }}" /><br />
+        <h3>Name: {{user_admin_obj.name}}</h3>
+        Gender: {{user_admin_obj.gender}}<br />
+        Date Of Visit: {{visiter_obj.visitDate}}<br />
+        Reason of visit: {{visiter_obj.reason}}<br />
+        Time validity: {{visiter_obj.visiting_hour}}<br />
+        Gate Number: {{visiter_obj.gateId}} {{visiter_obj.userId}} {% else %}
+        <h3>
+          You don't have any get pass... want to <a href="gatepass">create</a>
+        </h3>
+        {% endif %}
+      </div>
+    </div>
+    <script>
+      let name = document.querySelector(".m-0");
+      name.innerHtml = {{user_admin_obj.name}};
+      console.log({{user_admin_obj.name}});
+    </script>
+  </body>
+</html>
