@@ -70,22 +70,29 @@ def userRegister(request):
     return render(request,'src/userRegister.html')
 
 def gatepass(request):
+    gateid=Admin.objects.all()
+    #print(gateid)
+    context = {
+            'gateid':gateid,
+    }
     if request.method =='POST':
         gateId = request.POST.get('gateId')
         userId =userid
         visitDate = request.POST.get('visitDate')
         visiting_hour = models.CharField(max_length=20, default=1)
         reason = request.POST.get('reason')
-
+        visit_gate = Admin.objects.get(gate=gateId)
+        user_id = User.objects.get(id=userId)
+        #print(visit_gate)
         #print(username, name,password,mail,contact)
-        visitor = Visitor(gateId=gateId, userId=userId, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
+        visitor = Visitor(gateId=visit_gate, userId=user_id, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
         try: 
             visitor.save()
             return render(request,'src/userDash.html')
         except Exception as e:
             print(e)
-            return render(request,'src/gatepass.html')
+            return render(request,'src/gatepass.html',context)
 
-    return render(request,'src/gatepass.html')
+    return render(request,'src/gatepass.html', context)
 
 
