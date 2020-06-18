@@ -25,6 +25,8 @@ class Admin(models.Model):
     contact = models.IntegerField()
     gender = models.CharField(max_length=10, choices=GENDER)
 
+    def __str__(self):
+        return str(self.gate)
 
 class User(models.Model):
     username = models.CharField(max_length=50, unique=True)
@@ -37,16 +39,15 @@ class User(models.Model):
     #bdate = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.username
-
+        return str(self.id)
 
 class Visitor(models.Model):
     gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
     userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
-    checkin = models.DateTimeField()
-    checkout = models.DateTimeField()
-    feedback = models.TextField()
+    checkin = models.DateTimeField( null =True)
+    checkout = models.DateTimeField( null =True)
+    feedback = models.TextField(null =True)
     visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
 
