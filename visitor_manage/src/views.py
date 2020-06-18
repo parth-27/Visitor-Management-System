@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render,redirect, get_object_or_404 ,HttpResponseRedirect
 from .models import *
 from django.contrib import auth
 from django.contrib.auth import authenticate
@@ -64,6 +64,93 @@ def userLogin(request):
             
     return render(request, "src/userLogin.html")
     
+def adminLogin(request):
+    username="username"
+    type="text"
+    context={
+        'username':username,
+        'typo': type
+    }
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username)
+        try:
+            user_admin_obj = SuperAdmin.objects.get(username=username)
+        except:
+            user_admin_obj = None
+        # user_admin_obj = UserAdmin.objects.get(username=username)
+        if user_admin_obj is None:
+            errors = "Username you entered doesn't exist"
+            return render(request, "src/adminLogin.html", {"error": errors},context)
+        elif not user_admin_obj.password == password:
+            errors = "Username and password didn't match"
+            return render(request, "src/adminLogin.html", {"error": errors} ,context)
+        
+        return HttpResponseRedirect('superAdminDash/')
+        #return render(request,'src/superAdminDash.html')
+            
+    return render(request, "src/adminLogin.html",context)
+
+def gateAdminDash(request):
+    return render(request,'src/gateAdminDash.html')
+
+def gateAdminLogin(request):
+    username="GateId"
+    type="number"
+    context={
+        'username':username,
+        'typo':type
+    }
+    if request.method == "POST":
+        username = (request.POST.get('username'))
+        password = request.POST.get('password')
+        print(username)
+        try:
+            user_admin_obj = Admin.objects.get(gate=username)
+        except:
+            user_admin_obj = None
+        # user_admin_obj = UserAdmin.objects.get(username=username)
+        if user_admin_obj is None:
+            errors = "Gate ID you entered doesn't exist"
+            return render(request, "src/adminLogin.html", {"error": errors},context)
+        elif not user_admin_obj.password == password:
+            errors = "Gate Id and password didn't match"
+            return render(request, "src/adminLogin.html", {"error": errors} ,context)
+        
+        return HttpResponseRedirect('gateAdminDash/')
+        #return render(request,'src/superAdminDash.html')
+            
+    return render(request, "src/adminLogin.html",context)
+    
+def superAdminDash(request):
+    admin_obj=Admin.objects.all()
+    context={
+        'admin_obj':admin_obj,
+    }
+    if request.method == 'POST':
+        gate = request.POST.get('gate')
+        username=request.POST.get('username')
+        name=request.POST.get('name')
+        password=request.POST.get('password')
+        mail=request.POST.get('mail')
+        contact=request.POST.get('contact')
+        gender=request.POST.get('gender')
+        
+        admin =Admin(gate=gate, username=username, name=name, password=password, mail=mail, contact=contact, gender=gender)
+        try: 
+            admin.save()
+            admin_obj=Admin.objects.all()
+            context={
+                'admin_obj':admin_obj,
+            }
+            return render(request,'src/superAdminDash.html',context)
+        except Exception as e:
+            print(e)
+            return render(request,'src/superAdminDash.html',context)
+
+    return render(request,'src/superAdminDash.html',context)
+
 def userRegister(request):
     if request.method =='POST':
         username=request.POST.get('username')

@@ -23,7 +23,7 @@ class Admin(models.Model):
     password = models.CharField(max_length=20)
     mail = models.EmailField(unique=True)
     contact = models.IntegerField()
-    gender = models.CharField(max_length=10, choices=GENDER)
+    gender = models.CharField(max_length=10)
 
     def __str__(self):
         return str(self.gate)
