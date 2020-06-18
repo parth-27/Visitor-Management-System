@@ -92,8 +92,11 @@
         <i class="fa fa-bars mr-2"></i
         ><small class="text-uppercase font-weight-bold">Toggle</small>
       </button>
+
+      
       <div class="container">
-        <div class="d-flex justify-content-center">
+
+        <div class="d-flex justify-content-center h-100">
           <div class="card">
             <div class="card-header">
               <h3>Gate Pass</h3>
@@ -103,71 +106,51 @@
                 {% csrf_token %}
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <label class="custom-control-label" for="gateId"
-                    >Gate Number:</label
-                  >
-                  <br />
+                  <label class="custom-control-label" for="gateId" >Gate Number:</label>
+                  <br>
                   <select class="form-control" id="gateId" name="gateId">
+        
                     {% for gate in gateid %}
                     <option>{{gate.gate}}</option>
                     {% endfor %}
+                    
                   </select>
-                  <br />
+                  <br>
                 </div>
-
+        
+        
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <label class="custom-control-label" for="visiting_hour"
-                    >visiting_hour:</label
-                  >
-                  <select
-                    class="form-control"
-                    id=" visiting_hour"
-                    name=" visiting_hour"
-                  >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>More</option>
+                  <label class="custom-control-label" for="visiting_hour" >visiting_hour:</label><br>
+                  <select class="form-control" id= "visiting_hour" name="visiting_hour" >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="More Than 3">More Than 3</option>
+                    
                   </select>
                 </div>
+        
+                
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <input
-                    class="form-control"
-                    id="visitDate"
-                    name="visitDate"
-                    placeholder="VisitDate:YYYY-MM-DD"
-                    type="text"
-                  />
+                  <input class="form-control" id="visitDate" name="visitDate" placeholder="VisitDate:YYYY-MM-DD" type="text"/>
                 </div>
+        
+        
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"></i
-                    ></span>
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
-                  <textarea
-                    cols="32"
-                    rows="3"
-                    placeholder="Reason for visit"
-                    name="reason"
-                    id="reason"
-                  ></textarea>
-                </div>
-
+                  <textarea placeholder="Reason for visit" name="reason" id="reason" ></textarea>
+                </div>        
+        
                 <div class="form-group">
                   <input
                     type="submit"
@@ -179,6 +162,9 @@
               </form>
             </div>
           </div>
+        </div>
+        
+       
         </div>
 
         <script

@@ -34,7 +34,7 @@ class User(models.Model):
     password = models.CharField(max_length=20)
     mail = models.EmailField(unique=True)
     contact = models.IntegerField()
-    gender = models.CharField(max_length=10, choices=GENDER)
+    gender = models.CharField(max_length=10)
     photo = models.ImageField()
     #bdate = models.DateField(auto_now_add=True)
 
@@ -50,4 +50,6 @@ class Visitor(models.Model):
     feedback = models.TextField(null =True)
     visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
+    def __str__(self):
+        return str(self.id)
 
