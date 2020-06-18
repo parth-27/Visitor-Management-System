@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
   </head>
   <body>
-    <div class="vertical-nav bg-white" id="sidebar">
+    <!-- <div class="vertical-nav bg-white" id="sidebar">
       <div class="py-4 px-3 mb-4 bg-light">
         <div class="media d-flex align-items-center">
           <img
@@ -53,19 +53,22 @@
         <li class="nav-item">
           <a href="#" class="nav-link text-dark font-italic bg-light">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
-            Home
+            Super Admin
           </a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link text-dark font-italic">
             <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-            About
+            Admin
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+          <a
+            href="{% url 'userLogin' %}"
+            class="nav-link text-dark font-italic"
+          >
             <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-            Services
+            User
           </a>
         </li>
         <li class="nav-item">
@@ -75,7 +78,8 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div> -->
+    {% include "src/navbar.html" %}
     <!-- End vertical navbar -->
 
     <div class="page-content p-5" id="content">
