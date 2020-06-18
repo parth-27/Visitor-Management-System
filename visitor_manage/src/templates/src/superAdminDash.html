@@ -1,0 +1,118 @@
+{% extends "src/superAdminBasefile.html" %} {% block content %} 
+
+<div class="d-flex justify-content-center h-100">
+    <div class="card">
+      <div class="card-header">
+        <h3>Add Gate Admin</h3>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="number" class="form-control" placeholder="Gate Number" id="gate" name="gate"/>
+          </div>
+
+
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="UserName" id="username" name="username"/>
+          </div>
+
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Full Name" id="name" name="name"/>
+          </div>
+  
+          <div class="input-group form-group">
+  
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="Password" name="password"/>
+          </div>
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="email" class="form-control" placeholder="Mail Id" id="mail" name="mail"/>
+          </div>
+  
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact"/>
+          </div>
+  
+  
+          <div class="input-group form-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <label class="custom-control-label" for="gender" >Gender:</label><br>
+            <select class="form-control" id= "gender" name="gender" >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+               
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <input
+              type="submit"
+              value="ADD"
+              class="btn float-right login_btn"
+              id="lg_bt"
+            />
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <br>
+
+  <table class="table table-sm table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Gate Id</th>
+        <th scope="col">UserName</th>
+        <th scope="col">FullName</th>
+        <th scope="col">Email</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Gender</th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+        {% for admin in admin_obj %}
+        <tr>
+            <th scope="row">{{admin.gate}}</th>
+            <td>{{admin.username}}</td>
+            <td>{{admin.name}}</td>
+            <td>{{admin.mail}}</td>
+            <td>{{admin.contact}}</td>
+            <td>{{admin.gender}}</td>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
+        </tr>
+        
+        {% endfor %}
+      
+      
+    </tbody>
+  </table>
+  
+  {% endblock %}
