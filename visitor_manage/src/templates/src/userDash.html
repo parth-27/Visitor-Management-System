@@ -24,12 +24,66 @@
     ></script>
     <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
   </head>
-  <body>
-    {% include "src/navbar.html" %}
+  <body">
+    <div class="vertical-nav bg-white" id="sidebar">
+      <div class="py-4 px-3 mb-4 bg-light">
+        <div class="media d-flex align-items-center">
+          <img
+            src="https://i.pinimg.com/originals/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.png"
+            alt="..."
+            width="65"
+            class="mr-3 rounded-circle img-thumbnail shadow-sm"
+          />
+          <div class="media-body">
+            <h4 class="m-0">{{user_admin_obj.name}}</h4>
+            <p class="font-weight-light text-muted mb-0">
+              School of Engineering and Applied Science
+            </p>
+          </div>
+        </div>
+      </div>
 
-    <!-- <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a class="navbar-brand" href="/superAdmin">{{ username }}_</a>
-    </nav> -->
+      <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+        Main
+      </p>
+
+      <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item">
+          <a
+            href="{% url 'adminLogin' %}"
+            class="nav-link text-dark font-italic bg-light"
+          >
+            <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+            Super Admin
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="{% url 'gateAdminLogin' %}"
+            class="nav-link text-dark font-italic"
+          >
+            <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+            Admin
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="{% url 'userLogin' %}"
+            class="nav-link text-dark font-italic"
+          >
+            <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+            User
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link text-dark font-italic">
+            <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+            Gallery
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div class="page-content p-5" id="content">
       <div class="container">
         {% if obj == 1 %}
@@ -47,10 +101,5 @@
         {% endif %}
       </div>
     </div>
-    <script>
-      let name = document.querySelector(".m-0");
-      name.innerHtml = {{user_admin_obj.name}};
-      console.log({{user_admin_obj.name}});
-    </script>
   </body>
 </html>

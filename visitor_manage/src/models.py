@@ -28,6 +28,7 @@ class Admin(models.Model):
     def __str__(self):
         return str(self.gate)
 
+
 class User(models.Model):
     username = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=100)
@@ -35,21 +36,22 @@ class User(models.Model):
     mail = models.EmailField(unique=True)
     contact = models.IntegerField()
     gender = models.CharField(max_length=10)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='gallery')
     #bdate = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
 
+
 class Visitor(models.Model):
     gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
     userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
-    checkin = models.DateTimeField( null =True)
-    checkout = models.DateTimeField( null =True)
-    feedback = models.TextField(null =True)
+    checkin = models.DateTimeField(null=True)
+    checkout = models.DateTimeField(null=True)
+    feedback = models.TextField(null=True)
     visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
+
     def __str__(self):
         return str(self.id)
-
