@@ -105,8 +105,8 @@
             <td>{{admin.mail}}</td>
             <td>{{admin.contact}}</td>
             <td>{{admin.gender}}</td>
-            <td><button>Edit</button></td>
-            <td><button>Delete</button></td>
+            <td><button><a href="/adminEdit/{{admin.pk}}">Edit</a></button></td>
+            <td><button><a href="/adminDelete/{{admin.pk}}">Delete</a></button></td>
         </tr>
         
         {% endfor %}

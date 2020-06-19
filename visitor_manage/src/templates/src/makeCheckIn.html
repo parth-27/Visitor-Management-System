@@ -3,9 +3,20 @@
 
 {% if obj == 1 %}
     {% for visitor in visitor_obj %}
-    
-            {{visitor.reason}}
+        {% for user in user_obj %}
+            {% if user.pk == visitor.userId %}       
+                Name:{{user.name}}<br>
+                Gender: {{user.gender}}<br />
+                Date Of Visit: {{visitor.visitDate}}<br />
+                Reason of visit: {{visitor.reason}}<br />
+                Time validity: {{visitor.visiting_hour}}<br />
+                Photo: {{user.photo.url}}
+            {% endif %}
+            
+        {% endfor %}
+            
     {% endfor %}
+    
 {% else %}
     Here is no pending checkin....
 {% endif %}
