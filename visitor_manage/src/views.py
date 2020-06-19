@@ -205,6 +205,43 @@ def superAdminDash(request):
             return render(request, 'src/superAdminDash.html', context)
 
     return render(request, 'src/superAdminDash.html', context)
+
+def adminEdit(request,pk):
+    admin_obj=Admin.objects.get(gate=pk)
+    print(admin_obj)
+    context={
+        'admin_obj': admin_obj,
+    }
+    if request.method == 'POST':
+        #gate = request.POST.get('gate')
+        username = request.POST.get('username')
+        name = request.POST.get('name')
+        mail = request.POST.get('mail')
+        contact = request.POST.get('contact')
+        gender = request.POST.get('gender')
+
+        admin_obj.username=username
+        admin_obj.name=name
+        admin_obj.mail=mail
+        admin_obj.contact=contact
+        admin_obj.gender=gender
+
+        #admin = Admin( username=username, name=name,password=password, mail=mail, contact=contact, gender=gender)
+        try:
+            admin_obj.save()
+            return HttpResponseRedirect('/adminLogin/superAdminDash/')
+            #return render(request, 'src/superAdminDash.html')
+        except Exception as e:
+            print(e)
+            return render(request, 'src/adminEdit.html', context)
+
+    return render(request, 'src/adminEdit.html',context)
+
+def adminDelete(request,pk):
+    admin_obj=Admin.objects.get(gate=pk).delete()
+
+    return HttpResponseRedirect('/adminLogin/superAdminDash/')
+
 def gateAdminLogin(request):
     username = "GateId"
     type = "number"
@@ -262,9 +299,12 @@ def gateAdminDash(request):
 
 
 def makeCheckIn(request):
+
     obj=-1
     try:
         visitor_obj = Visitor.objects.all().filter( checkin=None, visitDate=datetime.datetime.now().date()) 
+        #print(1)
+        print((visitor_obj))
     except:
         visitor_obj = None
 
@@ -274,13 +314,16 @@ def makeCheckIn(request):
         }
         return render(request, 'src/makeCheckIn.html',context)
     else:
-        #user_obj = User.objects.get.all(id=visiter_obj)
-        #print(user_obj)
+        l=[0]*len(visitor_obj)
+        for i in range(len(visitor_obj)):
+            l[i]=1#User.objects.get(id=visiter_obj[i])
+        user_obj= User.objects.all()
+
         obj=1
         context={
             'obj':obj,
             'visitor_obj': visitor_obj,
-            #'user_obj': user_obj,
+            'user_obj':user_obj,
         }
         return render(request, 'src/makeCheckIn.html',context)
 

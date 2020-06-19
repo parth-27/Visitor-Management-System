@@ -9,6 +9,8 @@ urlpatterns = [
     path('userRegister/gatepass', views.gatepass, name='gatepass'),
 
     path('adminLogin/', views.adminLogin, name='adminLogin'),
+    path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
+    path('adminDelete/<int:pk>', views.adminDelete, name='adminDelete'),
     path('adminLogin/superAdminDash/',
          views.superAdminDash, name='superAdminDash'),
 
