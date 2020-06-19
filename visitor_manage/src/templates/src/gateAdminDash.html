@@ -1,4 +1,144 @@
 {% extends "src/gateAdminBasefile.html" %} {% block content %} 
-Hello
-  
+<div class="page-content p-5" id="content">
+  <!-- Toggle button -->
+  <button
+    id="sidebarCollapse"
+    type="button"
+    class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"
+  >
+    <i class="fa fa-bars mr-2"></i
+    ><small class="text-uppercase font-weight-bold">Toggle</small>
+  </button>
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <div class="card">
+        <div class="card-header">
+          <h3>Make Gate Pass</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Name"
+                id="name"
+                name="name"
+              />
+            </div>
+            
+        
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Mail Id"
+                id="mail"
+                name="mail"
+              />
+            </div>
+
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="numer"
+                class="form-control"
+                placeholder="Contact Number"
+                id="contact"
+                name="contact"
+              />
+            </div>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <label class="custom-control-label" for="visiting_hour" >visiting_hour:</label><br>
+              <select class="form-control" id= "visiting_hour" name="visiting_hour" >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="More Than 3">More Than 3</option>
+                
+              </select>
+            </div>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <textarea placeholder="Reason for visit" name="reason" id="reason" ></textarea>
+            </div>    
+            
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <label class="custom-control-label" for="gender"
+                >Gender:</label
+              ><br />
+              <select class="form-control" id="gender" name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="file"
+                class="form-control"
+                placeholder="photo"
+                id="photo"
+                name="photo"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="submit"
+                value="MAKE"
+                class="btn float-right login_btn"
+                id="lg_bt"
+              />
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    // Sidebar toggle behavior
+    $("#sidebarCollapse").on("click", function () {
+      $("#sidebar, #content").toggleClass("active");
+    });
+  });
+</script>
+</body>
+</html>
+
   {% endblock %}

@@ -35,7 +35,7 @@
             class="mr-3 rounded-circle img-thumbnail shadow-sm"
           />
           <div class="media-body">
-            <h4 class="m-0">{{user_admin_obj.name}}</h4>
+            <h4 class="m-0">{{username}}</h4>
             <p class="font-weight-light text-muted mb-0">
               School of Engineering and Applied Science
             </p>
@@ -88,7 +88,7 @@
       <div class="container">
         {% if obj == 1 %}
         <h3>Ahmedabad University</h3>
-        Photo:<img src="{{ user.photo.url }}" /><br />
+        Photo:<img src="{{user_admin_obj.photo.url }}" /><br />
         <h3>Name: {{user_admin_obj.name}}</h3>
         Gender: {{user_admin_obj.gender}}<br />
         Date Of Visit: {{visiter_obj.visitDate}}<br />
@@ -96,7 +96,7 @@
         Time validity: {{visiter_obj.visiting_hour}}<br />
         Gate Number: {{visiter_obj.gateId}} {{visiter_obj.userId}} {% else %}
         <h3>
-          You don't have any get pass... want to <a href="gatepass">create</a>
+          You don't have any gate pass... want to <a href="gatepass">create</a>
         </h3>
         {% endif %}
       </div>

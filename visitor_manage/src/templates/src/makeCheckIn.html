@@ -1,0 +1,13 @@
+{% extends "src/gateAdminBasefile.html" %} 
+{% block content %} 
+
+{% if obj == 1 %}
+    {% for visitor in visitor_obj %}
+    
+            {{visitor.reason}}
+    {% endfor %}
+{% else %}
+    Here is no pending checkin....
+{% endif %}
+
+{% endblock %}

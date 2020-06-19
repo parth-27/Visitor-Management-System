@@ -43,9 +43,28 @@ class User(models.Model):
         return str(self.id)
 
 
+
 class Visitor(models.Model):
     gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
     userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
+    visitDate = models.DateField()
+    checkin = models.DateTimeField(null=True)
+    checkout = models.DateTimeField(null=True)
+    feedback = models.TextField(null=True)
+    visiting_hour = models.CharField(max_length=20, default=1)
+    reason = models.TextField(max_length=1000)
+
+    def __str__(self):
+        return str(self.userId)
+
+
+class TemporaryUser(models.Model):
+    name = models.CharField(max_length=100)
+    mail = models.EmailField(unique=True)
+    contact = models.IntegerField()
+    gender = models.CharField(max_length=10)
+    photo = models.ImageField(upload_to='gallery')
+    gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
     checkin = models.DateTimeField(null=True)
     checkout = models.DateTimeField(null=True)

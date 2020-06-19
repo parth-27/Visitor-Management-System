@@ -16,7 +16,7 @@ urlpatterns = [
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
     path('gateAdminLogin/gateAdminDash/',
          views.gateAdminDash, name='gateAdminDash'),
-
+     path('makeCheckIn/',views.makeCheckIn, name='makeCheckIn'),
     # path('forgotPassword/', views.sendMail),
 
 ]
