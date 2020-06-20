@@ -18,11 +18,11 @@ urlpatterns = [
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
     path('gateAdminLogin/gateAdminDash/',
          views.gateAdminDash, name='gateAdminDash'),
-     path('makeCheckIn/',views.makeCheckIn, name='makeCheckIn'),
-     path('makeCheckIn/<int:pk>',views.checkInVisitor, name='checkInVisitor'),
-     path('makeCheckOut/',views.makeCheckOut, name='makeCheckOut'),
-     path('makeCheckOut/<int:pk>',views.checkOutVisitor, name='checkOutVisitor'),
-     path('checkOutDone',views.checkOutDone, name='checkOutDone'),
+    path('makeCheckIn/', views.makeCheckIn, name='makeCheckIn'),
+    path('makeCheckIn/<int:pk>', views.checkInVisitor, name='checkInVisitor'),
+    path('makeCheckOut/', views.makeCheckOut, name='makeCheckOut'),
+    path('makeCheckOut/<int:pk>', views.checkOutVisitor, name='checkOutVisitor'),
+    path('checkOutDone', views.checkOutDone, name='checkOutDone'),
     # path('forgotPassword/', views.sendMail),
 
 ]
