@@ -1,105 +1,110 @@
 <html>
-  <head>
-    {% load static %}
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
-  </head>
-  <body">
-    <div class="vertical-nav bg-white" id="sidebar">
-      <div class="py-4 px-3 mb-4 bg-light">
-        <div class="media d-flex align-items-center">
-          <img
-            src="https://i.pinimg.com/originals/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.png"
-            alt="..."
-            width="65"
-            class="mr-3 rounded-circle img-thumbnail shadow-sm"
-          />
-          <div class="media-body">
-            <h4 class="m-0">{{username}}</h4>
-            <p class="font-weight-light text-muted mb-0">
-              School of Engineering and Applied Science
-            </p>
-          </div>
+
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
+</head>
+<body">
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center">
+        <img src="https://i.pinimg.com/originals/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.png" alt="..." width="65"
+          class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+        <div class="media-body">
+          <h4 class="m-0">{{username}}</h4>
+          <p class="font-weight-light text-muted mb-0">
+            School of Engineering and Applied Science
+          </p>
         </div>
       </div>
-
-      <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
-        Main
-      </p>
-
-      <ul class="nav flex-column bg-white mb-0">
-        <li class="nav-item">
-          <a
-            href="{% url 'adminLogin' %}"
-            class="nav-link text-dark font-italic bg-light"
-          >
-            <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
-            Super Admin
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            href="{% url 'gateAdminLogin' %}"
-            class="nav-link text-dark font-italic"
-          >
-            <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-            Admin
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            href="{% url 'userLogin' %}"
-            class="nav-link text-dark font-italic"
-          >
-            <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-            User
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
-            <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
-            Gallery
-          </a>
-        </li>
-      </ul>
     </div>
 
-    <div class="page-content p-5" id="content">
-      <div class="container">
-        {% if obj == 1 %}
-        <h3>Ahmedabad University</h3>
-        Photo:<img src="{{ user_admin_obj.photo.url }}" /><br />
-        <h3>Name: {{user_admin_obj.name}}</h3>
-        Gender: {{user_admin_obj.gender}}<br />
-        Date Of Visit: {{visiter_obj.visitDate}}<br />
-        Reason of visit: {{visiter_obj.reason}}<br />
-        Time validity: {{visiter_obj.visiting_hour}}<br />
-        Gate Number: {{visiter_obj.gateId}} {{visiter_obj.userId}} {% else %}
-        <h3>
-          You don't have any gate pass... want to <a href="gatepass">create</a>
-        </h3>
-        {% endif %}
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+      Main
+    </p>
+
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="{% url 'adminLogin' %}" class="nav-link text-dark font-italic bg-light">
+          <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+          Super Admin
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'gateAdminLogin' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+          Admin
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'userLogin' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+          User
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+          Gallery
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-content p-5" id="content">
+    <button id="sidebarCollapse" type="button">
+      <i class="fa fa-bars mr-2">
+        <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
+      </i>
+    </button>
+    <div class="container">
+      <div class="d-flex justify-content-center">
+          {% if obj == 1 %}
+          <div class="card">
+          <div class="card-header">
+            <h3>Visitor Pass</h3>
+          </div>
+          <div class="card-body">
+            <h3>Ahmedabad University</h3>
+            Photo:<img src="{{ user_admin_obj.photo.url }}" /><br />
+            <h3>Name: {{user_admin_obj.name}}</h3>
+            Gender: {{user_admin_obj.gender}}<br />
+            Date Of Visit: {{visiter_obj.visitDate}}<br />
+            Reason of visit: {{visiter_obj.reason}}<br />
+            Time validity: {{visiter_obj.visiting_hour}}<br />
+            Gate Number: {{visiter_obj.gateId}} {{visiter_obj.userId}}
+          </div>
+          </div>
+          {% else %}
+          <div id="createPass">
+            <h2 id="head">Visitor Pass</h2>
+            <h4>You don't have any gate pass... want to <a href="gatepass">create One ??</a></h4>
+          </div>
+          {% endif %}
+        
       </div>
     </div>
+  </div>
+  <script>
+    $(function () {
+      // Sidebar toggle behavior
+      $("#sidebarCollapse").on("click", function () {
+        $("#sidebar, #content").toggleClass("active");
+      });
+    });
+  </script>
   </body>
+
 </html>
