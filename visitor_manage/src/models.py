@@ -55,7 +55,7 @@ class Visitor(models.Model):
     reason = models.TextField(max_length=1000)
 
     def __str__(self):
-        return str(self.userId)
+        return str(self.id)
 
 
 class TemporaryUser(models.Model):

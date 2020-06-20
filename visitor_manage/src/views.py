@@ -310,13 +310,9 @@ def gateAdminDash(request):
 
 
 def makeCheckIn(request):
-
     obj = -1
     try:
-        visitor_obj = Visitor.objects.all().filter(
-            checkin=None, visitDate=datetime.datetime.now().date())
-        # print(1)
-        print((visitor_obj))
+        visitor_obj = Visitor.objects.all().filter( checkin=None, visitDate=datetime.datetime.now().date()) 
     except:
         visitor_obj = None
 
@@ -326,15 +322,93 @@ def makeCheckIn(request):
         }
         return render(request, 'src/makeCheckIn.html', context)
     else:
-        l = [0]*len(visitor_obj)
-        for i in range(len(visitor_obj)):
-            l[i] = 1  # User.objects.get(id=visiter_obj[i])
-        user_obj = User.objects.all()
+        l=[0]*len(visitor_obj)
 
-        obj = 1
-        context = {
-            'obj': obj,
+        for i in range(len(visitor_obj)):
+            x=visitor_obj[i].userId
+            l[i]=x
+        obj=1
+        context={
+            'obj':obj,
             'visitor_obj': visitor_obj,
-            'user_obj': user_obj,
+            'x':l,
+            'len':len(visitor_obj),
         }
-        return render(request, 'src/makeCheckIn.html', context)
+        return render(request, 'src/makeCheckIn.html',context)
+
+def checkInVisitor(request, pk):
+    print(pk)
+    visitor_obj=Visitor.objects.get(id=pk , checkin=None)
+    visitor_obj.checkin=datetime.datetime.now()
+    try:
+        visitor_obj.save()
+
+    except Exception as e:
+        print(e)
+    return HttpResponseRedirect('/makeCheckIn/')
+
+def makeCheckOut(request):
+    obj=-1
+    try:
+        visitor_obj = Visitor.objects.all().filter( checkout=None ,visitDate=datetime.datetime.now().date()).exclude(checkin=None)
+    except:
+        visitor_obj = None
+
+    if visitor_obj is None:
+        context={
+            'obj':obj,
+        }
+        return render(request, 'src/makeCheckOut.html',context)
+    else:
+        l=[0]*len(visitor_obj)
+
+        for i in range(len(visitor_obj)):
+            x=visitor_obj[i].userId
+            l[i]=x
+        obj=1
+        context={
+            'obj':obj,
+            'visitor_obj': visitor_obj,
+            'x':l,
+            'len':len(visitor_obj),
+        }
+        return render(request, 'src/makeCheckOut.html', context)
+
+def checkOutVisitor(request, pk):
+    print(pk)
+    visitor_obj=Visitor.objects.get(id=pk , checkout=None)
+    visitor_obj.checkout=datetime.datetime.now()
+    try:
+        visitor_obj.save()
+
+    except Exception as e:
+        print(e)
+    return HttpResponseRedirect('/makeCheckOut/')
+
+def checkOutDone(request):
+    obj=-1
+    try:
+        visitor_obj = Visitor.objects.all().filter(visitDate=datetime.datetime.now().date()).exclude( checkout=None)
+        print(visitor_obj)
+    except:
+        visitor_obj = None
+
+    if visitor_obj is None:
+        context={
+            'obj':obj,
+        }
+        return render(request, 'src/checkOutDone.html',context)
+    else:
+        l=[0]*len(visitor_obj)
+
+        for i in range(len(visitor_obj)):
+            x=visitor_obj[i].userId
+            l[i]=x
+        obj=1
+        context={
+            'obj':obj,
+            'visitor_obj': visitor_obj,
+            'x':l,
+            'len':len(visitor_obj),
+        }
+        return render(request, 'src/checkOutDone.html', context)

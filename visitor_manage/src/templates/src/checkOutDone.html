@@ -11,7 +11,6 @@
                 Reason of visit: {{visitor.reason}}<br />
                 Time validity: {{visitor.visiting_hour}}<br />
                 Photo: <img src="{{ user.photo.url }}" /><br>
-                <button><a href='/makeCheckIn/{{visitor.pk}}'> Check In </a></button><br><br>
                 <hr>
             {% endif %}
         {% endfor %}
