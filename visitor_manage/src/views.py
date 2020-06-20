@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 
 import datetime
 
+
 def sendMail(request):
     send_mail('Sending OTP for Pass Generation', "420 is the otp for your password",
               "",
@@ -20,7 +21,8 @@ def sendMail(request):
 
 
 userid = -1
-gate_id=-1
+gate_id = -1
+
 
 def index(request):
     return render(request, 'src/index.html')
@@ -29,6 +31,7 @@ def index(request):
 def login(id):
     global userid
     userid = id
+
 
 def gateLogin(id):
     global gate_id
@@ -84,6 +87,7 @@ def userLogin(request):
             return render(request, 'src/userDash.html', context)
 
     return render(request, "src/userLogin.html")
+
 
 def userRegister(request):
     if request.method == 'POST':
@@ -149,12 +153,14 @@ def gatepass(request):
 
     return render(request, 'src/gatepass.html', context)
 
+
 def adminLogin(request):
     username = "username"
     type = "text"
     context = {
         'username': username,
-        'typo': type
+        'typo': type,
+        'src': "https://img.icons8.com/ios-glyphs/2x/caspar-king-magician.png",
     }
     if request.method == "POST":
         username = request.POST.get('username')
@@ -176,6 +182,7 @@ def adminLogin(request):
         # return render(request,'src/superAdminDash.html')
 
     return render(request, "src/adminLogin.html", context)
+
 
 def superAdminDash(request):
     admin_obj = Admin.objects.all()
@@ -206,10 +213,11 @@ def superAdminDash(request):
 
     return render(request, 'src/superAdminDash.html', context)
 
-def adminEdit(request,pk):
-    admin_obj=Admin.objects.get(gate=pk)
+
+def adminEdit(request, pk):
+    admin_obj = Admin.objects.get(gate=pk)
     print(admin_obj)
-    context={
+    context = {
         'admin_obj': admin_obj,
     }
     if request.method == 'POST':
@@ -220,34 +228,37 @@ def adminEdit(request,pk):
         contact = request.POST.get('contact')
         gender = request.POST.get('gender')
 
-        admin_obj.username=username
-        admin_obj.name=name
-        admin_obj.mail=mail
-        admin_obj.contact=contact
-        admin_obj.gender=gender
+        admin_obj.username = username
+        admin_obj.name = name
+        admin_obj.mail = mail
+        admin_obj.contact = contact
+        admin_obj.gender = gender
 
         #admin = Admin( username=username, name=name,password=password, mail=mail, contact=contact, gender=gender)
         try:
             admin_obj.save()
             return HttpResponseRedirect('/adminLogin/superAdminDash/')
-            #return render(request, 'src/superAdminDash.html')
+            # return render(request, 'src/superAdminDash.html')
         except Exception as e:
             print(e)
             return render(request, 'src/adminEdit.html', context)
 
-    return render(request, 'src/adminEdit.html',context)
+    return render(request, 'src/adminEdit.html', context)
 
-def adminDelete(request,pk):
-    admin_obj=Admin.objects.get(gate=pk).delete()
+
+def adminDelete(request, pk):
+    admin_obj = Admin.objects.get(gate=pk).delete()
 
     return HttpResponseRedirect('/adminLogin/superAdminDash/')
+
 
 def gateAdminLogin(request):
     username = "GateId"
     type = "number"
     context = {
         'username': username,
-        'typo': type
+        'typo': type,
+        'src': "https://img.icons8.com/ios-filled/2x/front-gate-closed.png",
     }
     if request.method == "POST":
         gateId = (request.POST.get('username'))
@@ -280,13 +291,14 @@ def gateAdminDash(request):
         contact = request.POST.get('contact')
         gender = request.POST.get('gender')
         photo = request.POST.get('photo')
-        gateId= gate_id
+        gateId = gate_id
         visit_gate = Admin.objects.get(gate=gateId)
-        visitDate= datetime.datetime.now().date()
-        visiting_hour= request.POST.get('visiting_hour')
-        reason= request.POST.get('reason')
+        visitDate = datetime.datetime.now().date()
+        visiting_hour = request.POST.get('visiting_hour')
+        reason = request.POST.get('reason')
         checkin = datetime.datetime.now()
-        user = TemporaryUser(name=name,mail=mail, contact=contact, gender=gender, photo=photo, gateId=visit_gate ,checkin=checkin, visitDate=visitDate,visiting_hour=visiting_hour, reason=reason)
+        user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender, photo=photo, gateId=visit_gate,
+                             checkin=checkin, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
         try:
             user.save()
             return render(request, 'src/index.html')
@@ -297,38 +309,32 @@ def gateAdminDash(request):
     return render(request, 'src/gateAdminDash.html')
 
 
-
 def makeCheckIn(request):
 
-    obj=-1
+    obj = -1
     try:
-        visitor_obj = Visitor.objects.all().filter( checkin=None, visitDate=datetime.datetime.now().date()) 
-        #print(1)
+        visitor_obj = Visitor.objects.all().filter(
+            checkin=None, visitDate=datetime.datetime.now().date())
+        # print(1)
         print((visitor_obj))
     except:
         visitor_obj = None
 
     if visitor_obj is None:
-        context={
-            'obj':obj,
+        context = {
+            'obj': obj,
         }
-        return render(request, 'src/makeCheckIn.html',context)
+        return render(request, 'src/makeCheckIn.html', context)
     else:
-        l=[0]*len(visitor_obj)
+        l = [0]*len(visitor_obj)
         for i in range(len(visitor_obj)):
-            l[i]=1#User.objects.get(id=visiter_obj[i])
-        user_obj= User.objects.all()
+            l[i] = 1  # User.objects.get(id=visiter_obj[i])
+        user_obj = User.objects.all()
 
-        obj=1
-        context={
-            'obj':obj,
+        obj = 1
+        context = {
+            'obj': obj,
             'visitor_obj': visitor_obj,
-            'user_obj':user_obj,
+            'user_obj': user_obj,
         }
-        return render(request, 'src/makeCheckIn.html',context)
-
-    
-    
-
-
-
+        return render(request, 'src/makeCheckIn.html', context)

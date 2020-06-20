@@ -1,144 +1,103 @@
-{% extends "src/gateAdminBasefile.html" %} {% block content %} 
-<div class="page-content p-5" id="content">
-  <!-- Toggle button -->
-  <button
-    id="sidebarCollapse"
-    type="button"
-    class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"
-  >
-    <i class="fa fa-bars mr-2"></i
-    ><small class="text-uppercase font-weight-bold">Toggle</small>
-  </button>
-  <div class="container">
-    <div class="d-flex justify-content-center">
-      <div class="card">
-        <div class="card-header">
-          <h3>Make Gate Pass</h3>
-        </div>
-        <div class="card-body">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Name"
-                id="name"
-                name="name"
-              />
-            </div>
-            
-        
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Mail Id"
-                id="mail"
-                name="mail"
-              />
-            </div>
+{% extends "src/gateAdminBasefile.html" %} {% block content %}
 
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
-              <input
-                type="numer"
-                class="form-control"
-                placeholder="Contact Number"
-                id="contact"
-                name="contact"
-              />
-            </div>
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-              </div>
-              <label class="custom-control-label" for="visiting_hour" >visiting_hour:</label><br>
-              <select class="form-control" id= "visiting_hour" name="visiting_hour" >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="More Than 3">More Than 3</option>
-                
-              </select>
-            </div>
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-              </div>
-              <textarea placeholder="Reason for visit" name="reason" id="reason" ></textarea>
-            </div>    
-            
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
-              <label class="custom-control-label" for="gender"
-                >Gender:</label
-              ><br />
-              <select class="form-control" id="gender" name="gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
+<div class="d-flex justify-content-center">
+	<div class="card">
+		<div class="card-header">
+			<h3>Make Gate Pass</h3>
+		</div>
+		<div class="card-body">
+			<form method="POST">
+				{% csrf_token %}
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">
+							<i class="fas fa-user">
+								<img src="https://img.icons8.com/ios-glyphs/2x/employee-card.png" width="30" />
+							</i>
+						</span>
+					</div>
+					<input type="text" class="form-control" placeholder="Name" id="name" name="name" />
+				</div>
 
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"
-                  ><i class="fas fa-user"></i
-                ></span>
-              </div>
-              <input
-                type="file"
-                class="form-control"
-                placeholder="photo"
-                id="photo"
-                name="photo"
-              />
-            </div>
 
-            <div class="form-group">
-              <input
-                type="submit"
-                value="MAKE"
-                class="btn float-right login_btn"
-                id="lg_bt"
-              />
-            </div>
-          </form>
-        </div>
-        
-      </div>
-    </div>
-  </div>
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user">
+								<img src="https://img.icons8.com/ios-glyphs/2x/email.png" width="30" /></i></span>
+					</div>
+					<input type="email" class="form-control" placeholder="Mail Id" id="mail" name="mail" />
+				</div>
+
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user"><img
+									src="https://img.icons8.com/ios-glyphs/2x/contact-card.png" width="30" /></i></span>
+					</div>
+					<input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact" />
+				</div>
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user"></i></span>
+					</div>
+					<label class="custom-control-label" for="visiting_hour">visiting_hour:</label><br>
+					<select class="form-control" id="visiting_hour" name="visiting_hour">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="More Than 3">More Than 3</option>
+
+					</select>
+				</div>
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user">
+							<img src="data:image/jpeg;base64,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" width="30">
+						</i></span>
+					</div>
+					<textarea placeholder="Reason for visit" name="reason" id="reason" cols="32" rows="2"></textarea>
+				</div>
+
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user"><img
+                          src="https://img.icons8.com/ios-glyphs/2x/gender.png"
+                          width="30" /></i></span>
+					</div>
+					<br />
+					<select class="form-control" id="gender" name="gender">
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+						<option value="Other">Other</option>
+					</select>
+				</div>
+
+				<div class="input-group form-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-user"><img
+                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
+                          width="30" /></i></span>
+					</div>
+					<input type="file" class="form-control" placeholder="photo" id="photo" name="photo" />
+				</div>
+
+				<div class="form-group">
+					<input type="submit" value="MAKE" class="btn float-right login_btn" id="lg_bt" />
+				</div>
+			</form>
+		</div>
+
+	</div>
 </div>
-
 <script>
-  $(function () {
-    // Sidebar toggle behavior
-    $("#sidebarCollapse").on("click", function () {
-      $("#sidebar, #content").toggleClass("active");
-    });
-  });
+	$(function () {
+		// Sidebar toggle behavior
+		$("#sidebarCollapse").on("click", function () {
+			$("#sidebar, #content").toggleClass("active");
+		});
+	});
 </script>
 </body>
+
 </html>
 
-  {% endblock %}
+{% endblock %}

@@ -30,14 +30,13 @@
     {% include "src/navbar.html" %}
 
     <div class="page-content p-5" id="content">
-      <!-- Toggle button -->
-      <button
-        id="sidebarCollapse"
-        type="button"
-        class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"
-      >
+      <button id="sidebarCollapse" type="button">
         <i class="fa fa-bars mr-2"></i
-        ><small class="text-uppercase font-weight-bold">Toggle</small>
+        ><img
+          src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png"
+          width="30"
+          height="30"
+        />
       </button>
       <div class="container">
         <div class="d-flex justify-content-center">
@@ -51,7 +50,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/name.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -65,7 +67,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/user-male.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -79,7 +84,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-key"></i
+                      ><i class="fas fa-key"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/password1.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -92,7 +100,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/email.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -107,7 +118,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/contact-card.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -121,12 +135,15 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/gender.png"
+                          width="30" /></i
                     ></span>
                   </div>
-                  <label class="custom-control-label" for="gender"
+                  <!-- <label class="custom-control-label" for="gender"
                     >Gender:</label
-                  ><br />
+                  ><br /> -->
                   <select class="form-control" id="gender" name="gender">
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -137,7 +154,10 @@
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
-                      ><i class="fas fa-user"></i
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
+                          width="30" /></i
                     ></span>
                   </div>
                   <input
@@ -161,17 +181,13 @@
             </div>
             <div class="card-footer">
               <div class="d-flex justify-content-center links">
-                Don't have an account?<a href="/userLogin/">Sign In</a>
-              </div>
-              <div class="d-flex justify-content-center">
-                <a href="/forgotPassword/">Forgot your password?</a>
+                Already Have an Account?<a href="/userLogin/">Sign In</a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <script>
       $(function () {
         // Sidebar toggle behavior
