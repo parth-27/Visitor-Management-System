@@ -6,11 +6,9 @@
         {% for user in x %}
             {% if forloop.counter == forloop.parentloop.counter %}
                 Name:{{user.name}}<br>
-                Gender: {{user.gender}}<br />
-                Date Of Visit: {{visitor.visitDate}}<br />
                 Reason of visit: {{visitor.reason}}<br />
                 Time validity: {{visitor.visiting_hour}}<br />
-                Photo: <img src="{{user.photo.url }}" /><br>
+                <img src="{{user.photo.url }}" /><br>
                 <button><a href='/makeCheckOut/{{visitor.pk}}'> Check Out </a></button><br><br>
                 <hr>
             {% endif %}

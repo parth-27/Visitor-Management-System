@@ -1,16 +1,16 @@
 {% extends "src/gateAdminBasefile.html" %} 
 {% block content %} 
 
+<div class="card">
+    <div class="card-body">
 {% if obj == 1 %}
     {% for visitor in visitor_obj %}
         {% for user in x %}
             {% if forloop.counter == forloop.parentloop.counter %}
                 Name:{{user.name}}<br>
-                Gender: {{user.gender}}<br />
-                Date Of Visit: {{visitor.visitDate}}<br />
                 Reason of visit: {{visitor.reason}}<br />
                 Time validity: {{visitor.visiting_hour}}<br />
-                Photo: <img src="{{ user.photo.url }}" /><br>
+                <img src="{{ user.photo.url }}"  width="100" height="100"/><br>
                 <button><a href='/makeCheckIn/{{visitor.pk}}'> Check In </a></button><br><br>
                 <hr>
             {% endif %}
@@ -19,5 +19,6 @@
 {% else %}
     Here is no pending checkin....
 {% endif %}
-
+</div>
+</div>
 {% endblock %}
