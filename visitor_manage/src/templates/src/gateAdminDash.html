@@ -1,5 +1,15 @@
 {% extends "src/gateAdminBasefile.html" %} {% block content %}
-
+<script>
+	if( messages.length>0){
+		var i;
+		msg="These are the name which are running on over due:";
+		for (i = 0; i < messages.length; i++) {
+			
+			msg += cars[i] + "<br>";
+		}
+    	alert(msg);
+	}
+</script>
 <div class="d-flex justify-content-center">
   <div class="card">
     <div class="card-header">

@@ -7,8 +7,11 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
+from django.contrib import messages
+from django.utils.timezone import utc
 
 import datetime
+from datetime import datetime, timedelta , timezone
 
 
 def sendMail(request):
@@ -63,13 +66,12 @@ def userLogin(request):
         login(user_admin_obj.id)
         # print(userid)
         try:
-            visitor_obj = Visitor.objects.get(
-                userId=user_admin_obj.id, checkin=None)
+            visitor_obj = Visitor.objects.all.filter(userId=user_admin_obj.id, checkin=None )
         except:
             visitor_obj = None
         obj = -1
         # print(visitor_obj.userId)
-        if visitor_obj is None:
+        if visitor_obj is None or len(visitor_obj)==0:
             context = {
                 'username': username,
                 'obj': obj,
@@ -213,6 +215,21 @@ def superAdminDash(request):
 
     return render(request, 'src/superAdminDash.html', context)
 
+def statistics(request):
+    dayVisitor=[0]*10
+    day=['2000-03-12']*10
+    c=0
+    while(c<10):
+        day[c]=datetime.strftime(datetime.now() - timedelta(c), '%Y-%m-%d')
+        visitor=Visitor.objects.all().filter(visitDate=day[c] ).exclude(checkout=None)
+        dayVisitor[c]= len(visitor)
+        c+=1
+    context={
+        'dayVisitor': dayVisitor,
+        'day': day,
+    }
+    #print(datetime.strftime(datetime.now() - timedelta(30), '%Y-%m-%d'))
+    return render(request, 'src/statistics.html' , context)
 
 def adminEdit(request, pk):
     admin_obj = Admin.objects.get(gate=pk)
@@ -277,14 +294,38 @@ def gateAdminLogin(request):
             return render(request, "src/adminLogin.html", {"error": errors}, context)
 
         gateLogin(gateId)
+       
+        #messages.info(request, 'Your password has been changed successfully!')
         return HttpResponseRedirect('gateAdminDash/')
         # return render(request,'src/superAdminDash.html')
 
     return render(request, "src/adminLogin.html", context)
 
 
-def gateAdminDash(request):
-
+def gateAdminDash(request ):
+    visitor_obj = Visitor.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
+    l=[]
+    for i in range(len(visitor_obj)):
+        if visitor_obj[i].visiting_hour!="More Than 3":
+            now =datetime.utcnow().replace(tzinfo=utc)
+            diff= visitor_obj[i].checkin - now
+            hour=5.5-float(diff.total_seconds()/3600)
+            if visitor_obj[i].visiting_hour=="1":
+                if hour>1:
+                    user_obj= (visitor_obj[i].userId)
+                    l.append(user_obj.name)
+            if visitor_obj[i].visiting_hour=="2":
+                if hour>2:
+                    user_obj=  (visitor_obj[i].userId)
+                    l.append(user_obj.name)
+            if visitor_obj[i].visiting_hour=="3":
+                if hour>3:
+                    user_obj=  (visitor_obj[i].userId)
+                    l.append(user_obj.name)
+    #print(l)
+    context={
+        'messages':l,
+    }
     if request.method == 'POST':
         name = request.POST.get('name')
         mail = request.POST.get('mail')
@@ -304,19 +345,20 @@ def gateAdminDash(request):
             return render(request, 'src/index.html')
         except Exception as e:
             print(e)
-            return render(request, 'src/gateAdminDashhtml')
+            return render(request, 'src/gateAdminDashhtml', context)
 
-    return render(request, 'src/gateAdminDash.html')
+    return render(request, 'src/gateAdminDash.html', context)
 
 
 def makeCheckIn(request):
     obj = -1
     try:
-        visitor_obj = Visitor.objects.all().filter( checkin=None, visitDate=datetime.datetime.now().date()) 
+        visitor_obj = Visitor.objects.all().filter( checkin=None, gateId=gate_id ,visitDate=datetime.now().date()) 
     except:
         visitor_obj = None
-
-    if visitor_obj is None:
+    #print(len(visitor_obj))
+    #print('z')
+    if visitor_obj is None or len(visitor_obj)==0:
         context = {
             'obj': obj,
         }
@@ -338,8 +380,8 @@ def makeCheckIn(request):
 
 def checkInVisitor(request, pk):
     print(pk)
-    visitor_obj=Visitor.objects.get(id=pk , checkin=None)
-    visitor_obj.checkin=datetime.datetime.now()
+    visitor_obj=Visitor.objects.get(id=pk , checkin=None, visitDate=datetime.now().date() )
+    visitor_obj.checkin=datetime.now()
     try:
         visitor_obj.save()
 
@@ -350,11 +392,11 @@ def checkInVisitor(request, pk):
 def makeCheckOut(request):
     obj=-1
     try:
-        visitor_obj = Visitor.objects.all().filter( checkout=None ,visitDate=datetime.datetime.now().date()).exclude(checkin=None)
+        visitor_obj = Visitor.objects.all().filter( checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
     except:
         visitor_obj = None
 
-    if visitor_obj is None:
+    if visitor_obj is None or len(visitor_obj)==0:
         context={
             'obj':obj,
         }
@@ -376,7 +418,7 @@ def makeCheckOut(request):
 
 def checkOutVisitor(request, pk):
     print(pk)
-    visitor_obj=Visitor.objects.get(id=pk , checkout=None)
+    visitor_obj=Visitor.objects.get(id=pk , checkout=None, visitDate=datetime.now().date(),)
     visitor_obj.checkout=datetime.datetime.now()
     try:
         visitor_obj.save()
@@ -388,12 +430,12 @@ def checkOutVisitor(request, pk):
 def checkOutDone(request):
     obj=-1
     try:
-        visitor_obj = Visitor.objects.all().filter(visitDate=datetime.datetime.now().date()).exclude( checkout=None)
+        visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(), gateId=gate_id ).exclude( checkout=None)
         print(visitor_obj)
     except:
         visitor_obj = None
 
-    if visitor_obj is None:
+    if visitor_obj is None or len(visitor_obj)==0:
         context={
             'obj':obj,
         }
