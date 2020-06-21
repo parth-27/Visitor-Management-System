@@ -29,6 +29,14 @@
     {% include "src/gateAdminNav.html" %}
 
     <div class="page-content p-5" id="content">
+      <div class="active-cyan-3 active-cyan-4 mb-4">
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </div>
       <button id="sidebarCollapse" type="button">
         <i class="fa fa-bars mr-2">
           <img
@@ -38,6 +46,7 @@
           />
         </i>
       </button>
+
       <div class="container">
         {% block content %} {% endblock %}
       </div>

@@ -22,36 +22,72 @@
 
   <ul class="nav flex-column bg-white mb-0">
     <li class="nav-item">
-      <a href="{% url 'gateAdminDash' %}" class="nav-link text-dark font-italic bg-light">
-        <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+      <a
+        href="{% url 'gateAdminDash' %}"
+        class="nav-link text-dark font-italic bg-light"
+      >
+        <i class="fa fa-th-large mr-3 text-primary fa-fw">
+          <img src="https://img.icons8.com/ios-glyphs/2x/home.png" width="30" />
+        </i>
         Home (Create a pass)
       </a>
     </li>
     <li class="nav-item">
       <a href="{% url 'makeCheckIn' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+        <i class="fa fa-address-card mr-3 text-primary fa-fw">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHoAAAB6CAMAAABHh7fWAAAAZlBMVEX///8AAADw8PDKysr5+fnHx8fb29v8/PzBwcH09PQdHR10dHS3t7e+vr5YWFgpKSmmpqbj4+Obm5tqamrp6elNTU2vr69vb29AQEAYGBgxMTGVlZWGhobU1NQNDQ1lZWU4ODh9fX3UbMe5AAAE7klEQVRogb2b2YKqMAyGAUFERUBRcdf3f8kzrjTploRyvruZMf2xtGmWThQJSCa702JVXeP4Wq0Wp90kkYzCl83OVaxRnbOR5dNsb9D9qO8n6WjCSd3ZdN909ThfvVgf3MJP5usivPKSIPwSXwYWbjxTDaa9Cam8pgs/qYMJJzeechzfAi23KWOyv3TTEMqTK185jg+XAMoS4SeDtS+OSV1tNivHyxg45xblRa2MO60XI2g3Jj+yKXP8ubzcGD5YDdjgxVYf72EZr3non13JzxN9Im+OSZzq2/8hVV5qQ5WBDWwkeJx76zNpj8jkKjvIVmiYBcUIL7eNRBn7kjPN7IzMJJ6lEylr2lu+cglH2JMNc7TQJ1zlHG7po+ZF7KRzYLriSqM3zfJL02FvG87ammd8Er6rFw0w7njGUQS3t9cdAGAwxl4pcI3uWLbAnbAXShRtxfYNCIoyvjTw5hVnxsGEdSQ/3Kxnyk/JUfrs4LQk+bEMLeWHOsKJIQ2embKns9cn1agJzBtdOVH90Z0QaryVVelCHaKiRysgGCREGjPDSlZPzys9QJyp0n5P9lUG3w14NPo627HMjMpwe9HjJPDEvk35ec9bdLaBdUZPPR+qmee4/Crj34PIjn78LOjSNuUoUscghzgu6Smskc2syrk6Bimi9Ej/rYKjcvR/V5hhZoTS1nfdPn/R71Lz2n6TyibcusI/vmYKlPHaVp7yC92J16oZiBOOirZ9hT0BwR09WABnJtiTxUf74lOGj093KeCJoQ9v35nB4eJRjh7qGPSgtFWPnS1cRB/t+TuOMa3tF6mavMwZYQo4r5Fde+//ZM/dwSo70pVhFI4dcPKrS1u/M3rVnHQTHF1aQPkNA1yZHAhpORVbmLpoB31R+ZQ9AzjIQYaru8Gk80TXe9Wel+eCJPmqB4bpxLlf4Jemu1Hdlpmw4WSRV7pLYXrNTLoyYGz28XbA5ogrlm0Oc3tuYb4A1rwph9N9YJcMYXrOeXTUrWCWBSLta9NDaVT/iQV10lqmjZVFLRjceCAdurhMepUoQ0dOfGsnbMMrZvy443F89e1Uq5/fZcqmjovzDNKmSVAA+mJorXXW1TYzdGBuUmVc9nuzLQ2tu2RpbP0MaLw8TOPFx33ZKm+9aMqNuaEu7j/80Vo7e9v9uV6W5a4+762triuvTIhgtnAhfBeqkosamm8OzMMSozdxyAxu3+MeDhlO8G0m84uYEVRWMbjnRERQTtZwtJFdBGido5iaCjuINWL3K3YOg7xJj3YI++GUoV0k1itPNo7B7iIZDmI3wtjEQK7FK266gS5UZeaXUwngTXoMlxbsCJq3Dozxio0gl4B6GH4ljDfpafySX4JeN3uCLwJY4dUQKFD9SjXCzUac/lkId8OuJyXdeOtGuUtK8isz/zgSCPFKiNjEBCFeCRKbmDBdKgOIrv2QaH3SgWITEx6/Et6b9OCyEmKEq8o9zvRvDG/SkzriFUp7fwiO9C/07WwNa7wSNjYxYb3IO5o36bH4lfG8SY8lXgkem5gw+pUxvUmP0a+M6k16DOlfqPTOiy79v5T19G90b9KDwjT23cMBIL8iLj1LAOVqeelZAkj/Aqd3Ph698pDSswTldtP/+e85hV+8Mqz0LOF3xyhg3YTKx6+EKxYxeGW9vPZyKF7p30jpnY/6MB8y3f8ARC8zipCowKUAAAAASUVORK5CYII="
+            width="30"
+          />
+        </i>
         CheckIn Pending
       </a>
     </li>
-  
+
     <li class="nav-item">
       <a href="{% url 'makeCheckOut' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+          <img
+            src="https://img.icons8.com/android/2x/checkout.png"
+            width="30"
+          />
+        </i>
         CheckOut Pending
       </a>
     </li>
 
     <li class="nav-item">
       <a href="{% url 'checkOutDone' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+          <img
+            src="data:image/jpeg;base64,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"
+            width="30"
+          />
+        </i>
         Daily lisit of Visitors
       </a>
     </li>
 
     <li class="nav-item">
       <a href="{% url 'timeDue' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+          <img
+            src="https://img.icons8.com/pastel-glyph/2x/time.png"
+            width="30"
+          />
+        </i>
         Time Due
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link text-dark font-italic">
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+          <img
+            src="https://img.icons8.com/android/2x/logout-rounded-left.png"
+            width="30"
+          />
+        </i>
+        Logout
       </a>
     </li>
   </ul>
