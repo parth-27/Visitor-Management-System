@@ -1,5 +1,17 @@
 {% extends "src/gateAdminBasefile.html" %} {% block content %}
-
+<script>
+  var msggg= JSON.parse('{{messages|safe}}');
+  console.log(msggg);
+	if( msggg.length>0){
+		var i;
+		msg="These are the name which are running on over due:\n";
+		for ( i=0;i<msggg.length; i++) {
+			msg += msggg[i]+"\n" ;
+      console.log(msggg[i])
+		}
+    	alert(msg);
+	}
+</script>
 <div class="d-flex justify-content-center">
   <div class="card">
     <div class="card-header">

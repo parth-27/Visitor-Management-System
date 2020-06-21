@@ -1,16 +1,17 @@
 {% extends "src/superAdminBasefile.html" %} {% block content %}
-
+<br><br>
 <script>
     var d="{{day}}";
     var dv="{{dayVisitor}}";
     var i;
+    var djangoData = JSON.parse('{{graphData|safe}}');
     window.onload = function () {
         
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         
         title:{
-            text:"Fortune 500 Companies by Country"
+            text:"Number of Visitors of Last 10 days"
         },
         axisX:{
             interval: 1
@@ -18,26 +19,14 @@
         axisY2:{
             interlacedColor: "rgba(1,77,101,.2)",
             gridColor: "rgba(1,77,101,.1)",
-            title: "Number of Companies"
+            title: "Number of Visitors"
         },
         data: [{
             type: "bar",
             name: "companies",
             axisYType: "secondary",
             color: "#014D65",
-            dataPoints: [
-                { y: 3, label: "Sweden" },
-                { y: 7, label: "Taiwan" },
-                { y: 5, label: "Russia" },
-                { y: 15, label: "Switzerland" },
-                { y: 25, label: "Britain" },
-                { y: 28, label: "Germany" },
-                { y: 29, label: "France" },
-                { y: 52, label: "Japan" },
-                { y: 103, label: "China" },
-                { y: 134, label: "US" },
-
-            ]
+            dataPoints: djangoData
         }]
     });
     chart.render();

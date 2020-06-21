@@ -1,0 +1,17 @@
+{% extends "src/gateAdminBasefile.html" %} 
+{% block content %} 
+
+{% if obj == 1 %}
+    {% for n in name%}
+        {% for t in time %}
+            {% if forloop.counter == forloop.parentloop.counter %}
+                Name :{{n}}<br>
+                Due Time::{{t}} Hours<br><br>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}   
+{% else %}
+    Here is no pending checkout....
+{% endif %}
+
+{% endblock %}
