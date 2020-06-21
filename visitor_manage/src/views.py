@@ -83,17 +83,17 @@ def userLogin(request):
             return render(request, "src/userLogin.html", {"error": errors})
 
         login(user_admin_obj.id)
-        # print(userid)
         try:
-            visitor_obj = Visitor.objects.all.filter(userId=user_admin_obj.id, checkin=None )
+            visitor_obj = Visitor.objects.get(userId=user_admin_obj.id, checkin=None)
         except:
             visitor_obj = None
         obj = -1
-        # print(visitor_obj.userId)
-        if visitor_obj is None or len(visitor_obj)==0:
+
+        if visitor_obj is None: 
             context = {
                 'username': username,
                 'obj': obj,
+                'user_admin_obj': user_admin_obj,
             }
             return render(request, 'src/userDash.html', context)
         else:
@@ -266,15 +266,15 @@ def statistics(request):
             day[c]=datetime.strftime(datetime.now() - timedelta(c), '%Y-%m-%d')
             visitor=Visitor.objects.all().filter(visitDate=day[c] ).exclude(checkout=None)
             dayVisitor[c]= len(visitor)
-            #dictio["label"]=x
-            #l.append(dictio)
             c+=1
-        for i in range(0,10):
+        x=9
+        while(x>=0):
             dictio={}
-            dictio['y']=dayVisitor[i]
-            dictio['label']=day[i]
+            dictio['y']=dayVisitor[x]
+            dictio['label']=day[x]
             l.append(dictio)
-        print(l)
+            x-=1
+        #print(l)
         graphData = json.dumps(l)
         context={
             'graphData' : graphData,
@@ -426,28 +426,33 @@ def timeDue(request):
     else:
         obj=-1
         visitor_obj = Visitor.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
+        print(visitor_obj)
         l=[]
         timeDue=[]
         for i in range(len(visitor_obj)):
-            obj=1
+            
             if visitor_obj[i].visiting_hour!="More Than 3":
+                
                 now =datetime.utcnow().replace(tzinfo=utc)
                 diff= visitor_obj[i].checkin - now
                 print(visitor_obj[i].checkin)
                 hour=5.5-float(diff.total_seconds()/3600)
                 if visitor_obj[i].visiting_hour=="1":
                     if hour>1:
+                        obj=1
                         user_obj= (visitor_obj[i].userId)
                         l.append(user_obj.name)
 
                         timeDue.append(format(hour-1, '.2f'))
                 if visitor_obj[i].visiting_hour=="2":
                     if hour>2:
+                        obj=1
                         user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
                         timeDue.append(format(hour-2, '.2f'))
                 if visitor_obj[i].visiting_hour=="3":
                     if hour>3:
+                        obj=1
                         user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
                         timeDue.append(format(hour-3, '.2f'))
