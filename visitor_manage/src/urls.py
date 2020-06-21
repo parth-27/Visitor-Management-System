@@ -13,6 +13,7 @@ urlpatterns = [
     path('adminDelete/<int:pk>', views.adminDelete, name='adminDelete'),
     path('adminLogin/superAdminDash/',
          views.superAdminDash, name='superAdminDash'),
+    path ('statistics/', views.statistics , name='statistics'),
 
 
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
