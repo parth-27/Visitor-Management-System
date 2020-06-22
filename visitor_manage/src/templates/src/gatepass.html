@@ -28,8 +28,54 @@
   <body>
     
         
-    {% include "src/navbar.html" %}
-    <!-- End vertical navbar -->
+      <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center">
+        <img src="{{ user_admin_obj.photo.url }}" width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+        <div class="media-body">
+          <h4 class="m-0">{{username}}</h4>
+          <p class="font-weight-light text-muted mb-0">
+            School of Engineering and Applied Science
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+      Main
+    </p>
+
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="{% url 'userLogin' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-cubes mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/user-group-man-man.png" width="30" />
+          </i>
+          Login as Other User
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a href="#" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30" />
+          </i>
+          Gallery
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{% url 'userLogoutDone' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/android/2x/logout-rounded-left.png" width="30" />
+          </i>
+          Logout
+        </a>
+      </li>
+
+    </ul>
+  </div>
 
     <div class="page-content p-5" id="content">
       <!-- Toggle button -->

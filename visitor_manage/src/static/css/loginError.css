@@ -1,6 +1,6 @@
 html,
 body {
-  background-image: url("https://images.static-collegedunia.com/public/college_data/images/campusimage/1542285606Copy%20of%20SEAS%20_%20Venture%20Studio%20-%20007.jpg");
+  background-image: url("https://www.infrascale.com/wp-content/uploads/jpg/bg-img-404-error-1920x1080.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
@@ -10,15 +10,13 @@ body {
 .container {
   height: 100%;
   align-content: center;
-  overflow: auto;
 }
 
 .card {
-  max-height: 600;
-  overflow: auto;
+  height: 100px;
   margin-top: auto;
   margin-bottom: auto;
-  width: 400px;
+  width: 600px;
   color: white;
   background-color: rgba(0, 0, 0, 0.5) !important;
 }

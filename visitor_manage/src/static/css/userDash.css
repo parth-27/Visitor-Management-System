@@ -27,11 +27,16 @@ body {
 }
 
 .card {
-  height: 470px;
+  min-height: auto;
   margin-top: auto;
   margin-bottom: auto;
-  width: 400px;
+  min-width: 600px;
+  color: white;
   background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.clg {
+  font-family: cursive;
 }
 
 .social_icon span {

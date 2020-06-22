@@ -1,8 +1,10 @@
 <html>
   <head>
     {% load static %}
+    <link rel="stylesheet" href="{% static '/css/adminDelete.css' %}" />
     <link rel="stylesheet" href="{% static '/css/SuperAdmin.css' %}" />
     <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -25,6 +27,7 @@
       crossorigin="anonymous"
     ></script>
   </head>
+
   <body>
     {% include "src/superAdminNav.html" %}
 
@@ -49,6 +52,27 @@
         $("#sidebarCollapse").on("click", function () {
           $("#sidebar, #content").toggleClass("active");
         });
+      });
+    </script>
+    <script>
+      $("button").click(function () {
+        if ($(this).hasClass("confirm")) {
+          $(this).addClass("done");
+          $("span").text("Deleted");
+        } else {
+          $(this).addClass("confirm");
+          $("span").text("Are you sure?");
+        }
+      });
+
+      // Reset
+      $("button").on("mouseout", function () {
+        if ($(this).hasClass("confirm") || $(this).hasClass("done")) {
+          setTimeout(function () {
+            $("button").removeClass("confirm").removeClass("done");
+            $("span").text("Delete");
+          }, 3000);
+        }
       });
     </script>
   </body>

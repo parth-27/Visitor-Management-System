@@ -4,6 +4,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
   <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/Delete.css' %}" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -38,43 +39,36 @@
       <li class="nav-item">
         <a href="{% url 'userLogin' %}" class="nav-link text-dark font-italic">
           <i class="fa fa-cubes mr-3 text-primary fa-fw">
-            <img
-            src="https://img.icons8.com/ios-glyphs/2x/user-group-man-man.png"
-            width="30"
-        />
+            <img src="https://img.icons8.com/ios-glyphs/2x/user-group-man-man.png" width="30" />
           </i>
           Login as Other User
         </a>
       </li>
 
-      
+
       <li class="nav-item">
         <a href="#" class="nav-link text-dark font-italic">
           <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30"
-        />
+            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30" />
           </i>
           Gallery
         </a>
       </li>
 
       <li class="nav-item">
-      <a href="{% url 'userLogoutDone' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-          <img
-            src="https://img.icons8.com/android/2x/logout-rounded-left.png"
-            width="30"
-          />
-        </i>
-        Logout
-      </a>
-    </li>
+        <a href="{% url 'userLogoutDone' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/android/2x/logout-rounded-left.png" width="30" />
+          </i>
+          Logout
+        </a>
+      </li>
 
     </ul>
   </div>
 
   <div class="page-content p-5" id="content">
-    <button id="sidebarCollapse" type="button">
+    <button id="sidebarCollapse" type="button" style="background-color:white;">
       <i class="fa fa-bars mr-2">
         <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
       </i>
@@ -83,27 +77,78 @@
       <div class="d-flex justify-content-center">
         {% if obj == 1 %}
         <div class="card">
-          <div class="card-header">
-            <h3>Visitor Pass</h3>
-          </div>  
           <div class="card-body">
-            <h3>Ahmedabad University</h3>
-            <img src="{{ user_admin_obj.photo.url }}" width="150" height="100" /><br />
-            <h3>Name: {{user_admin_obj.name}}</h3>
-            Gender: {{user_admin_obj.gender}}<br />
-            Date Of Visit: {{visiter_obj.visitDate}}<br />
-            Reason of visit: {{visiter_obj.reason}}<br />
-            Time validity: {{visiter_obj.visiting_hour}}<br />
-            Gate Number: {{visiter_obj.gateId}} <br/>
-            <button>
-              <a href="/gatepassDelete/{{visiter_obj.pk}}"
-                >Delete
-                <img
-                  src="https://img.icons8.com/ios/2x/delete-trash.png"
-                  width="30"
-              /></a>
-            </button>
+            <div class="d-flex justify-content-center">
+              <h3 class="clg">Ahmedabad University</h3>
+            </div>
 
+            <div class="d-flex justify-content-center">
+              <img src="{{ user_admin_obj.photo.url }}" width="100" height="100" /><br />
+            </div>
+            <div class="d-flex justify-content-center">
+              <h3>{{user_admin_obj.name}}</h3>
+            </div>
+            <div class="d-flex justify-content-center">
+              Gender: {{user_admin_obj.gender}}<br />
+              Date Of Visit: {{visiter_obj.visitDate}}<br />
+              Reason of visit: {{visiter_obj.reason}}<br />
+              Time validity: {{visiter_obj.visiting_hour}}<br />
+              Gate Number: {{visiter_obj.gateId}} <br />
+            </div>
+
+            <div class="d-flex justify-content-center">
+
+              
+              <button class='centerMe'>
+                <div class='icon'>
+                  <i class='fa fa-trash-o'>
+                    <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" />
+                  </i>
+                  <i class='fa fa-question'></i>
+                  <i class='fa fa-check'></i>
+                </div>
+                <div class='text'>
+                  <span>Delete
+                  </span>
+                </div>
+                <a href="/gatepassDelete/{{visiter_obj.pk}}"></a>
+              </button>
+
+              <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
+              <script>
+                $("button").click(function () {
+                  if ($(this).hasClass("confirm")) {
+                    $(this).addClass("done");
+                    $("span").text("Deleted");
+                  } else {
+                    $(this).addClass("confirm");
+                    $("span").text("Are you sure?");
+                  }
+                });
+
+                // Reset
+                $("button").on('mouseout', function () {
+                  if ($(this).hasClass("confirm") || $(this).hasClass("done")) {
+                    setTimeout(function () {
+                      $("button").removeClass("confirm").removeClass("done");
+                      $("span").text("Delete");
+                    }, 3000);
+                  }
+                });
+              </script>
+
+
+              <!-- <button>
+                <a href="/gatepassDelete/{{visiter_obj.pk}}">Delete
+                  <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+              </button> -->
+            </div>
+            <hr>
+            <hr>
+            <div class="d-flex justify-content-center" style="background-color: black;">
+              <h1>Visitor</h1>
+            </div>
 
           </div>
         </div>
