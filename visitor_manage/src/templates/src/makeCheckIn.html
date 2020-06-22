@@ -1,6 +1,7 @@
 {% extends "src/gateAdminBasefile.html" %} 
 {% block content %} 
 
+<div class="d-flex justify-content-center">
 <div class="card">
     <div class="card-body">
 {% if obj == 1 %}
@@ -19,6 +20,7 @@
 {% else %}
     Here is no pending checkin....
 {% endif %}
+</div>
 </div>
 </div>
 {% endblock %}

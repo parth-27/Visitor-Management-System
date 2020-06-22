@@ -2,6 +2,8 @@
 
 <head>
   {% load static %}
+  <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -13,8 +15,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
-  <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
 </head>
 <body">
   <div class="vertical-nav bg-white" id="sidebar">
@@ -36,26 +36,36 @@
 
     <ul class="nav flex-column bg-white mb-0">
       <li class="nav-item">
-        <a href="{% url 'adminLogin' %}" class="nav-link text-dark font-italic bg-light">
-          <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
-          Super Admin
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'gateAdminLogin' %}" class="nav-link text-dark font-italic">
-          <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
-          Admin
-        </a>
-      </li>
-      <li class="nav-item">
         <a href="{% url 'userLogin' %}" class="nav-link text-dark font-italic">
-          <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
-          User
+          <i class="fa fa-cubes mr-3 text-primary fa-fw">
+            <img
+            src="https://img.icons8.com/ios-glyphs/2x/user-group-man-man.png"
+            width="30"
+        />
+          </i>
+          Login as Other User
         </a>
       </li>
+
+      
+      <li class="nav-item">
+      <a href="#" class="nav-link text-dark font-italic">
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+          <img
+            src="https://img.icons8.com/android/2x/logout-rounded-left.png"
+            width="30"
+          />
+        </i>
+        Logout
+      </a>
+    </li>
+
       <li class="nav-item">
         <a href="#" class="nav-link text-dark font-italic">
-          <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30"
+        />
+          </i>
           Gallery
         </a>
       </li>
