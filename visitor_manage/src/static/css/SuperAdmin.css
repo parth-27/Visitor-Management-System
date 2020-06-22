@@ -1,6 +1,6 @@
 html,
 body {
-  background-image: url("https://pbs.twimg.com/media/EL7KdTGVUAAGG1W.jpg");
+  background-image: url("https://images.static-collegedunia.com/public/college_data/images/campusimage/1542285606Copy%20of%20SEAS%20_%20Venture%20Studio%20-%20007.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
@@ -13,11 +13,11 @@ body {
 }
 
 .card {
-  height: 520px;
+  height: 550px;
   margin-top: auto;
   margin-bottom: auto;
   width: 400px;
-  background-color: rgba(153, 194, 218, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .social_icon span {

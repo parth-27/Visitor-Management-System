@@ -1,6 +1,9 @@
 {% extends "src/gateAdminBasefile.html" %} 
 {% block content %} 
 
+<div class="d-flex justify-content-center">
+<div class="card">
+    <div class="card-body">
 {% if obj == 1 %}
     {% for n in name%}
         {% for t in time %}
@@ -13,5 +16,7 @@
 {% else %}
     Here is no pending checkout....
 {% endif %}
-
+</div>
+</div>
+</div>
 {% endblock %}
