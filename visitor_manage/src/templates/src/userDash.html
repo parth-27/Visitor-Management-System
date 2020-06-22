@@ -49,7 +49,17 @@
 
       
       <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
+        <a href="#" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30"
+        />
+          </i>
+          Gallery
+        </a>
+      </li>
+
+      <li class="nav-item">
+      <a href="{% url 'userLogoutDone' %}" class="nav-link text-dark font-italic">
         <i class="fa fa-picture-o mr-3 text-primary fa-fw">
           <img
             src="https://img.icons8.com/android/2x/logout-rounded-left.png"
@@ -60,15 +70,6 @@
       </a>
     </li>
 
-      <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30"
-        />
-          </i>
-          Gallery
-        </a>
-      </li>
     </ul>
   </div>
 
@@ -87,13 +88,23 @@
           </div>  
           <div class="card-body">
             <h3>Ahmedabad University</h3>
-            Photo:<img src="{{ user_admin_obj.photo.url }}" width="150" height="100" /><br />
+            <img src="{{ user_admin_obj.photo.url }}" width="150" height="100" /><br />
             <h3>Name: {{user_admin_obj.name}}</h3>
             Gender: {{user_admin_obj.gender}}<br />
             Date Of Visit: {{visiter_obj.visitDate}}<br />
             Reason of visit: {{visiter_obj.reason}}<br />
             Time validity: {{visiter_obj.visiting_hour}}<br />
-            Gate Number: {{visiter_obj.gateId}} {{visiter_obj.userId}}
+            Gate Number: {{visiter_obj.gateId}} <br/>
+            <button>
+              <a href="/gatepassDelete/{{visiter_obj.pk}}"
+                >Delete
+                <img
+                  src="https://img.icons8.com/ios/2x/delete-trash.png"
+                  width="30"
+              /></a>
+            </button>
+
+
           </div>
         </div>
         {% else %}

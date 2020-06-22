@@ -76,11 +76,11 @@ def userLogin(request):
             user_admin_obj = None
         # user_admin_obj = UserAdmin.objects.get(username=username)
         if user_admin_obj is None:
-            errors = "Username you entered doesn't exist"
-            return render(request, "src/userLogin.html", {"error": errors})
+            error = "Username you entered doesn't exist"
+            return render(request, "src/userLogin.html", {"error": error})
         elif not user_admin_obj.password == password:
             errors = "Username and password didn't match"
-            return render(request, "src/userLogin.html", {"error": errors})
+            return render(request, "src/userLogin.html", {"errors": errors})
 
         login(user_admin_obj.id)
         try:
@@ -141,6 +141,21 @@ def userRegister(request):
 
     return render(request, 'src/userRegister.html')
 
+
+def gatepassDelete(request, pk):
+    gateLogout()
+    if userid==-1:
+        return render(request, 'src/loginError.html')
+    else:
+        visitor_obj = Visitor.objects.get(id=pk).delete()
+
+        return HttpResponseRedirect('/userLogin/gatepass')
+
+def userLogoutDone(request):
+    logout()
+    gateLogout()
+    superLogout()
+    return HttpResponseRedirect('/')
 
 def gatepass(request):
     gateLogout()
@@ -594,3 +609,16 @@ def checkOutDone(request):
                 'len':len(visitor_obj),
             }
             return render(request, 'src/checkOutDone.html', context)
+
+def adminLogout(request):
+    logout()
+    gateLogout()
+    superLogout()
+    return HttpResponseRedirect('/')
+
+
+def superAdminLogout(request):
+    logout()
+    gateLogout()
+    superLogout()
+    return HttpResponseRedirect('/')

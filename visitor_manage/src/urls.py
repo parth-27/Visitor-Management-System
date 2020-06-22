@@ -7,6 +7,8 @@ urlpatterns = [
      path('userRegister/', views.userRegister, name='userRegister'),
      path('userLogin/gatepass', views.gatepass, name='gatepass'),
      path('userRegister/gatepass', views.gatepass, name='gatepass'),
+     path('gatepassDelete/<int:pk>', views.gatepassDelete, name='gatepassDelete'),
+     path('userLogoutDone/', views.userLogoutDone, name='userLogoutDone'),
 
      path('adminLogin/', views.adminLogin, name='adminLogin'),
      path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
@@ -14,6 +16,7 @@ urlpatterns = [
      path('adminLogin/superAdminDash/',
          views.superAdminDash, name='superAdminDash'),
      path ('statistics/', views.statistics , name='statistics'),
+     path('/superAdminLogout/', views.superAdminLogout, name='superAdminLogout'),
 
 
      path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
@@ -25,5 +28,6 @@ urlpatterns = [
      path('makeCheckOut/<int:pk>',views.checkOutVisitor, name='checkOutVisitor'),
      path('checkOutDone',views.checkOutDone, name='checkOutDone'),
      path('timeDue/', views.timeDue, name='timeDue'),
+     path('adminLogout/',views.adminLogout, name='adminLogout'),
 
 ]
