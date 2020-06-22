@@ -21,26 +21,11 @@
             class="form-control"
             placeholder="Gate Number"
             id="gate"
-            name="gate"
+            name="gate" min="0" required 
           />
         </div>
 
-        <div class="input-group form-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <img
-                src="https://img.icons8.com/ios-glyphs/2x/user-male.png"
-                width="30" /><i class="fas fa-user"></i
-            ></span>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="UserName"
-            id="username"
-            name="username"
-          />
-        </div>
+        <small style="color:white">{{error}}</small>
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
@@ -55,7 +40,7 @@
             class="form-control"
             placeholder="Full Name"
             id="name"
-            name="name"
+            name="name" maxlength="100" minlength="2" required 
           />
         </div>
 
@@ -71,7 +56,7 @@
             type="password"
             class="form-control"
             placeholder="Password"
-            name="password"
+            name="password" minlength="4" maxlength="20" required 
           />
         </div>
         <div class="input-group form-group">
@@ -87,9 +72,10 @@
             class="form-control"
             placeholder="Mail Id"
             id="mail"
-            name="mail"
+            name="mail" pattern=".+@gmail.com" maxlenght="320" required 
           />
         </div>
+        <small style="color:white">{{errors}}</small>
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
@@ -102,9 +88,9 @@
           <input
             type="numer"
             class="form-control"
-            placeholder="Contact Number"
-            id="contact"
-            name="contact"
+            placeholder="Contact Number(format: 1234567890)"
+            id="contact" 
+            name="contact"  pattern="[0-9]{10}" required 
           />
         </div>
 
@@ -147,7 +133,6 @@
     <thead>
       <tr>
         <th scope="col">Gate Id</th>
-        <th scope="col">UserName</th>
         <th scope="col">FullName</th>
         <th scope="col">Email</th>
         <th scope="col">Contact</th>
@@ -160,7 +145,6 @@
       {% for admin in admin_obj %}
       <tr>
         <th scope="row">{{admin.gate}}</th>
-        <td>{{admin.username}}</td>
         <td>{{admin.name}}</td>
         <td>{{admin.mail}}</td>
         <td>{{admin.contact}}</td>

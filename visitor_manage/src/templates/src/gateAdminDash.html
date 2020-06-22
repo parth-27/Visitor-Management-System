@@ -36,7 +36,7 @@
             class="form-control"
             placeholder="Name"
             id="name"
-            name="name"
+            name="name" minlength="2" maxlength="100" required 
           />
         </div>
 
@@ -54,7 +54,7 @@
             class="form-control"
             placeholder="Mail Id"
             id="mail"
-            name="mail"
+            name="mail"  pattern=".+@gmail.com" maxlenght="320" required 
           />
         </div>
 
@@ -68,11 +68,11 @@
             ></span>
           </div>
           <input
-            type="numer"
+            type="tel"
             class="form-control"
-            placeholder="Contact Number"
+            placeholder="Contact Number(format: 1234567890)"
             id="contact"
-            name="contact"
+            name="contact"  pattern="[0-9]{10}" required 
           />
         </div>
         <div class="input-group form-group">
@@ -86,10 +86,10 @@
             ></span>
           </div>
           <select class="form-control" id="visiting_hour" name="visiting_hour">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="More Than 3">More Than 3</option>
+            <option value="1">1 Hour</option>
+            <option value="2">2  Hour</option>
+            <option value="3">3 Hour</option>
+            <option value="More Than 3">More Than 3 Hour</option>
           </select>
         </div>
         <div class="input-group form-group">
@@ -107,7 +107,7 @@
             name="reason"
             id="reason"
             cols="32"
-            rows="2"
+            rows="2" minlength="2" maxlength="1000" required 
           ></textarea>
         </div>
 
@@ -142,7 +142,7 @@
             class="form-control"
             placeholder="photo"
             id="photo"
-            name="photo"
+            name="photo" required
           />
         </div>
 

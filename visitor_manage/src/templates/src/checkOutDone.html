@@ -8,20 +8,28 @@
         <h2 style="justify-content: center;">Todays Visitors</h2>
         {% if obj == 1 %}
         {% for visitor in visitor_obj %}
-        {% for user in x %}
-        {% if forloop.counter == forloop.parentloop.counter %}
-        Name:{{user.name}}<br>
-        Reason of visit: {{visitor.reason}}<br />
-        Time validity: {{visitor.visiting_hour}}<br />
-        <img src="{{ user.photo.url }}" width="100" height="100" /><br>
-        <hr>
-        {% endif %}
+            {% for user in x %}
+            {% if forloop.counter == forloop.parentloop.counter %}
+                Name:{{user.name}}<br>
+                Reason of visit: {{visitor.reason}}<br />
+                Time validity: {{visitor.visiting_hour}}<br />
+                <img src="{{ user.photo.url }}" width="100" height="100" /><br>
+                <hr>
+            {% endif %}
+            {% endfor %}
         {% endfor %}
-        {% endfor %}
-        {% else %}
-        No vistor today
-        {% endif %}
-    </div>
+        {% for tp in temp_user_obj %}
+            Name:{{tp.name}}<br>
+            Reason of visit: {{tp.reason}}<br />
+            Time validity: {{tp.visiting_hour}}<br />
+            <img src="{{tp.photo.url }}" /><br>
+            <button><a href='/makeCheckOut/{{tp.pk}}/"temp"'> Check Out </a></button><br><br>
+            <hr>
+        {% endfor %}  
+    {% else %}
+    No vistor today....
+    {% endif %}
+</div>
 </div>
 </div>
 {% endblock %}

@@ -18,7 +18,7 @@ class SuperAdmin(models.Model):
 
 class Admin(models.Model):
     gate = models.IntegerField(primary_key=True)
-    username = models.CharField(max_length=200, unique=True)
+    #username = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=100)
     password = models.CharField(max_length=20)
     mail = models.EmailField(unique=True)
@@ -60,7 +60,7 @@ class Visitor(models.Model):
 
 class TemporaryUser(models.Model):
     name = models.CharField(max_length=100)
-    mail = models.EmailField(unique=True)
+    mail = models.EmailField(max_length=320)
     contact = models.IntegerField()
     gender = models.CharField(max_length=10)
     photo = models.ImageField(upload_to='gallery')

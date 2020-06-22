@@ -13,13 +13,24 @@
               ><i class="fas fa-user"> <img src="{{src}}" width="30" /> </i
             ></span>
           </div>
-          <input
-            type="{{typo}}"
-            class="form-control"
-            placeholder="{{username}}"
-            name="username"
-          />
+          {% ifequal username "GateId" %}
+            <select class="form-control" id="gateId" name="username">
+          
+              {% for gate in gateid %}
+              <option>{{gate.gate}}</option>
+              {% endfor %}
+              
+            </select>
+          {% else %}
+            <input
+              type="{{typo}}"
+              class="form-control"
+              placeholder="{{username}}"
+              name="username" autocomplete="off"
+            />
+          {% endifequal %}
         </div>
+        <small style="color:white">{{error}}</small>
         <div class="input-group form-group">
           <div class="input-group-prepend">
             <span class="input-group-text"
@@ -36,6 +47,7 @@
             name="password"
           />
         </div>
+        <small style="color:white">{{errors}}</small>
         <div class="form-group">
           <input
             type="submit"

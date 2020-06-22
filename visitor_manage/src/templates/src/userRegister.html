@@ -47,6 +47,7 @@
             <div class="card-body">
               <form method="POST">
                 {% csrf_token %}
+                <small style="color:white">{{errors}}</small>
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
@@ -61,9 +62,10 @@
                     class="form-control"
                     placeholder="Name"
                     id="name"
-                    name="name"
+                    name="name" minlength="2" maxlength="100" required 
                   />
                 </div>
+                
                 <div class="input-group form-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"
@@ -78,7 +80,7 @@
                     class="form-control"
                     placeholder="Username"
                     id="username"
-                    name="username"
+                    name="username" minlength="2" maxlength="50" autocomplete="off" required 
                   />
                 </div>
                 <div class="input-group form-group">
@@ -94,7 +96,7 @@
                     type="password"
                     class="form-control"
                     placeholder="Password"
-                    name="password"
+                    name="password" minlength="4" maxlength="20" required 
                   />
                 </div>
                 <div class="input-group form-group">
@@ -111,7 +113,7 @@
                     class="form-control"
                     placeholder="Mail Id"
                     id="mail"
-                    name="mail"
+                    name="mail"  pattern=".+@gmail.com" maxlenght="320" required 
                   />
                 </div>
 
@@ -129,7 +131,7 @@
                     class="form-control"
                     placeholder="Contact Number"
                     id="contact"
-                    name="contact"
+                    name="contact" pattern="[0-9]{10}" required 
                   />
                 </div>
                 <div class="input-group form-group">
@@ -165,7 +167,7 @@
                     class="form-control"
                     placeholder="photo"
                     id="photo"
-                    name="photo"
+                    name="photo"  required 
                   />
                 </div>
 
