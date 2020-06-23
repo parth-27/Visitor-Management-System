@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/otp.css' %}" />
+    <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    {% include "src/navbar.html" %}
+    <div class="page-content p-5" id="content">
+        <button id="sidebarCollapse" type="button" style="background-color: white;">
+            <i class="fa fa-bars mr-2">
+                <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
+            </i>
+        </button>
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <h3 class="clg">OTP Confirmation</h3>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"><img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAAB+CAMAAADV/VW6AAAAaVBMVEX///8AAAC4uLjHx8dmZmaZmZmEhITr6+vu7u6NjY09PT1CQkJ3d3fCwsL6+vqJiYkJCQl9fX0yMjLe3t6vr69gYGBJSUlxcXFXV1empqbk5OTNzc3T09OTk5MrKys4ODgcHBwWFhYkJCROdLv0AAAESklEQVRoge3baXuiMBAAYCIgUQ4LWETEA/7/j1wiiA45yEV33Tqf9GnhFZiEJAyO84lP0IEDxcDW6MC/IPWILOnuVgPvYmdH18O7OFjQqxvZ0yVUi6Y//sSYj8h+/Epto8Trjz811THJur3qVg8epYbHT678TXmrkTfNv1W3i28D3jD/CO+Z8GbHb84b9T9sHteb8nrJiigO5nmT/GPyx2c/2KasHwB5tLbJx5PO7Uwf3ITXzz+aP1Oda0n5U147/yg+pXSEwundleJ182/K+wwdoWKWR2ut/JvwNVPvbgqzvF7+TXjuuCOf5bXOP+SnSf8MeG9j8jr5B/kDl29B82fzGu0P8P3Qgx0rCV59/AF4XuKROMvwyuMPwB8FfCnFq/b/gF8L+Ox1v8k39//U8g/wsMcr968Brr3DPXrF/AP8Bp5HwWasrlnn+AG/l+ZFWaLS/wA+n/JJDuJ5+RMRr9D/Az7IJnzQgN3Wz+3Yt6bR1+LhxU+nvwd0/Duhv6IlCR6cfYpvX+dCCT0sMeZBp0/xHrykuV/cvhhhwFdXAe9PN04wI+5dkibvnAS85IKGZ8C/3PKnvGw6G/FOfGPzGXvGYZt3cMrkXck9mvJdTh8IGwH+KKub811Ou/tj/MrL6zb4IR58WHP/ZVG+H3gfldYQ7fG4DL3NScW2yjsBVp87WeR14sO/I3/abbRjNzYQbV44gJmLcRamzYvHjzMxDkbe9ehPZ187zuNt4V0z/3fzcbrWjjQ25v9yw/vd7b6KXe2Ix/nnu2b+7+b32VY7svFR6Ls2vN/NV/rN3nU/7f7DvxtfuDE33Fx5hq3CCx5LDFHKLqhp8PM6QhdFX56vG5n+bPoA2RovWTB1ULr+1nm1p9P2eaW6pgV45EWykWYL8IqxlWoti/GokMnW5Xgkswq8IC+z/P/hP/w/yDee755WUUg+Hza7Z6Dt8C0qBZUuhnwxNFxMHlWDRvxSV1CXC/EvhSpHhMDzFFCdwC00MuIb8qi+2qxXPeF3o0FyBioy/LvzdRyfSL+a8/ZgxBPh/jQ3Sh7VRKXzKNkgf7yf9e4XJbzTb8STQ23hp2/A3wt3SI1KtATf3S+r/hPJM4/m7wdNFrN4JTQm/BaPtTGZM0y8IR9l15BUM+BwAZ4Uhw6LfDdnqOeBPK6qQHj+LPIrmh8i53Y8JnyBx6WOls0nJKozv9sz4S94MPs5xpnm12FRXDlbG/OoGuuiyIP7gub5va0Nnozr7037a/whjHa/GB92f0zWTX/j8X+c76c1VUXqBoL25/nn5rhAI98X9KW2+JNg+5S8dpUEq3b4XmKM+8twSDCeTT2Zmodc+DJWEUVeO35rrtdr/+3WfWpm9Es+r8utbmiF3HIVvyjbMOJ5m8TsNdQL2Vd9qmx+X+qRSb/jVbfze1ONi0KRU8KvitcMtZUop44E0wXVaCKV+q5HsKou52PBF0Q/8T/FHyDvUwjHc/q3AAAAAElFTkSuQmCC"
+                                                width="30" /></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Confirm OTP send to your mail" name="otpConfirm"
+                                    autocomplete="off" />
+
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Confirm" class="btn float-right login_btn" id="lg_bt" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            // Sidebar toggle behavior
+            $("#sidebarCollapse").on("click", function () {
+                $("#sidebar, #content").toggleClass("active");
+            });
+        });
+    </script>
+</body>
+
+</html>
