@@ -1,26 +1,56 @@
-{% extends "src/gateAdminBasefile.html" %} 
-{% block content %} 
+{% extends "src/gateAdminBasefile.html" %}
+{% block content %}
 
-<div class="d-flex justify-content-center">
-<div class="card">
-    <div class="card-body">
-{% if obj == 1 %}
-    {% for visitor in visitor_obj %}
-        {% for user in x %}
+<style>
+    #searchContainer {
+        padding: 20px;
+        position: absolute;
+        top: 35px;
+        right: 0;
+    }
+
+    #searchContainer {
+        width: 350px;
+    }
+
+    #searchContainer button {
+        background-color: rgba(1, 159, 198);
+        width: 75px;
+    }
+
+    .searchControl {
+        box-shadow: 2px 2px 5px black;
+        border: none;
+        border-radius: 5px;
+        padding: 5px;
+    }
+</style>
+
+<div id="searchContainer">
+    <input class="searchControl" type="text" placeholder="Username" id="searchInput"><button class="searchControl"
+        id="searchBtn">Search</button>
+</div>
+
+<div class="d-flex justify-content-center h-25">
+    <div class="card">
+        <div class="card-body">
+            {% if obj == 1 %}
+            {% for visitor in visitor_obj %}
+            {% for user in x %}
             {% if forloop.counter == forloop.parentloop.counter %}
-                Name:{{user.name}}<br>
-                Reason of visit: {{visitor.reason}}<br />
-                Time validity: {{visitor.visiting_hour}}<br />
-                <img src="{{ user.photo.url }}"  width="100" height="100"/><br>
-                <button><a href='/makeCheckIn/{{visitor.pk}}'> Check In </a></button><br><br>
-                <hr>
+            Name:{{user.name}}<br>
+            Reason of visit: {{visitor.reason}}<br />
+            Time validity: {{visitor.visiting_hour}}<br />
+            <img src="{{ user.photo.url }}" width="100" height="100" /><br>
+            <button><a href='/makeCheckIn/{{visitor.pk}}'> Check In </a></button><br><br>
+            <hr>
             {% endif %}
-        {% endfor %}
-    {% endfor %}   
-{% else %}
-    Here is no pending checkin....
-{% endif %}
-</div>
-</div>
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            Here is no pending checkin....
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
