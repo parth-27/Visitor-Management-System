@@ -98,7 +98,7 @@
 
             <div class="d-flex justify-content-center">
 
-              
+
               <button class='centerMe'>
                 <div class='icon'>
                   <i class='fa fa-trash-o'>
@@ -124,6 +124,17 @@
                   } else {
                     $(this).addClass("confirm");
                     $("span").text("Are you sure?");
+                  }
+
+                  if ($(this).hasClass("confirm")) {
+                    $(document).on("click", "a", function () {
+                      $(this).text("Click One more time to delete the pass");
+                    });
+
+                    $(document).ready(function () {
+                      $("a").trigger("click");
+                    });
+
                   }
                 });
 
