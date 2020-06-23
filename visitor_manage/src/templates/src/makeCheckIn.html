@@ -25,12 +25,11 @@
         padding: 5px;
     }
 </style>
-
+<form method="POST">
+    {% csrf_token %}
 <div id="searchContainer">
-    <input class="searchControl" type="text" placeholder="Username" id="searchInput"><button class="searchControl"
-        id="searchBtn">Search</button>
-</div>
-
+    <input class="searchControl" type="text" placeholder="Search by Name..." id="searchInput" name="search"><button class="searchControl" type="submit" id="searchBtn">Search</button></div></form>
+<br>
 <div class="d-flex justify-content-center h-25">
     <div class="card">
         <div class="card-body">

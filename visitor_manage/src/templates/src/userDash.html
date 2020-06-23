@@ -62,6 +62,7 @@
           </i>
           Logout
         </a>
+        
       </li>
 
     </ul>
@@ -98,62 +99,16 @@
 
             <div class="d-flex justify-content-center">
 
+           
 
-              <button class='centerMe'>
-                <div class='icon'>
-                  <i class='fa fa-trash-o'>
-                    <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" />
-                  </i>
-                  <i class='fa fa-question'></i>
-                  <i class='fa fa-check'></i>
-                </div>
-                <div class='text'>
-                  <span>Delete
-                  </span>
-                </div>
-                <a class="del" href="/gatepassDelete/{{visiter_obj.pk}}"></a>
-              </button>
+    
 
-              <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-
-              <script>
-                $("button").click(function () {
-                  if ($(this).hasClass("confirm")) {
-                    $(this).addClass("done");
-                    $("span").text("Deleted");
-                  } else {
-                    $(this).addClass("confirm");
-                    $("span").text("Are you sure?");
-                  }
-
-                  if ($(this).hasClass("confirm")) {
-                    $(document).on("click", "a", function () {
-                      $(".del").text("Click One more time to delete the pass");
-                    });
-
-                    $(document).ready(function () {
-                      $("a").trigger("click");
-                    });
-
-                  }
-                });
-
-                // Reset
-                $("button").on('mouseout', function () {
-                  if ($(this).hasClass("confirm") || $(this).hasClass("done")) {
-                    setTimeout(function () {
-                      $("button").removeClass("confirm").removeClass("done");
-                      $("span").text("Delete");
-                    }, 3000);
-                  }
-                });
-              </script>
-
-
-              <!-- <button>
+              <button>
                 <a href="/gatepassDelete/{{visiter_obj.pk}}">Delete
                   <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-              </button> -->
+              </button> 
+
+              
             </div>
             <hr>
             <hr>

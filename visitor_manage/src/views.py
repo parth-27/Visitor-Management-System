@@ -12,12 +12,12 @@ from django.utils.timezone import utc
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
-
+from django.utils.dateparse import parse_date
+from django.core.serializers.json import DjangoJSONEncoder
 import datetime
 from datetime import datetime, timedelta , timezone
 import json 
-
+from django.core.files.storage import FileSystemStorage
 
 def sendMail(request):
     send_mail('Sending OTP for Pass Generation', "420 is the otp for your password",
@@ -63,6 +63,10 @@ def index(request):
     logout()
     gateLogout()
     superLogout()
+    now=datetime.now().date()
+    year=now.year
+    print(year)
+
     return render(request, 'src/index.html')
 
 
@@ -88,12 +92,12 @@ def userLogin(request):
 
         login(user_admin_obj.id)
         try:
-            visitor_obj = Visitor.objects.get(userId=user_admin_obj.id, checkin=None)
+            visitor_obj = Visitor.objects.all().filter(userId=user_admin_obj.id, checkin=None)
         except:
             visitor_obj = None
         obj = -1
-
-        if visitor_obj is None: 
+        #print(visitor_obj)
+        if visitor_obj is None or len(visitor_obj)==0: 
             context = {
                 'username': username,
                 'obj': obj,
@@ -105,7 +109,7 @@ def userLogin(request):
             context = {
                 'username': username,
                 'obj': obj,
-                'visiter_obj': visitor_obj,
+                'visiter_obj': visitor_obj[0],
                 'user_admin_obj': user_admin_obj,
             }
 
@@ -126,7 +130,9 @@ def userRegister(request):
         contact = request.POST.get('contact')
         gender = request.POST.get('gender')
         # print(gender)
-        photo = request.POST.get('photo')
+        photo = request.FILES['photo']
+        fs = FileSystemStorage()
+        fs.save(photo.name, photo)
         #print(username, name,password,mail,contact)
         user = User(username=username, name=name, password=password,
                     mail=mail, contact=contact, gender=gender, photo=photo)
@@ -200,13 +206,7 @@ def gatepass(request):
                     'visiter_obj': visitor,
                     'user_admin_obj': user_id,
                 }
-                subject = 'Subject'
-                html_message = render_to_string('src/userDash.html', context)
-                plain_message = strip_tags(html_message)
-                from_email = 'From <dipikapawar2001@gmail.com>'
-                to = 'dipupawar1210@gmail.com'
-
-                mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+              
                 return render(request, 'src/userDash.html', context)
             except Exception as e:
                 print(e)
@@ -323,9 +323,38 @@ def statistics(request):
             l.append(dictio)
             x-=1
         #print(l)
+        now=datetime.now().date()
+
+        outerList=[]
+        currentYear=(now.year)
+
+        x=str(currentYear)+"-01-01"
+        sd= parse_date(x)
+        c=0
+        while(1):
+            innerList=[]
+            visitor=Visitor.objects.all().filter(visitDate=sd ).exclude(checkout=None)
+            temp_user=TemporaryUser.objects.all().filter(visitDate=sd).exclude(checkout=None)
+            innerList.append(str(sd))
+            innerList.append(len(visitor)+len(temp_user))
+            outerList.append(innerList)
+            td=datetime.strftime(sd + timedelta(1), '%Y-%m-%d')
+            nd=parse_date(td)
+            sd=nd
+
+            if(nd > datetime.now().date()):
+                break
+        #print(outerList)
+
+
+
         graphData = json.dumps(l)
+        yearData =json.dumps(outerList)
+        length=json.dumps(len(outerList))
         context={
             'graphData' : graphData,
+            'yearData': yearData,
+            'len':length,
         }
         return render(request, 'src/statistics.html' , context)
 
@@ -570,24 +599,32 @@ def makeCheckIn(request):
     if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        obj = -1
+        search=' '
+        if request.method == "POST":
+            search = request.POST.get('search')
+           
+            
         try:
             visitor_obj = Visitor.objects.all().filter( checkin=None, gateId=gate_id ,visitDate=datetime.now().date()) 
         except:
             visitor_obj = None
-        #print(len(visitor_obj))
-        #print('z')
+        obj = -1
         if visitor_obj is None or len(visitor_obj)==0:
             context = {
                 'obj': obj,
             }
             return render(request, 'src/makeCheckIn.html', context)
         else:
-            l=[0]*len(visitor_obj)
-
+            l=[]
+            #print(search)
+            user_obj = User.objects.all().filter(name__contains=search)
             for i in range(len(visitor_obj)):
-                x=visitor_obj[i].userId
-                l[i]=x
+                for j in range(len(user_obj)):
+
+                    if visitor_obj[i].userId==user_obj[j]:
+                        #x=visitor_obj[i].userId
+                        #l[i]=x
+                        l.append(visitor_obj[i].userId)
             obj=1
             context={
                 'obj':obj,
@@ -619,6 +656,11 @@ def makeCheckOut(request):
     if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
+        search=' '
+        if request.method == "POST":
+            search = request.POST.get('search')
+           
+   
         obj=-1
         try:
             visitor_obj = Visitor.objects.all().filter( checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
@@ -626,7 +668,7 @@ def makeCheckOut(request):
             visitor_obj = None
 
         try:
-            temp_user_obj = TemporaryUser.objects.all().filter(checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
+            temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search,checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj)==0) and (temp_user_obj is None or len(temp_user_obj)==0):
@@ -635,12 +677,15 @@ def makeCheckOut(request):
             }
             return render(request, 'src/makeCheckOut.html',context)
         else:
-            l=[0]*len(visitor_obj)
-
+            l=[]
+            user_obj = User.objects.all().filter(name__contains=search)
             for i in range(len(visitor_obj)):
-                x=visitor_obj[i].userId
-                l[i]=x
+                for j in range(len(user_obj)):
 
+                    if visitor_obj[i].userId==user_obj[j]:
+                        #x=visitor_obj[i].userId
+                        #l[i]=x
+                        l.append(visitor_obj[i].userId)
             obj=1
             context={
                 'obj':obj,
@@ -688,6 +733,11 @@ def checkOutDone(request):
     if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
+        search=' '
+        if request.method == "POST":
+            search = request.POST.get('search')
+
+
         obj=-1
         try:
             visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(), gateId=gate_id ).exclude( checkout=None)
@@ -695,7 +745,7 @@ def checkOutDone(request):
         except:
             visitor_obj = None
         try:
-            temp_user_obj = TemporaryUser.objects.all().filter( gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkout=None)
+            temp_user_obj = TemporaryUser.objects.all().filter( name__contains=search,gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkout=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj)==0) and (temp_user_obj is None or len(temp_user_obj)==0):
@@ -704,11 +754,15 @@ def checkOutDone(request):
             }
             return render(request, 'src/checkOutDone.html',context)
         else:
-            l=[0]*len(visitor_obj)
-
+            l=[]
+            user_obj = User.objects.all().filter(name__contains=search)
             for i in range(len(visitor_obj)):
-                x=visitor_obj[i].userId
-                l[i]=x
+                for j in range(len(user_obj)):
+
+                    if visitor_obj[i].userId==user_obj[j]:
+                        #x=visitor_obj[i].userId
+                        #l[i]=x
+                        l.append(visitor_obj[i].userId)
             obj=1
             context={
                 'obj':obj,
