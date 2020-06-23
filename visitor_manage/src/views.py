@@ -9,10 +9,14 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils.timezone import utc
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 import datetime
-from datetime import datetime, timedelta, timezone
-import json
+from datetime import datetime, timedelta , timezone
+import json 
 
 
 def sendMail(request):
@@ -26,37 +30,33 @@ def sendMail(request):
 
 userid = -1
 gate_id = -1
-superAdminId = -1
-
+superAdminId= -1
 
 def login(id):
     global userid
     userid = id
 
-
 def logout():
     global userid
     userid = -1
-
 
 def gateLogin(id):
     global gate_id
     gate_id = id
 
-
 def gateLogout():
     global gate_id
-    gate_id = -1
+    gate_id=-1
 
 
 def superLogin(id):
     global superAdminId
     superAdminId = id
 
-
 def superLogout():
     global superAdminId
-    superAdminId = -1
+    superAdminId=-1
+
 
 
 def index(request):
@@ -88,13 +88,12 @@ def userLogin(request):
 
         login(user_admin_obj.id)
         try:
-            visitor_obj = Visitor.objects.get(
-                userId=user_admin_obj.id, checkin=None)
+            visitor_obj = Visitor.objects.get(userId=user_admin_obj.id, checkin=None)
         except:
             visitor_obj = None
         obj = -1
 
-        if visitor_obj is None:
+        if visitor_obj is None: 
             context = {
                 'username': username,
                 'obj': obj,
@@ -137,28 +136,28 @@ def userRegister(request):
             context = {
                 'username': username,
                 'obj': obj,
+                'user_admin_obj': user,
             }
             login(user.id)
             return render(request, 'src/userDash.html', context)
         except Exception as e:
             print(e)
-            errors = "*We fond the same username or email id in our data. These should be unique. Try some new"
-            context = {
+            errors="*We fond the same username or email id in our data. These should be unique. Try some new"
+            context={
                 'errors': errors,
             }
-            return render(request, 'src/userRegister.html', context)
+            return render(request, 'src/userRegister.html' , context)
 
     return render(request, 'src/userRegister.html')
 
 
 def gatepassDelete(request, pk):
     gateLogout()
-    if userid == -1:
+    if userid==-1:
         return render(request, 'src/loginError.html')
     else:
         visitor_obj = Visitor.objects.get(id=pk).delete()
         return HttpResponseRedirect('/userLogin/gatepass')
-
 
 def userLogoutDone(request):
     logout()
@@ -166,43 +165,48 @@ def userLogoutDone(request):
     superLogout()
     return HttpResponseRedirect('/')
 
-
 def gatepass(request):
     gateLogout()
     superLogout()
-    # print(userid)
-    if userid == -1:
+    #print(userid)
+    if userid==-1:
         return render(request, 'src/loginError.html')
     else:
         gateid = Admin.objects.all()
         # print(gateid)
-        userId = userid
-        user_id = User.objects.get(id=userId)
+        user_admin_obj=User.objects.get(id=userid)
         context = {
             'gateid': gateid,
-            'username': user_id.username,
-            'user_admin_obj': user_id,
+            'user_admin_obj': user_admin_obj,
         }
         if request.method == 'POST':
             gateId = request.POST.get('gateId')
+            userId = userid
             visitDate = request.POST.get('visitDate')
             visiting_hour = request.POST.get('visiting_hour')
             reason = request.POST.get('reason')
             visit_gate = Admin.objects.get(gate=gateId)
-
+            user_id = User.objects.get(id=userId)
             # print(visit_gate)
             #print(username, name,password,mail,contact)
             visitor = Visitor(gateId=visit_gate, userId=user_id,
-                              visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
-            visitor.save()
-            obj = 1
-            context = {
-                'username': user_id.username,
-                'obj': obj,
-                'visiter_obj': visitor,
-                'user_admin_obj': user_id,
-            }
+                            visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
             try:
+                visitor.save()
+                obj = 1
+                context = {
+                    'username': user_id.username,
+                    'obj': obj,
+                    'visiter_obj': visitor,
+                    'user_admin_obj': user_id,
+                }
+                subject = 'Subject'
+                html_message = render_to_string('src/userDash.html', context)
+                plain_message = strip_tags(html_message)
+                from_email = 'From <dipikapawar2001@gmail.com>'
+                to = 'dipupawar1210@gmail.com'
+
+                mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                 return render(request, 'src/userDash.html', context)
             except Exception as e:
                 print(e)
@@ -247,7 +251,7 @@ def adminLogin(request):
 def superAdminDash(request):
     gateLogout()
     logout()
-    if superAdminId == -1:
+    if superAdminId==-1:
         return render(request, 'src/loginError.html')
     else:
         admin_obj = Admin.objects.all()
@@ -265,17 +269,17 @@ def superAdminDash(request):
 
             adminData = Admin.objects.all()
             for i in range(len(adminData)):
-
-                if(int(gate) == int(adminData[i].gate)):
+             
+                if(int(gate)==int(adminData[i].gate)):
                     print('g')
                     context = {
                         'admin_obj': admin_obj,
                         'error': "*This gateId is already exist",
                     }
                     return render(request, 'src/superAdminDash.html', context)
-
+                    
             admin = Admin(gate=gate, name=name,
-                          password=password, mail=mail, contact=contact, gender=gender)
+                        password=password, mail=mail, contact=contact, gender=gender)
             try:
                 admin.save()
                 admin_obj = Admin.objects.all()
@@ -293,47 +297,42 @@ def superAdminDash(request):
 
         return render(request, 'src/superAdminDash.html', context)
 
-
 def statistics(request):
     gateLogout()
     logout()
-    if superAdminId == -1:
+    if superAdminId==-1:
         return render(request, 'src/loginError.html')
     else:
-        dayVisitor = [0]*10
-        day = ['2000-03-12']*10
-        c = 0
+        dayVisitor=[0]*10
+        day=['2000-03-12']*10
+        c=0
 
-        l = []
-        while(c < 10):
-            day[c] = datetime.strftime(
-                datetime.now() - timedelta(c), '%Y-%m-%d')
-            visitor = Visitor.objects.all().filter(
-                visitDate=day[c]).exclude(checkout=None)
-            temp_user = TemporaryUser.objects.all().filter(
-                visitDate=day[c]).exclude(checkout=None)
-            # print(len(temp_user))
-            dayVisitor[c] = len(visitor)+len(temp_user)
-            c += 1
-        x = 9
-        while(x >= 0):
-            dictio = {}
-            dictio['y'] = dayVisitor[x]
-            dictio['label'] = day[x]
+        l=[]
+        while(c<10):    
+            day[c]=datetime.strftime(datetime.now() - timedelta(c), '%Y-%m-%d')
+            visitor=Visitor.objects.all().filter(visitDate=day[c] ).exclude(checkout=None)
+            temp_user=TemporaryUser.objects.all().filter(visitDate=day[c]).exclude(checkout=None)
+            #print(len(temp_user))
+            dayVisitor[c]= len(visitor)+len(temp_user)
+            c+=1
+        x=9
+        while(x>=0):
+            dictio={}
+            dictio['y']=dayVisitor[x]
+            dictio['label']=day[x]
             l.append(dictio)
-            x -= 1
-        # print(l)
+            x-=1
+        #print(l)
         graphData = json.dumps(l)
-        context = {
-            'graphData': graphData,
+        context={
+            'graphData' : graphData,
         }
-        return render(request, 'src/statistics.html', context)
-
+        return render(request, 'src/statistics.html' , context)
 
 def adminEdit(request, pk):
     gateLogout()
     logout()
-    if superAdminId == -1:
+    if superAdminId==-1:
         return render(request, 'src/loginError.html')
     else:
         admin_obj = Admin.objects.get(gate=pk)
@@ -373,7 +372,7 @@ def adminEdit(request, pk):
 def adminDelete(request, pk):
     gateLogout()
     logout()
-    if superAdminId == -1:
+    if superAdminId==-1:
         return render(request, 'src/loginError.html')
     else:
         admin_obj = Admin.objects.get(gate=pk).delete()
@@ -412,7 +411,7 @@ def gateAdminLogin(request):
             return render(request, "src/adminLogin.html", {"errors": errors}, context)
 
         gateLogin(gateId)
-
+       
         #messages.info(request, 'Your password has been changed successfully!')
         return HttpResponseRedirect('gateAdminDash/')
         # return render(request,'src/superAdminDash.html')
@@ -420,71 +419,69 @@ def gateAdminLogin(request):
     return render(request, "src/adminLogin.html", context)
 
 
-def gateAdminDash(request):
+def gateAdminDash(request ):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                   checkout=None, gateId=gate_id).exclude(checkin=None)
-        temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
-                                                           checkout=None, gateId=gate_id).exclude(checkin=None)
+        visitor_obj = Visitor.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
+        temp_user_obj = TemporaryUser.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
 
-        l = []
+        l=[]
         for i in range(len(visitor_obj)):
-            if visitor_obj[i].visiting_hour != "More Than 3":
-                now = datetime.utcnow().replace(tzinfo=utc)
-                diff = visitor_obj[i].checkin - now
-                hour = 5.5-float(diff.total_seconds()/3600)
-                if visitor_obj[i].visiting_hour == "1":
-                    if hour > 1:
-                        user_obj = (visitor_obj[i].userId)
+            if visitor_obj[i].visiting_hour!="More Than 3":
+                now =datetime.utcnow().replace(tzinfo=utc)
+                diff= visitor_obj[i].checkin - now
+                hour=5.5-float(diff.total_seconds()/3600)
+                if visitor_obj[i].visiting_hour=="1":
+                    if hour>1:
+                        user_obj= (visitor_obj[i].userId)
                         l.append(user_obj.name)
-                if visitor_obj[i].visiting_hour == "2":
-                    if hour > 2:
-                        user_obj = (visitor_obj[i].userId)
+                if visitor_obj[i].visiting_hour=="2":
+                    if hour>2:
+                        user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
-                if visitor_obj[i].visiting_hour == "3":
-                    if hour > 3:
-                        user_obj = (visitor_obj[i].userId)
+                if visitor_obj[i].visiting_hour=="3":
+                    if hour>3:
+                        user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
         for i in range(len(temp_user_obj)):
-            if temp_user_obj[i].visiting_hour != "More Than 3":
-                now = datetime.utcnow().replace(tzinfo=utc)
-                diff = temp_user_obj[i].checkin - now
-                hour = 5.5-float(diff.total_seconds()/3600)
-                if temp_user_obj[i].visiting_hour == "1":
-                    if hour > 1:
+            if temp_user_obj[i].visiting_hour!="More Than 3":
+                now =datetime.utcnow().replace(tzinfo=utc)
+                diff= temp_user_obj[i].checkin - now
+                hour=5.5-float(diff.total_seconds()/3600)
+                if temp_user_obj[i].visiting_hour=="1":
+                    if hour>1:
                         #user_obj= (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
-                if temp_user_obj[i].visiting_hour == "2":
-                    if hour > 2:
+                if temp_user_obj[i].visiting_hour=="2":
+                    if hour>2:
                         #user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
-                if temp_user_obj[i].visiting_hour == "3":
-                    if hour > 3:
+                if temp_user_obj[i].visiting_hour=="3":
+                    if hour>3:
                         #user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
-        # print(l)
+        #print(l)
         dueList = json.dumps(l)
-        context = {
-            'messages': dueList,
+        context={
+            'messages':dueList,
         }
         if request.method == 'POST':
             name = request.POST.get('name')
             mail = request.POST.get('mail')
             contact = request.POST.get('contact')
             gender = request.POST.get('gender')
-            photo = request.POST.get('photo')
+            #photo = request.POST.get('photo')
             gateId = gate_id
             visit_gate = Admin.objects.get(gate=gateId)
             visitDate = datetime.now().date()
             visiting_hour = request.POST.get('visiting_hour')
             reason = request.POST.get('reason')
             checkin = datetime.now()
-            user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender, photo=photo, gateId=visit_gate,
-                                 checkin=checkin, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
+            user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender,  gateId=visit_gate,
+                                checkin=checkin, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
             try:
                 user.save()
                 return render(request, 'src/gateAdminDash.html', context)
@@ -494,128 +491,121 @@ def gateAdminDash(request):
 
         return render(request, 'src/gateAdminDash.html', context)
 
-
 def timeDue(request):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        obj = -1
-        visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                   checkout=None, gateId=gate_id).exclude(checkin=None)
-        temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
-                                                           checkout=None, gateId=gate_id).exclude(checkin=None)
+        obj=-1
+        visitor_obj = Visitor.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
+        temp_user_obj = TemporaryUser.objects.all().filter(visitDate= datetime.now().date(), checkout=None , gateId= gate_id).exclude(checkin=None)
         print(visitor_obj)
-        l = []
-        timeDue = []
+        l=[]
+        timeDue=[]
         for i in range(len(visitor_obj)):
-
-            if visitor_obj[i].visiting_hour != "More Than 3":
-
-                now = datetime.utcnow().replace(tzinfo=utc)
-                diff = visitor_obj[i].checkin - now
+            
+            if visitor_obj[i].visiting_hour!="More Than 3":
+                
+                now =datetime.utcnow().replace(tzinfo=utc)
+                diff= visitor_obj[i].checkin - now
                 print(visitor_obj[i].checkin)
-                hour = 5.5-float(diff.total_seconds()/3600)
-                if visitor_obj[i].visiting_hour == "1":
-                    if hour > 1:
-                        obj = 1
-                        user_obj = (visitor_obj[i].userId)
+                hour=5.5-float(diff.total_seconds()/3600)
+                if visitor_obj[i].visiting_hour=="1":
+                    if hour>1:
+                        obj=1
+                        user_obj= (visitor_obj[i].userId)
                         l.append(user_obj.name)
 
                         timeDue.append(format(hour-1, '.2f'))
-                if visitor_obj[i].visiting_hour == "2":
-                    if hour > 2:
-                        obj = 1
-                        user_obj = (visitor_obj[i].userId)
+                if visitor_obj[i].visiting_hour=="2":
+                    if hour>2:
+                        obj=1
+                        user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
                         timeDue.append(format(hour-2, '.2f'))
-                if visitor_obj[i].visiting_hour == "3":
-                    if hour > 3:
-                        obj = 1
-                        user_obj = (visitor_obj[i].userId)
+                if visitor_obj[i].visiting_hour=="3":
+                    if hour>3:
+                        obj=1
+                        user_obj=  (visitor_obj[i].userId)
                         l.append(user_obj.name)
                         timeDue.append(format(hour-3, '.2f'))
 
         for i in range(len(temp_user_obj)):
-            if temp_user_obj[i].visiting_hour != "More Than 3":
-                now = datetime.utcnow().replace(tzinfo=utc)
-                diff = temp_user_obj[i].checkin - now
-                # print(visitor_obj[i].checkin)
-                hour = 5.5-float(diff.total_seconds()/3600)
-                if temp_user_obj[i].visiting_hour == "1":
-                    if hour > 1:
-                        obj = 1
+            if temp_user_obj[i].visiting_hour!="More Than 3": 
+                now =datetime.utcnow().replace(tzinfo=utc)
+                diff= temp_user_obj[i].checkin - now
+                #print(visitor_obj[i].checkin)
+                hour=5.5-float(diff.total_seconds()/3600)
+                if temp_user_obj[i].visiting_hour=="1":
+                    if hour>1:
+                        obj=1
                         #user_obj= (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
                         timeDue.append(format(hour-1, '.2f'))
-                if temp_user_obj[i].visiting_hour == "2":
-                    if hour > 2:
-                        obj = 1
+                if temp_user_obj[i].visiting_hour=="2":
+                    if hour>2:
+                        obj=1
                        # user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
                         timeDue.append(format(hour-2, '.2f'))
-                if temp_user_obj[i].visiting_hour == "3":
-                    if hour > 3:
-                        obj = 1
+                if temp_user_obj[i].visiting_hour=="3":
+                    if hour>3:
+                        obj=1
                         #user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
                         timeDue.append(format(hour-3, '.2f'))
-
-        # print(l)
-        context = {
-            'name': l,
-            'time': timeDue,
-            'obj': obj,
+                
+        #print(l)
+        context={
+            'name':l,
+            'time':timeDue,
+            'obj':obj,
         }
         return render(request, 'src/timeDue.html', context)
-
 
 def makeCheckIn(request):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
         obj = -1
         try:
-            visitor_obj = Visitor.objects.all().filter(
-                checkin=None, gateId=gate_id, visitDate=datetime.now().date())
+            visitor_obj = Visitor.objects.all().filter( checkin=None, gateId=gate_id ,visitDate=datetime.now().date()) 
         except:
             visitor_obj = None
-        # print(len(visitor_obj))
-        # print('z')
-        if visitor_obj is None or len(visitor_obj) == 0:
+        #print(len(visitor_obj))
+        #print('z')
+        if visitor_obj is None or len(visitor_obj)==0:
             context = {
                 'obj': obj,
             }
             return render(request, 'src/makeCheckIn.html', context)
         else:
-            l = [0]*len(visitor_obj)
+            l=[0]*len(visitor_obj)
 
             for i in range(len(visitor_obj)):
-                x = visitor_obj[i].userId
-                l[i] = x
-            obj = 1
-            context = {
-                'obj': obj,
+                x=visitor_obj[i].userId
+                l[i]=x
+            obj=1
+            context={
+                'obj':obj,
                 'visitor_obj': visitor_obj,
-                'x': l,
-                'len': len(visitor_obj),
+                'x':l,
+                'len':len(visitor_obj),
             }
-            return render(request, 'src/makeCheckIn.html', context)
-
+            return render(request, 'src/makeCheckIn.html',context)
 
 def checkInVisitor(request, pk):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
         print(pk)
-        visitor_obj = Visitor.objects.get(
-            id=pk, checkin=None, visitDate=datetime.now().date())
-        visitor_obj.checkin = datetime.now()
+        visitor_obj=Visitor.objects.get(id=pk , checkin=None, visitDate=datetime.now().date() )
+        visitor_obj.checkin=datetime.now()
         try:
             visitor_obj.save()
 
@@ -623,76 +613,68 @@ def checkInVisitor(request, pk):
             print(e)
         return HttpResponseRedirect('/makeCheckIn/')
 
-
 def makeCheckOut(request):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        obj = -1
+        obj=-1
         try:
-            visitor_obj = Visitor.objects.all().filter(checkout=None, gateId=gate_id,
-                                                       visitDate=datetime.now().date()).exclude(checkin=None)
+            visitor_obj = Visitor.objects.all().filter( checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             visitor_obj = None
 
         try:
-            temp_user_obj = TemporaryUser.objects.all().filter(checkout=None, gateId=gate_id,
-                                                               visitDate=datetime.now().date()).exclude(checkin=None)
+            temp_user_obj = TemporaryUser.objects.all().filter(checkout=None , gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             temp_user_obj = None
-        if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
-            context = {
-                'obj': obj,
+        if (visitor_obj is None or len(visitor_obj)==0) and (temp_user_obj is None or len(temp_user_obj)==0):
+            context={
+                'obj':obj,
             }
-            return render(request, 'src/makeCheckOut.html', context)
+            return render(request, 'src/makeCheckOut.html',context)
         else:
-            l = [0]*len(visitor_obj)
+            l=[0]*len(visitor_obj)
 
             for i in range(len(visitor_obj)):
-                x = visitor_obj[i].userId
-                l[i] = x
+                x=visitor_obj[i].userId
+                l[i]=x
 
-            obj = 1
-            context = {
-                'obj': obj,
+            obj=1
+            context={
+                'obj':obj,
                 'visitor_obj': visitor_obj,
-                'x': l,
-                'len': len(visitor_obj),
+                'x':l,
+                'len':len(visitor_obj),
                 'temp_user_obj': temp_user_obj,
             }
             return render(request, 'src/makeCheckOut.html', context)
-
 
 def checkOutVisitor(request, pk):
     logout()
     superLogout()
    # print(pk)
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        visitor_obj = Visitor.objects.get(
-            id=pk, checkout=None, visitDate=datetime.now().date())
-        visitor_obj.checkout = datetime.now()
+        visitor_obj=Visitor.objects.get(id=pk , checkout=None, visitDate=datetime.now().date())
+        visitor_obj.checkout=datetime.now()
         try:
             visitor_obj.save()
 
         except Exception as e:
             print(e)
         return HttpResponseRedirect('/makeCheckOut/')
-
-
 def checkOutTempVisitor(request, pk, type):
     logout()
     superLogout()
    # print(pk)
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        tp_obj = TemporaryUser.objects.get(
-            id=pk, checkout=None, visitDate=datetime.now().date())
-        tp_obj.checkout = datetime.now()
+        tp_obj= TemporaryUser.objects.get(id=pk , checkout=None, visitDate=datetime.now().date())
+        tp_obj.checkout=datetime.now()
         try:
             tp_obj.save()
 
@@ -700,46 +682,42 @@ def checkOutTempVisitor(request, pk, type):
             print(e)
         return HttpResponseRedirect('/makeCheckOut/')
 
-
 def checkOutDone(request):
     logout()
     superLogout()
-    if gate_id == -1:
+    if gate_id==-1:
         return render(request, 'src/loginError.html')
     else:
-        obj = -1
+        obj=-1
         try:
-            visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                       gateId=gate_id).exclude(checkout=None)
+            visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(), gateId=gate_id ).exclude( checkout=None)
             print(visitor_obj)
         except:
             visitor_obj = None
         try:
-            temp_user_obj = TemporaryUser.objects.all().filter(
-                gateId=gate_id, visitDate=datetime.now().date()).exclude(checkout=None)
+            temp_user_obj = TemporaryUser.objects.all().filter( gateId=gate_id ,visitDate=datetime.now().date()).exclude(checkout=None)
         except:
             temp_user_obj = None
-        if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
-            context = {
-                'obj': obj,
+        if (visitor_obj is None or len(visitor_obj)==0) and (temp_user_obj is None or len(temp_user_obj)==0):
+            context={
+                'obj':obj,
             }
-            return render(request, 'src/checkOutDone.html', context)
+            return render(request, 'src/checkOutDone.html',context)
         else:
-            l = [0]*len(visitor_obj)
+            l=[0]*len(visitor_obj)
 
             for i in range(len(visitor_obj)):
-                x = visitor_obj[i].userId
-                l[i] = x
-            obj = 1
-            context = {
-                'obj': obj,
+                x=visitor_obj[i].userId
+                l[i]=x
+            obj=1
+            context={
+                'obj':obj,
                 'visitor_obj': visitor_obj,
-                'x': l,
-                'len': len(visitor_obj),
+                'x':l,
+                'len':len(visitor_obj),
                 'temp_user_obj': temp_user_obj,
             }
             return render(request, 'src/checkOutDone.html', context)
-
 
 def adminLogout(request):
     logout()

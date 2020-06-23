@@ -36,7 +36,7 @@ class User(models.Model):
     mail = models.EmailField(unique=True)
     contact = models.IntegerField()
     gender = models.CharField(max_length=10)
-    photo = models.ImageField(upload_to='gallery')
+    photo = models.ImageField()
     #bdate = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -63,7 +63,7 @@ class TemporaryUser(models.Model):
     mail = models.EmailField(max_length=320)
     contact = models.IntegerField()
     gender = models.CharField(max_length=10)
-    photo = models.ImageField(upload_to='gallery')
+    photo = models.ImageField(upload_to='gallery', default='/tempUser.png')
     gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
     checkin = models.DateTimeField(null=True)
