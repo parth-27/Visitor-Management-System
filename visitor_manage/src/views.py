@@ -273,7 +273,6 @@ def gatepass(request):
         return render(request, 'src/gatepass.html', context)
 
 
-
 def adminLogin(request):
     gateLogout()
     logout()
@@ -420,119 +419,130 @@ def statistics(request):
         }
         return render(request, 'src/statistics.html', context)
 
+
 def imageGallery(request):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
-        obj=1
-        img1=ImageGallery.objects.all()
-        img2= ImageUpload.objects.all()
-        user=[]
+        obj = 1
+        img1 = ImageGallery.objects.all()
+        img2 = ImageUpload.objects.all()
+        user = []
         for i in range(len(img2)):
             user.append(img2[i].userId)
-        context={
-            'obj':obj,
-            'img1':img1,
-            'img2':img2,
-            'user':user,
+        context = {
+            'obj': obj,
+            'img1': img1,
+            'img2': img2,
+            'user': user,
             'basefile': "src/superAdminBasefile.html",
         }
         if request.method == 'POST':
             photo = request.FILES['photo']
             fs = FileSystemStorage()
             fs.save(photo.name, photo)
-            image= ImageGallery(photo=photo)
+            image = ImageGallery(photo=photo)
             try:
                 image.save()
-                img1=ImageGallery.objects.all()
-                context={
-                    'obj':obj,
-                    'img1':img1,
-                    'img2':img2,
-                    'user':user2,
+                img1 = ImageGallery.objects.all()
+                context = {
+                    'obj': obj,
+                    'img1': img1,
+                    'img2': img2,
+                    'user': user2,
                     'basefile': "src/superAdminBasefile.html",
                 }
             except Exception as e:
                 print(e)
 
-        return render(request,'src/imageGallery.html', context)
+        return render(request, 'src/imageGallery.html', context)
 
-        
+
 def imageGalleryUser(request):
-    img1=ImageGallery.objects.all()
-    img2=ImageUpload.objects.all()
+    img1 = ImageGallery.objects.all()
+    img2 = ImageUpload.objects.all()
 
-    context={
-        'img1':img1,
+    context = {
+        'img1': img1,
         'img2': img2,
         'basefile': "src/base.html",
-        }
-    return render(request,'src/imageGallery.html', context)
+    }
+    return render(request, 'src/imageGallery.html', context)
+
+
 def imageDelete(request, pk):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
         im = ImageGallery.objects.get(id=pk).delete()
 
         return HttpResponseRedirect('/imageGallery/')
 
-def imageDeleteUser(request, pk,us):
+
+def imageDeleteUser(request, pk, us):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
         im = ImageUpload.objects.get(id=pk).delete()
 
         return HttpResponseRedirect('/imageGallery/')
+
+
 def imageUpload(request):
     gateLogout()
     superLogout()
-    if userid==-1:
+    if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        objt=1
-        img1=ImageGallery.objects.all()
-        img2= ImageUpload.objects.all()
-        user=[]
+        user_admin_obj = User.objects.get(id=userid)
+        objt = 1
+        img1 = ImageGallery.objects.all()
+        img2 = ImageUpload.objects.all()
+        user = []
         for i in range(len(img2)):
             user.append(img2[i].userId)
-        context={
-            'objt':objt,
-            'img1':img1,
-            'img2':img2,
-            'user':user,
+        context = {
+            'objt': objt,
+            'img1': img1,
+            'img2': img2,
+            'user': user,
             'basefile': "src/userNav.html",
-            
+            'user_admin_obj': user_admin_obj,
+            'username':user_admin_obj.username
+
         }
         if request.method == 'POST':
             photo = request.FILES['photo']
             fs = FileSystemStorage()
             fs.save(photo.name, photo)
-            userObj= User.objects.get(id=userid)
-            image= ImageUpload(photo=photo, userId=userObj)
+            userObj = User.objects.get(id=userid)
+            image = ImageUpload(photo=photo, userId=userObj)
             try:
                 image.save()
-                img2=ImageUpload.objects.all()
-                user=[]
+                img2 = ImageUpload.objects.all()
+                user = []
                 for i in range(len(img2)):
                     user.append(img2[i].userId)
-                context={
-                    'objt':objt,
-                    'img1':img1,
-                    'img2':img2,
-                    'user':user,
+                context = {
+                    'objt': objt,
+                    'img1': img1,
+                    'img2': img2,
+                    'user': user,
                     'basefile': "src/userNav.html",
+                    'user_admin_obj': user_admin_obj,
                 }
 
             except Exception as e:
                 print(e)
 
-        return render(request,'src/imageGallery.html', context)
+        return render(request, 'src/imageGallery.html', context)
+
 
 def adminEdit(request, pk):
     gateLogout()

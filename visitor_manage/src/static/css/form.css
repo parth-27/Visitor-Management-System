@@ -10,13 +10,16 @@ body {
 .container {
   height: 100%;
   align-content: center;
+  overflow: auto;
 }
 
 .card {
-  height: 370px;
+  max-height: 370;
+  overflow: auto;
   margin-top: auto;
   margin-bottom: auto;
   width: 400px;
+  color: white;
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
