@@ -74,7 +74,7 @@ def index(request):
     year = now.year
     print(year)
 
-    return render(request, 'src/carousel.html')
+    return render(request, 'src/index.html')
 
 
 def userLogin(request):
