@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from .models import *
+from django.db.models import Q
 from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -97,33 +98,62 @@ def userLogin(request):
             return render(request, "src/userLogin.html", {"errors": errors})
 
         login(user_admin_obj.id)
+        #Visitor.objects.filter(checkin=None).delete()
         try:
-            visitor_obj = Visitor.objects.all().filter(
-                userId=user_admin_obj.id, checkin=None)
+            visitor_obj = Visitor.objects.all().filter(userId=user_admin_obj.id, feedback=None).exclude(Q(checkin=None)|Q(checkout=None))
         except:
             visitor_obj = None
-        obj = -1
-        # print(visitor_obj)
+        #print(visitor_obj[0].checkout)
         if visitor_obj is None or len(visitor_obj) == 0:
-            context = {
-                'username': username,
-                'obj': obj,
-                'user_admin_obj': user_admin_obj,
-            }
-            return render(request, 'src/userDash.html', context)
-        else:
-            obj = 1
-            context = {
-                'username': username,
-                'obj': obj,
-                'visiter_obj': visitor_obj[0],
-                'user_admin_obj': user_admin_obj,
-            }
+            try:
+                visitor_obj = Visitor.objects.all().filter( Q(checkin=None)|Q(checkout=None),userId=user_admin_obj.id)
+            except:
+                visitor_obj = None
+            obj = -1
+            # print(visitor_obj)
+            if visitor_obj is None or len(visitor_obj) == 0:
+                context = {
+                    'username': username,
+                    'obj': obj,
+                    'user_admin_obj': user_admin_obj,
+                }
+                return render(request, 'src/userDash.html', context)
+            else:
+                obj = 1
+                context = {
+                    'username': username,
+                    'obj': obj,
+                    'visiter_obj': visitor_obj[0],
+                    'user_admin_obj': user_admin_obj,
+                }
 
-            return render(request, 'src/userDash.html', context)
+                return render(request, 'src/userDash.html', context)
+        else:
+            return HttpResponseRedirect('/feedback/')
 
     return render(request, "src/userLogin.html")
 
+def feedback(request):
+    gateLogout()
+    superLogout()
+    if userid == -1:
+        return render(request, 'src/loginError.html')
+    else:
+        user_admin_obj=User.objects.get(id=userid)
+        context={
+            'user_admin_obj': user_admin_obj,
+        }
+        if request.method == "POST":
+            feedback = request.POST.get('feedback')
+            visitor_obj= Visitor.objects.get((~Q(checkin=None)&~Q(checkout=None)),userId=userid, feedback=None)
+            print(visitor_obj)
+            visitor_obj.feedback=feedback
+            try:
+                visitor_obj.save()
+                return HttpResponseRedirect('/userLogin/gatepass')
+            except Exception as e:
+                print(e)
+    return render(request,'src/feedback.html',context)
 
 def userRegister(request):
     logout()
@@ -157,12 +187,8 @@ def userRegister(request):
             try:
                 obj = -1
                 user.save()
-                context = {
-                    'username': username,
-                    'obj': obj,
-                    'user_admin_obj': user,
-                }
                 login(user.id)
+               
                 return HttpResponseRedirect('/userRegister/userConfirmation')
                 # return render(request, 'src/userDash.html', context)
             except Exception as e:
@@ -188,7 +214,14 @@ def userConfirmation(request):
         OTP = int(request.POST.get('otpConfirm'))
 
         if OTP == otp_f:
-            return render(request, 'src/userDash.html')
+            user_admin_obj= User.objects.get(id=userid)
+            username=user_admin_obj.username
+            context = {
+                    'username': username,
+                    'user_admin_obj': user,
+                }
+
+            return render(request, 'src/userDash.html', context)
         else:
             User.objects.get(id=userid).delete()
             errors = "OTP Confirmation Fails!!. Please Try Again"
@@ -258,7 +291,7 @@ def gatepass(request):
                           + "Gender : {}\n".format(user_admin_obj.gender)
                           + "Date of Visit: {}\n".format(visitor.visitDate)
                           + "Reason of Visit: {}\n".format(visitor.reason)
-                          + "Time validity: {}\n".format(visitor.visiting_hour)
+                          + "Time validity: {} Hour\n".format(visitor.visiting_hour)
                           + "Gate Number: {}\n".format(visitor.gateId),
                           "visitormanage10@gmail.com",
                           [user_admin_obj.mail],
@@ -419,6 +452,53 @@ def statistics(request):
         }
         return render(request, 'src/statistics.html', context)
 
+<<<<<<< HEAD
+=======
+def viewVisitor(request):
+    logout()
+    gateLogout()
+    if superAdminId == -1:
+        return render(request, 'src/loginError.html')
+    else:
+        search = ' '
+        if request.method == "POST":
+            search = request.POST.get('search')
+        obj = -1
+        try:
+            visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date()).exclude(checkout=None)
+            print(visitor_obj)
+        except:
+            visitor_obj = None
+        try:
+            temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search, visitDate=datetime.now().date()).exclude(checkout=None)
+        except:
+            temp_user_obj = None
+        if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
+            context = {
+                'obj': obj,
+            }
+            return render(request, 'src/viewVisitor.html', context)
+        else:
+            l = []
+            user_obj = User.objects.all().filter(name__contains=search)
+            for i in range(len(visitor_obj)):
+                for j in range(len(user_obj)):
+
+                    if visitor_obj[i].userId == user_obj[j]:
+                        # x=visitor_obj[i].userId
+                        # l[i]=x
+                        l.append(visitor_obj[i].userId)
+            obj = 1
+            context = {
+                'obj': obj,
+                'visitor_obj': visitor_obj,
+                'x': l,
+                'len': len(visitor_obj),
+                'temp_user_obj': temp_user_obj,
+            }
+            return render(request, 'src/viewVisitor.html', context)
+
+>>>>>>> 503cb9a5f911adf49e8d065c14ca1416b0c2de88
 
 def imageGallery(request):
     gateLogout()
@@ -544,6 +624,53 @@ def imageUpload(request):
         return render(request, 'src/imageGallery.html', context)
 
 
+def review(request):
+    gateLogout()
+    logout()
+    if superAdminId==-1:
+        return render(request, 'src/loginError.html')
+    else:
+        visitor_obj= Visitor.objects.all().exclude(feedback=None)
+        user=[]
+        for i in range(len(visitor_obj)):
+            user.append(visitor_obj[i].userId)
+        obj=1
+        context={
+            'visitor_obj': visitor_obj,
+            'user': user,
+            'obj':obj,
+            'basefile': "src/superAdminBasefile.html",
+
+        }
+        return render(request,'src/review.html', context)
+
+def reviewHome(request):
+    gateLogout()
+    logout()
+    superLogout()
+    visitor_obj= Visitor.objects.all().exclude(feedback=None)
+    context={
+        'visitor_obj': visitor_obj,
+        'basefile': "src/base.html",
+    }
+    return render(request,'src/review.html', context)
+
+def deleteReview(request,pk):
+    gateLogout()
+    logout()
+    if superAdminId==-1:
+        return render(request, 'src/loginError.html')
+    else:
+        visitor= Visitor.objects.get(id=pk)
+        visitor.feedback=None
+        try:
+            visitor.save()
+        except Exception as e:
+            print(e)
+    return HttpResponseRedirect('/review')
+
+def location(request):
+    return render(request, 'src/location.html')
 def adminEdit(request, pk):
     gateLogout()
     logout()

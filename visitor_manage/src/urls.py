@@ -20,19 +20,22 @@ urlpatterns = [
     path('imageGalleryUser/', views.imageGalleryUser, name='imageGalleryUser'),
      path('imageUpload/', views.imageUpload, name='imageUpload'),
      path('imageDelete/<int:pk>/<str:us>', views.imageDeleteUser, name='imageDeleteUser'),
+     path('location/', views.location, name='location'),
+     path('feedback/', views.feedback, name='feedback'),
+     path ('reviewHome/', views.reviewHome, name='reviewHome'),
 
-
-
-    path('adminLogin/', views.adminLogin, name='adminLogin'),
-    path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
-    path('adminDelete/<int:pk>', views.adminDelete, name='adminDelete'),
-    path('adminLogin/superAdminDash/',
+     path('adminLogin/', views.adminLogin, name='adminLogin'),
+     path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
+     path('adminDelete/<int:pk>', views.adminDelete, name='adminDelete'),
+     path('adminLogin/superAdminDash/',
          views.superAdminDash, name='superAdminDash'),
-    path('statistics/', views.statistics, name='statistics'),
-    path('superAdminLogout/', views.superAdminLogout, name='superAdminLogout'),
-    path('imageGallery/', views.imageGallery, name='imageGallery'),
-    path('imageDelete/<int:pk>', views.imageDelete, name='imageDelete'),
-
+     path('statistics/', views.statistics, name='statistics'),
+     path('superAdminLogout/', views.superAdminLogout, name='superAdminLogout'),
+     path('viewVisitor/', views.viewVisitor, name='viewVisitor'),
+     path('imageGallery/', views.imageGallery, name='imageGallery'),
+     path('imageDelete/<int:pk>', views.imageDelete, name='imageDelete'),
+     path('review', views.review, name='review'),
+     path('deleteReview/<int:pk>', views.deleteReview, name='deleteReview'),
 
 
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
