@@ -1,0 +1,81 @@
+{% extends 'src/forgotPassword.html' %} {% block content %}
+<div class="page-content p-5" id="content">
+  <button id="sidebarCollapse" type="button" style="background-color: white;">
+    <i class="fa fa-bars mr-2">
+      <img
+        src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png"
+        width="30"
+        height="30"
+      />
+    </i>
+  </button>
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-center">
+            <h3 class="clg">Registerd Email</h3>
+          </div>
+          <form method="POST">
+            {% csrf_token %}
+
+            <small style="color: white;">{{errors}}</small>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"
+                    ><img
+                      src="https://img.icons8.com/ios-glyphs/2x/user-male.png"
+                      width="30" /></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Your UserName"
+                id="username"
+                name="username"
+                minlength="2"
+                maxlength="50"
+                autocomplete="off"
+                required
+              />
+            </div>
+
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"
+                    ><img
+                      src="https://img.icons8.com/ios-glyphs/2x/email.png"
+                      width="30" /></i
+                ></span>
+              </div>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Enter your Registered Mail"
+                id="mail"
+                name="mail"
+                pattern=".+@gmail.com"
+                maxlenght="320"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="submit"
+                value="Send OTP"
+                class="btn float-right login_btn"
+                id="lg_bt"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

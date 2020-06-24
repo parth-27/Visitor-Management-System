@@ -850,10 +850,66 @@ def superAdminLogout(request):
 def forgotPassword(request):
     if request.method == 'POST':
         mail = request.POST.get('mail')
-        send_mail('Sending OTP for Pass Generation', "420 is the otp for your password",
-                  "visitormanage10@gmail.com",
-                  [mail],  # "list of recpetenets",
-                  fail_silently=False
-                  )
-        return render(request, 'src/forgo')
-    return render(request, 'src/forgotPassword.html')
+        uname = request.POST.get('username')
+
+        try:
+            user = User.objects.get(username=uname)
+
+            if mail == user.mail:
+                otp = random.randint(1000, 9999)
+                print(otp)
+                send_mail('Forgot Password', "OTP for Changing your password is {}".format(otp),
+                          "visitormanage10@gmail.com",
+                          [mail],  # "list of recpetenets",
+                          fail_silently=False
+                          )
+                supermail(mail, otp)
+                return HttpResponseRedirect('/forgotPassword/otpForgot')
+            else:
+                context = {
+                    'errors': "Email is Not registered"
+                }
+                return render(request, 'src/emailSendForgot.html', context)
+        except User.DoesNotExist:
+            context = {
+                'errors': "Username is Not registered"
+            }
+            return render(request, 'src/emailSendForgot.html', context)
+    return render(request, 'src/emailSendForgot.html')
+
+
+def otpForgot(request):
+
+    if request.method == 'POST':
+        otp = request.POST.get('otpConfirm')
+        print(otp_f)
+        if otp_f == int(otp):
+            return HttpResponseRedirect('/forgotPassword/setNewPassword')
+        else:
+            context = {
+                'errors': "Wrong OTP Entered!!!"
+            }
+            return render(request, 'src/otpForgot.html', context)
+
+    return render(request, 'src/otpForgot.html')
+
+
+def setNewPassword(request):
+
+    if request.method == 'POST':
+        passw = request.POST.get('password')
+        cpassw = request.POST.get('cpassword')
+
+        if passw == cpassw:
+            user = User.objects.get(mail=e_mail)
+            print(user.name)
+            user.password = passw
+            user.save()
+            return HttpResponseRedirect('/userLogin/')
+        else:
+            context = {
+                'errors': "Password Doesn't Match"
+            }
+            return render(request, 'src/setNewPassword.html', context)
+
+    return render(request, 'src/setNewPassword.html')
