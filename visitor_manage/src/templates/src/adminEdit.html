@@ -1,70 +1,105 @@
-{% extends 'src/superAdminBasefile.html' %}
-
-{% block content %}
+{% extends 'src/superAdminBasefile.html' %} {% block content %}
 
 <div class="d-flex justify-content-center h-100">
-    <div class="card">
-      <div class="card-header">
-        <h3>Edit Gate Admin</h3>
-      </div>
-      <div class="card-body">
-        <form method="POST">
-          {% csrf_token %}
-          <div class="input-group form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-            </div>
-            <input type="number" disabled="true" class="form-control" placeholder="Gate Number" id="gate" name="gate" value="{{admin_obj.pk}}"/>
+  <div class="card">
+    <div class="card-header">
+      <h3>Edit Gate Admin</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
           </div>
+          <input
+            type="number"
+            disabled="true"
+            class="form-control"
+            placeholder="Gate Number"
+            id="gate"
+            name="gate"
+            value="{{admin_obj.pk}}"
+          />
+        </div>
 
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Full Name"
+            id="name"
+            name="name"
+            value="{{admin_obj.name}}"
+            maxlength="100"
+            minlength="2"
+            required
+          />
+        </div>
 
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Mail Id"
+            id="mail"
+            name="mail"
+            value="{{admin_obj.mail}}"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            maxlenght="320"
+            required
+          />
+        </div>
+        <small style="color: white;">{{errors}}</small>
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input
+            type="numer"
+            class="form-control"
+            placeholder="Contact Number"
+            id="contact"
+            name="contact"
+            value="{{admin_obj.contact}}"
+            pattern="[0-9]{10}"
+            required
+          />
+        </div>
 
-          <div class="input-group form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-            </div>
-            <input type="text" class="form-control" placeholder="Full Name" id="name" name="name"  value="{{admin_obj.name}}"  maxlength="100" minlength="2" required />
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
           </div>
+          <label class="custom-control-label" for="gender">Gender:</label><br />
+          <select
+            class="form-control"
+            id="gender"
+            name="gender"
+            value="{{admin_obj.gender}}"
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
 
-          <div class="input-group form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-            </div>
-            <input type="email" class="form-control" placeholder="Mail Id" id="mail" name="mail"  value="{{admin_obj.mail}}" pattern=".+@gmail.com" maxlenght="320" required />
-          </div>
-          <small style="color:white">{{errors}}</small>
-          <div class="input-group form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-            </div>
-            <input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact"  value="{{admin_obj.contact}}" pattern="[0-9]{10}" required />
-          </div>
-  
-  
-          <div class="input-group form-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-            </div>
-            <label class="custom-control-label" for="gender" >Gender:</label><br>
-            <select class="form-control" id= "gender" name="gender"  value="{{admin_obj.gender}}">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-               
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <input
-              type="submit"
-              value="EDIT"
-              class="btn float-right login_btn"
-              id="lg_bt"
-            />
-          </div>
-        </form>
-      </div>
-      
+        <div class="form-group">
+          <input
+            type="submit"
+            value="EDIT"
+            class="btn float-right login_btn"
+            id="lg_bt"
+          />
+        </div>
+      </form>
     </div>
   </div>
+</div>
 {% endblock %}

@@ -120,6 +120,18 @@ def userLogin(request):
                 'user_admin_obj': user_admin_obj,
             }
 
+            # send_mail("Your Visitor Pass", "Your Visitor Pass has been Successfully Created\n"
+            #           + " You can Show this Mail to Enter in the College\n"
+            #             + "Gender : {}\n".format(user_admin_obj.gender)
+            #             + "Date of Visit: {}\n".format(visiter_obj[0].visitDate)
+            #             + "Reason of Visit: {}\n".format(visiter_obj[0].reason)
+            #             + "Time validity: {}\n".format(visiter_obj[0].visiting_hour)
+            #             + "Gate Number: {}\n".format(visiter_obj[0].gateId),
+            #           "visitormanage10@gmail.com",
+            #           [user_admin_obj.mail],
+            #           fail_silently=False
+            #           )
+
             return render(request, 'src/userDash.html', context)
 
     return render(request, "src/userLogin.html")
@@ -133,41 +145,48 @@ def userRegister(request):
         username = request.POST.get('username')
         name = request.POST.get('name')
         password = request.POST.get('password')
-        mail = request.POST.get('mail')
-        otp = random.randint(1000, 9999)
-        send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
-                  "visitormanage10@gmail.com",
-                  [mail],
-                  fail_silently=False
-                  )
-        print(mail)
-        print(otp)
-        supermail(mail, otp)
-        contact = request.POST.get('contact')
-        gender = request.POST.get('gender')
-        # print(gender)
-        photo = request.FILES['photo']
-        fs = FileSystemStorage()
-        fs.save(photo.name, photo)
-        #print(username, name,password,mail,contact)
-        user = User(username=username, name=name, password=password,
-                    mail=mail, contact=contact, gender=gender, photo=photo)
-        try:
-            obj = -1
-            user.save()
+        cpassword = request.POST.get('cpassword')
+        if cpassword == password:
+            mail = request.POST.get('mail')
+            otp = random.randint(1000, 9999)
+            send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
+                      "visitormanage10@gmail.com",
+                      [mail],
+                      fail_silently=False
+                      )
+            print(mail)
+            print(otp)
+            supermail(mail, otp)
+            contact = request.POST.get('contact')
+            gender = request.POST.get('gender')
+            # print(gender)
+            photo = request.FILES['photo']
+            fs = FileSystemStorage()
+            fs.save(photo.name, photo)
+            #print(username, name,password,mail,contact)
+            user = User(username=username, name=name, password=password,
+                        mail=mail, contact=contact, gender=gender, photo=photo)
+            try:
+                obj = -1
+                user.save()
+                context = {
+                    'username': username,
+                    'obj': obj,
+                    'user_admin_obj': user,
+                }
+                login(user.id)
+                return HttpResponseRedirect('/userRegister/userConfirmation')
+                # return render(request, 'src/userDash.html', context)
+            except Exception as e:
+                print(e)
+                errors = "*We found the same username or email id in our data. These should be unique. Try some new"
+                context = {
+                    'errors': errors,
+                }
+                return render(request, 'src/userRegister.html', context)
+        else:
             context = {
-                'username': username,
-                'obj': obj,
-                'user_admin_obj': user,
-            }
-            login(user.id)
-            return HttpResponseRedirect('/userRegister/userConfirmation')
-            # return render(request, 'src/userDash.html', context)
-        except Exception as e:
-            print(e)
-            errors = "*We found the same username or email id in our data. These should be unique. Try some new"
-            context = {
-                'errors': errors,
+                'errors': "Password Doesn't Matches!!. Please Try Again.",
             }
             return render(request, 'src/userRegister.html', context)
     return render(request, 'src/userRegister.html')

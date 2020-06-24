@@ -1,16 +1,16 @@
 {% extends "src/gateAdminBasefile.html" %} {% block content %}
 <script>
-  var msggg= JSON.parse('{{messages|safe}}');
+  var msggg = JSON.parse("{{messages|safe}}");
   console.log(msggg);
-	if( msggg.length>0){
-		var i;
-		msg="These are the name which are running on over due:\n";
-		for ( i=0;i<msggg.length; i++) {
-			msg += msggg[i]+"\n" ;
-      console.log(msggg[i])
-		}
-    	alert(msg);
-	}
+  if (msggg.length > 0) {
+    var i;
+    msg = "These are the name which are running on over due:\n";
+    for (i = 0; i < msggg.length; i++) {
+      msg += msggg[i] + "\n";
+      console.log(msggg[i]);
+    }
+    alert(msg);
+  }
 </script>
 <div class="d-flex justify-content-center">
   <div class="card">
@@ -36,7 +36,10 @@
             class="form-control"
             placeholder="Name"
             id="name"
-            name="name" minlength="2" maxlength="100" required 
+            name="name"
+            minlength="2"
+            maxlength="100"
+            required
           />
         </div>
 
@@ -54,7 +57,10 @@
             class="form-control"
             placeholder="Mail Id"
             id="mail"
-            name="mail"  pattern=".+@gmail.com" maxlenght="320" required 
+            name="mail"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            maxlenght="320"
+            required
           />
         </div>
 
@@ -72,7 +78,9 @@
             class="form-control"
             placeholder="Contact Number(format: 1234567890)"
             id="contact"
-            name="contact"  pattern="[0-9]{10}" required 
+            name="contact"
+            pattern="[0-9]{10}"
+            required
           />
         </div>
         <div class="input-group form-group">
@@ -87,7 +95,7 @@
           </div>
           <select class="form-control" id="visiting_hour" name="visiting_hour">
             <option value="1">1 Hour</option>
-            <option value="2">2  Hour</option>
+            <option value="2">2 Hour</option>
             <option value="3">3 Hour</option>
             <option value="More Than 3">More Than 3 Hour</option>
           </select>
@@ -107,7 +115,10 @@
             name="reason"
             id="reason"
             cols="32"
-            rows="2" minlength="2" maxlength="1000" required 
+            rows="2"
+            minlength="2"
+            maxlength="1000"
+            required
           ></textarea>
         </div>
 
@@ -127,8 +138,6 @@
             <option value="Other">Other</option>
           </select>
         </div>
-
-
 
         <div class="form-group">
           <input
