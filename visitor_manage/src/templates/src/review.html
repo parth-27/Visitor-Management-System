@@ -1,0 +1,15 @@
+{% extends basefile %} 
+{% block content %}
+    {% for visitor in visitor_obj %}
+-->
+        {{visitor.feedback}}<br>
+        {% if obj == 1 %}
+            {% for u in user %}
+                {% if forloop.counter == forloop.parentloop.counter %}
+                    {{u.username}}<br> <button><a href='/deleteReview/{{visitor.pk}}'> Delete </a></button><br><br>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <hr>
+    {% endfor %}
+{% endblock %}

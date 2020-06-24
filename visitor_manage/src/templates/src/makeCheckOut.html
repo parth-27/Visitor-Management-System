@@ -41,7 +41,7 @@
             {% if forloop.counter == forloop.parentloop.counter %}
                 Name:{{user.name}}<br>
                 Reason of visit: {{visitor.reason}}<br />
-                Time validity: {{visitor.visiting_hour}}<br />
+                Time validity: {{visitor.visiting_hour}}  Hour<br />
                 <img src="{{user.photo.url }}" width="100" height="100" /><br>
                 <button><a href='/makeCheckOut/{{visitor.pk}}'> Check Out </a></button><br><br>
                 <hr>
