@@ -655,9 +655,13 @@ def reviewHome(request):
     logout()
     superLogout()
     visitor_obj = Visitor.objects.all().exclude(feedback=None)
+    user = []
+    for i in range(len(visitor_obj)):
+        user.append(visitor_obj[i].userId)
     context = {
         'visitor_obj': visitor_obj,
         'basefile': "src/base.html",
+        'user': user,
     }
     return render(request, 'src/review.html', context)
 
