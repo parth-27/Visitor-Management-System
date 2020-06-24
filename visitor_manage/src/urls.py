@@ -8,10 +8,12 @@ urlpatterns = [
     path('userLogin/gatepass', views.gatepass, name='gatepass'),
     path('userRegister/userConfirmation',
          views.userConfirmation, name='userConfirmation'),
+
     path('forgotPassword/', views.forgotPassword, name='forgotPassword'),
     path('forgotPassword/otpForgot', views.otpForgot, name='otpForgot'),
     path('forgotPassword/setNewPassword',
          views.setNewPassword, name='setNewPassword'),
+
     path('userRegister/gatepass', views.gatepass, name='gatepass'),
     path('gatepassDelete/<int:pk>', views.gatepassDelete, name='gatepassDelete'),
     path('userLogoutDone/', views.userLogoutDone, name='userLogoutDone'),

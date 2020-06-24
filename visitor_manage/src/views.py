@@ -120,18 +120,6 @@ def userLogin(request):
                 'user_admin_obj': user_admin_obj,
             }
 
-            # send_mail("Your Visitor Pass", "Your Visitor Pass has been Successfully Created\n"
-            #           + " You can Show this Mail to Enter in the College\n"
-            #             + "Gender : {}\n".format(user_admin_obj.gender)
-            #             + "Date of Visit: {}\n".format(visiter_obj[0].visitDate)
-            #             + "Reason of Visit: {}\n".format(visiter_obj[0].reason)
-            #             + "Time validity: {}\n".format(visiter_obj[0].visiting_hour)
-            #             + "Gate Number: {}\n".format(visiter_obj[0].gateId),
-            #           "visitormanage10@gmail.com",
-            #           [user_admin_obj.mail],
-            #           fail_silently=False
-            #           )
-
             return render(request, 'src/userDash.html', context)
 
     return render(request, "src/userLogin.html")
@@ -263,6 +251,19 @@ def gatepass(request):
                     'visiter_obj': visitor,
                     'user_admin_obj': user_id,
                 }
+
+                send_mail("Your Visitor Pass", "Your Visitor Pass has been Successfully Created\n"
+                          + " You can Show this Mail to Enter in the College\n\n"
+                          + "Name : {}\n".format(user_id.username)
+                          + "Gender : {}\n".format(user_admin_obj.gender)
+                          + "Date of Visit: {}\n".format(visitor.visitDate)
+                          + "Reason of Visit: {}\n".format(visitor.reason)
+                          + "Time validity: {}\n".format(visitor.visiting_hour)
+                          + "Gate Number: {}\n".format(visitor.gateId),
+                          "visitormanage10@gmail.com",
+                          [user_admin_obj.mail],
+                          fail_silently=False
+                          )
 
                 return render(request, 'src/userDash.html', context)
             except Exception as e:
