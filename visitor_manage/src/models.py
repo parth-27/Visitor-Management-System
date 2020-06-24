@@ -74,3 +74,15 @@ class TemporaryUser(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+class ImageGallery(models.Model):
+    photo = models.ImageField(upload_to='gallery', default='/tempUser.png')
+    def __str__(self):
+        return str(self.id)
+
+class ImageUpload( models.Model):
+    photo = models.ImageField(upload_to='gallery', default='/tempUser.png')
+    userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
+
+    def __str__(self):
+        return str(self.id)

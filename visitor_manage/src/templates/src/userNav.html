@@ -1,71 +1,94 @@
-<div class="vertical-nav bg-white" id="sidebar">
-  <div class="py-4 px-3 mb-4 bg-light">
-    <div class="media d-flex align-items-center">
-      <img
-        src="https://i.pinimg.com/originals/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.png"
-        alt="..."
-        width="65"
-        class="mr-3 rounded-circle img-thumbnail shadow-sm"
-      />
-      <div class="media-body">
-        <h4 class="m-0">Ahmedabad University</h4>
-        <p class="font-weight-light text-muted mb-0">
-          School of Engineering and Applied Science
-        </p>
+<html>
+
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/Delete.css' %}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
+<body">
+  <div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+      <div class="media d-flex align-items-center">
+        <img src="{{ user_admin_obj.photo.url }}" width="100" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+        <div class="media-body">
+          <h4 class="m-0">{{username}}</h4>
+          <p class="font-weight-light text-muted mb-0">
+            School of Engineering and Applied Science
+          </p>
+        </div>
       </div>
     </div>
+
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
+      Main
+    </p>
+
+    <ul class="nav flex-column bg-white mb-0">
+      <li class="nav-item">
+        <a href="{% url 'userLogin' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-cubes mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/user-group-man-man.png" width="30" />
+          </i>
+          Login as Other User
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a href="{% url 'imageUpload' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30" />
+          </i>
+          Gallery
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{% url 'userLogoutDone' %}" class="nav-link text-dark font-italic">
+          <i class="fa fa-picture-o mr-3 text-primary fa-fw">
+            <img src="https://img.icons8.com/android/2x/logout-rounded-left.png" width="30" />
+          </i>
+          Logout
+        </a>
+        
+      </li>
+      
+
+    </ul>
   </div>
 
-  <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
-    Main
-  </p>
+  <div class="page-content p-5" id="content">
+    <button id="sidebarCollapse" type="button" style="background-color:white;">
+      <i class="fa fa-bars mr-2">
+        <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
+      </i>
+    </button>
+    <div class="container">
+      {% block content %} {% endblock %}
+    </div>
 
-  <ul class="nav flex-column bg-white mb-0">
-    <li class="nav-item">
-      <a
-        href="{% url 'gateAdminDash' %}"
-        class="nav-link text-dark font-italic bg-light"
-      >
-        <i class="fa fa-th-large mr-3 text-primary fa-fw">
-          <img src="https://img.icons8.com/ios-glyphs/2x/home.png" width="30" />
-        </i>
-        Home (Create a pass)
-      </a>
-    </li>
+  </div>
+  <script>
+    $(function () {
+      // Sidebar toggle behavior
+      $("#sidebarCollapse").on("click", function () {
+        $("#sidebar, #content").toggleClass("active");
+      });
+    });
+  </script>
 
-    <li class="nav-item">
-      <a href="{% url 'checkOutDone' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-          <img
-            src="https://img.icons8.com/ios-glyphs/2x/image.png"
-            width="30"
-          />
-        </i>
-        Gallery
-      </a>
-    </li>
+  </body>
 
-    <li class="nav-item">
-      <a href="{% url 'timeDue' %}" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-          <img
-            src="https://img.icons8.com/pastel-glyph/2x/time.png"
-            width="30"
-          />
-        </i>
-        Time Due
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link text-dark font-italic">
-        <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-          <img
-            src="https://img.icons8.com/android/2x/logout-rounded-left.png"
-            width="30"
-          />
-        </i>
-        Logout
-      </a>
-    </li>
-  </ul>
-</div>
+  </html>

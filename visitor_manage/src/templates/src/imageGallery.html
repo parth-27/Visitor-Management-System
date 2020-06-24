@@ -1,0 +1,53 @@
+{% extends basefile %} 
+{% block content %}
+<br>
+{% for im in img1%}
+    <img src="{{ im.photo.url }}" width="100" height="100" /><br />
+    {% if obj == 1 %}
+    <button>
+        <a href="/imageDelete/{{im.pk}}">Delete
+          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+    </button> 
+    {% endif %}
+    <hr><br>
+
+{% endfor %}
+{% if obj == 1 %}
+    {% for im in img2%}
+        {% for us in user%}
+            {% if forloop.counter == forloop.parentloop.counter %}
+                <img src="{{ im.photo.url }}" width="100" height="100" /><br />
+                <p style ="color:white"> {{us.name}}<br>{{us.username}}</p>
+                    <button>
+                        <a href="/imageDelete/{{im.pk}}/'user'">Delete
+                        <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+                    </button> 
+                <hr><br>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% else %}
+    {% for im in img2%}
+        <img src="{{ im.photo.url }}" width="100" height="100" /><br />
+    {% endfor %}
+{% endif %}
+
+
+
+{% if obj == 1 %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <input  type="file" class="form-control" placeholder="photo" id="photo"  name="photo"  required   />
+    <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button>
+    </form>
+{% endif %}
+
+{% if objt == 1 %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input  type="file" class="form-control" placeholder="photo" id="photo"  name="photo"  required   />
+    <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button>
+    </form>
+{% endif %}
+
+{% endblock %}

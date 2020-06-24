@@ -17,6 +17,11 @@ urlpatterns = [
     path('userRegister/gatepass', views.gatepass, name='gatepass'),
     path('gatepassDelete/<int:pk>', views.gatepassDelete, name='gatepassDelete'),
     path('userLogoutDone/', views.userLogoutDone, name='userLogoutDone'),
+    path('imageGalleryUser/', views.imageGalleryUser, name='imageGalleryUser'),
+     path('imageUpload/', views.imageUpload, name='imageUpload'),
+     path('imageDelete/<int:pk>/<str:us>', views.imageDeleteUser, name='imageDeleteUser'),
+
+
 
     path('adminLogin/', views.adminLogin, name='adminLogin'),
     path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
@@ -25,6 +30,9 @@ urlpatterns = [
          views.superAdminDash, name='superAdminDash'),
     path('statistics/', views.statistics, name='statistics'),
     path('superAdminLogout/', views.superAdminLogout, name='superAdminLogout'),
+    path('imageGallery/', views.imageGallery, name='imageGallery'),
+    path('imageDelete/<int:pk>', views.imageDelete, name='imageDelete'),
+
 
 
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
