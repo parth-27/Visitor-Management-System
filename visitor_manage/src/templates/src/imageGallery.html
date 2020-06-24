@@ -10,9 +10,9 @@
         <div class="card-body">
             <br>
             {% for im in img1%}
-            <img src="{{ im.photo.url }}" width="200" height="200" /><br />
+            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
             {% if obj == 1 %}
-            <button>
+            <button style="background-color: white;">
                 <a href="/imageDelete/{{im.pk}}">Delete
                     <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
             </button>
@@ -24,9 +24,9 @@
             {% for im in img2%}
             {% for us in user%}
             {% if forloop.counter == forloop.parentloop.counter %}
-            <img src="{{ im.photo.url }}" width="200" height="200" /><br />
+            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
             <p style="color:white"> {{us.name}}<br>{{us.username}}</p>
-            <button>
+            <button style="background-color: white;">
                 <a href="/imageDelete/{{im.pk}}/'user'">Delete
                     <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
             </button>
@@ -36,7 +36,7 @@
             {% endfor %}
             {% else %}
             {% for im in img2%}
-            <img src="{{ im.photo.url }}" width="200" height="200" /><br />
+            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
             {% endfor %}
             {% endif %}
 
@@ -45,16 +45,76 @@
             {% if obj == 1 %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
-                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button>
+                <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
+                
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
+                          width="30" /></i
+                    ></span>
+                  </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    placeholder="photo"
+                    id="photo"
+                    name="photo"
+                    required
+                  />
+                </div>
+
+
+                <div class="form-group">
+                  <input
+                    type="submit"
+                    value="Add Pic"
+                    class="btn float-right login_btn"
+                    id="lg_bt"
+                  />
+                </div>
+
             </form>
             {% endif %}
 
             {% if objt == 1 %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
-                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button>
+                <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
+
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="fas fa-user"
+                        ><img
+                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
+                          width="30" /></i
+                    ></span>
+                  </div>
+                  <input
+                    type="file"
+                    class="form-control"
+                    placeholder="photo"
+                    id="photo"
+                    name="photo"
+                    required
+                  />
+                </div>
+
+
+                <div class="form-group">
+                  <input
+                    type="submit"
+                    value="Add Pic"
+                    class="btn float-right login_btn"
+                    id="lg_bt"
+                  />
+                </div>
+
             </form>
             {% endif %}
 

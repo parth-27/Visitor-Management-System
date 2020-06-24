@@ -1,5 +1,5 @@
 <div class="vertical-nav bg-white" id="sidebar">
-  <div class="py-4 px-3 mb-4 bg-light">
+  <div class="py-4 px-3 mb-4" style="background-color: black;">
     <div class="media d-flex align-items-center">
       <img
         src="https://i.pinimg.com/originals/73/16/f5/7316f550de9ca0045e3d8d98a5bb5e44.png"
@@ -8,9 +8,9 @@
         class="mr-3 rounded-circle img-thumbnail shadow-sm"
       />
       <div class="media-body">
-        <h4 class="m-0">Ahmedabad University</h4>
+        <h4 class="m-0" style="color: white;">Ahmedabad University</h4>
         <p class="font-weight-light text-muted mb-0">
-          School of Engineering and Applied Science
+          <h6 style="color: white;">School of Engineering and Applied Science</h6>
         </p>
       </div>
     </div>
@@ -81,7 +81,10 @@
     </li>
 
     <li class="nav-item">
-      <a href="{% url 'superAdminLogout'%}" class="nav-link text-dark font-italic">
+      <a
+        href="{% url 'superAdminLogout'%}"
+        class="nav-link text-dark font-italic"
+      >
         <i class="fa fa-picture-o mr-3 text-primary fa-fw">
           <img
             src="https://img.icons8.com/android/2x/logout-rounded-left.png"

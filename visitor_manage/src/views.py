@@ -74,7 +74,7 @@ def index(request):
     year = now.year
     print(year)
 
-    return render(request, 'src/index.html')
+    return render(request, 'src/carousel.html')
 
 
 def userLogin(request):
@@ -98,15 +98,17 @@ def userLogin(request):
             return render(request, "src/userLogin.html", {"errors": errors})
 
         login(user_admin_obj.id)
-        #Visitor.objects.filter(checkin=None).delete()
+        # Visitor.objects.filter(checkin=None).delete()
         try:
-            visitor_obj = Visitor.objects.all().filter(userId=user_admin_obj.id, feedback=None).exclude(Q(checkin=None)|Q(checkout=None))
+            visitor_obj = Visitor.objects.all().filter(userId=user_admin_obj.id,
+                                                       feedback=None).exclude(Q(checkin=None) | Q(checkout=None))
         except:
             visitor_obj = None
-        #print(visitor_obj[0].checkout)
+        # print(visitor_obj[0].checkout)
         if visitor_obj is None or len(visitor_obj) == 0:
             try:
-                visitor_obj = Visitor.objects.all().filter( Q(checkin=None)|Q(checkout=None),userId=user_admin_obj.id)
+                visitor_obj = Visitor.objects.all().filter(
+                    Q(checkin=None) | Q(checkout=None), userId=user_admin_obj.id)
             except:
                 visitor_obj = None
             obj = -1
@@ -133,27 +135,30 @@ def userLogin(request):
 
     return render(request, "src/userLogin.html")
 
+
 def feedback(request):
     gateLogout()
     superLogout()
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        user_admin_obj=User.objects.get(id=userid)
-        context={
+        user_admin_obj = User.objects.get(id=userid)
+        context = {
             'user_admin_obj': user_admin_obj,
         }
         if request.method == "POST":
             feedback = request.POST.get('feedback')
-            visitor_obj= Visitor.objects.get((~Q(checkin=None)&~Q(checkout=None)),userId=userid, feedback=None)
+            visitor_obj = Visitor.objects.get(
+                (~Q(checkin=None) & ~Q(checkout=None)), userId=userid, feedback=None)
             print(visitor_obj)
-            visitor_obj.feedback=feedback
+            visitor_obj.feedback = feedback
             try:
                 visitor_obj.save()
                 return HttpResponseRedirect('/userLogin/gatepass')
             except Exception as e:
                 print(e)
-    return render(request,'src/feedback.html',context)
+    return render(request, 'src/feedback.html', context)
+
 
 def userRegister(request):
     logout()
@@ -188,7 +193,7 @@ def userRegister(request):
                 obj = -1
                 user.save()
                 login(user.id)
-               
+
                 return HttpResponseRedirect('/userRegister/userConfirmation')
                 # return render(request, 'src/userDash.html', context)
             except Exception as e:
@@ -214,12 +219,12 @@ def userConfirmation(request):
         OTP = int(request.POST.get('otpConfirm'))
 
         if OTP == otp_f:
-            user_admin_obj= User.objects.get(id=userid)
-            username=user_admin_obj.username
+            user_admin_obj = User.objects.get(id=userid)
+            username = user_admin_obj.username
             context = {
-                    'username': username,
-                    'user_admin_obj': user,
-                }
+                'username': username,
+                'user_admin_obj': user,
+            }
 
             return render(request, 'src/userDash.html', context)
         else:
@@ -452,8 +457,7 @@ def statistics(request):
         }
         return render(request, 'src/statistics.html', context)
 
-<<<<<<< HEAD
-=======
+
 def viewVisitor(request):
     logout()
     gateLogout()
@@ -465,12 +469,14 @@ def viewVisitor(request):
             search = request.POST.get('search')
         obj = -1
         try:
-            visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date()).exclude(checkout=None)
+            visitor_obj = Visitor.objects.all().filter(
+                visitDate=datetime.now().date()).exclude(checkout=None)
             print(visitor_obj)
         except:
             visitor_obj = None
         try:
-            temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search, visitDate=datetime.now().date()).exclude(checkout=None)
+            temp_user_obj = TemporaryUser.objects.all().filter(
+                name__contains=search, visitDate=datetime.now().date()).exclude(checkout=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
@@ -498,7 +504,6 @@ def viewVisitor(request):
             }
             return render(request, 'src/viewVisitor.html', context)
 
->>>>>>> 503cb9a5f911adf49e8d065c14ca1416b0c2de88
 
 def imageGallery(request):
     gateLogout()
@@ -594,7 +599,7 @@ def imageUpload(request):
             'user': user,
             'basefile': "src/userNav.html",
             'user_admin_obj': user_admin_obj,
-            'username':user_admin_obj.username
+            'username': user_admin_obj.username
 
         }
         if request.method == 'POST':
@@ -627,50 +632,55 @@ def imageUpload(request):
 def review(request):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
-        visitor_obj= Visitor.objects.all().exclude(feedback=None)
-        user=[]
+        visitor_obj = Visitor.objects.all().exclude(feedback=None)
+        user = []
         for i in range(len(visitor_obj)):
             user.append(visitor_obj[i].userId)
-        obj=1
-        context={
+        obj = 1
+        context = {
             'visitor_obj': visitor_obj,
             'user': user,
-            'obj':obj,
+            'obj': obj,
             'basefile': "src/superAdminBasefile.html",
 
         }
-        return render(request,'src/review.html', context)
+        return render(request, 'src/review.html', context)
+
 
 def reviewHome(request):
     gateLogout()
     logout()
     superLogout()
-    visitor_obj= Visitor.objects.all().exclude(feedback=None)
-    context={
+    visitor_obj = Visitor.objects.all().exclude(feedback=None)
+    context = {
         'visitor_obj': visitor_obj,
         'basefile': "src/base.html",
     }
-    return render(request,'src/review.html', context)
+    return render(request, 'src/review.html', context)
 
-def deleteReview(request,pk):
+
+def deleteReview(request, pk):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
-        visitor= Visitor.objects.get(id=pk)
-        visitor.feedback=None
+        visitor = Visitor.objects.get(id=pk)
+        visitor.feedback = None
         try:
             visitor.save()
         except Exception as e:
             print(e)
     return HttpResponseRedirect('/review')
 
+
 def location(request):
     return render(request, 'src/location.html')
+
+
 def adminEdit(request, pk):
     gateLogout()
     logout()

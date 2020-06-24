@@ -1,5 +1,5 @@
 <div class="vertical-nav bg-white" id="sidebar">
-  <div class="py-4 px-3 mb-4 bg-light">
+  <div class="py-4 px-3 mb-4" style="background-color: black;">
     <div class="media d-flex align-items-center">
       <img
         src="https://img.icons8.com/ios/2x/user-male-circle.png"
@@ -8,9 +8,9 @@
         class="mr-3 rounded-circle img-thumbnail shadow-sm"
       />
       <div class="media-body">
-        <h4 class="m-0">Ahmedabad University</h4>
+        <h4 class="m-0" style="color: white;">Ahmedabad University</h4>
         <p class="font-weight-light text-muted mb-0">
-          School of Engineering and Applied Science
+          <h6 style="color: white;">School of Engineering and Applied Science</h6>
         </p>
       </div>
     </div>
@@ -58,7 +58,10 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="{% url 'imageGalleryUser' %}" class="nav-link text-dark font-italic">
+      <a
+        href="{% url 'imageGalleryUser' %}"
+        class="nav-link text-dark font-italic"
+      >
         <i class="fa fa-picture-o mr-3 text-primary fa-fw"
           ><img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30"
         /></i>
@@ -81,13 +84,15 @@
         Location
       </a>
     </li>
-    <br>
-    <li class="nav-item">
-      Visiter Management System <br>
-      @PCLUB <br>
-      Creaters:<br>
-       Parth Patel<br>
-      Dipika Pawar<br>
-    </li>
+    <br />
+    <div style="background-color: black;">
+      <li class="nav-item" style="color: white;">
+        Visiter Management System <br />
+        @PCLUB <br />
+        Creaters:<br />
+        Parth Patel<br />
+        Dipika Pawar<br />
+      </li>
+    </div>
   </ul>
 </div>
