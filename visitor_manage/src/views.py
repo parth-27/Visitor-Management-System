@@ -86,7 +86,7 @@ def index(request):
     logout()  # To manage Logout of each type of user
     gateLogout()
     superLogout()
-    return render(request, 'src/index.html')
+    return render(request, 'src/frontPage.html')
 
 
 """
