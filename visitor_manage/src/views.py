@@ -1013,8 +1013,8 @@ def gateAdminDash(request):
         for i in range(len(visitor_obj)):
             if visitor_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = visitor_obj[i].checkin - now
-                hour = 5.5-float(diff.total_seconds()/3600)
+                diff = now-visitor_obj[i].checkin 
+                hour = float(diff.total_seconds()/3600)
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
                         user_obj = (visitor_obj[i].userId)
@@ -1030,8 +1030,8 @@ def gateAdminDash(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = temp_user_obj[i].checkin - now
-                hour = 5.5-float(diff.total_seconds()/3600)
+                diff =now- temp_user_obj[i].checkin
+                hour = float(diff.total_seconds()/3600)
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         #user_obj= (visitor_obj[i].userId)
@@ -1044,7 +1044,8 @@ def gateAdminDash(request):
                     if hour > 3:
                         #user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
-        # print(l)
+        #print(l)
+
         dueList = json.dumps(l)
         context = {
             'messages': dueList,
@@ -1099,17 +1100,19 @@ def timeDue(request):
                                                    checkout=None, gateId=gate_id).exclude(checkin=None)
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
                                                            checkout=None, gateId=gate_id).exclude(checkin=None)
-        print(visitor_obj)
+        #print(visitor_obj)
         l = []
         timeDue = []
         for i in range(len(visitor_obj)):
 
             if visitor_obj[i].visiting_hour != "More Than 3":
-
+                print(visitor_obj[i].visiting_hour)
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = visitor_obj[i].checkin - now
+                print(now)
+                diff =now- visitor_obj[i].checkin #- now
                 print(visitor_obj[i].checkin)
-                hour = 5.5-float(diff.total_seconds()/3600)
+                hour =float(diff.total_seconds()/3600)
+                print(hour)
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
                         obj = 1
@@ -1133,9 +1136,9 @@ def timeDue(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = temp_user_obj[i].checkin - now
+                diff =now- temp_user_obj[i].checkin# - now
                 # print(visitor_obj[i].checkin)
-                hour = 5.5-float(diff.total_seconds()/3600)
+                hour = float(diff.total_seconds()/3600)
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         obj = 1

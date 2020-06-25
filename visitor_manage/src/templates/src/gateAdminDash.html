@@ -1,7 +1,7 @@
 {% extends "src/gateAdminBasefile.html" %} {% block content %}
 <script>
-  var msggg = JSON.parse("{{messages|safe}}");
-  console.log(msggg);
+  var msggg = JSON.parse('{{messages|safe}}');
+  
   if (msggg.length > 0) {
     var i;
     msg = "These are the name which are running on over due:\n";
