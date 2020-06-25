@@ -28,6 +28,8 @@ superAdminId = -1
 e_mail = ""
 otp_f = 0
 
+# mail Id change
+
 
 def supermail(mail, otp):
     global e_mail
@@ -35,92 +37,135 @@ def supermail(mail, otp):
     global otp_f
     otp_f = otp
 
+# change UserId when user login
+
 
 def login(id):
     global userid
     userid = id
+
+# Mange logout of User
 
 
 def logout():
     global userid
     userid = -1
 
+# Gate Admin Login
+
 
 def gateLogin(id):
     global gate_id
     gate_id = id
+
+# Gate Admin Logout
 
 
 def gateLogout():
     global gate_id
     gate_id = -1
 
+# Super Admin Login
+
 
 def superLogin(id):
     global superAdminId
     superAdminId = id
+
+# Super Admin Logout
 
 
 def superLogout():
     global superAdminId
     superAdminId = -1
 
+# Home Page
+
 
 def index(request):
-    logout()
+    logout()  # To manage Logout of each type of user
     gateLogout()
     superLogout()
-    now = datetime.now().date()
-    year = now.year
-    print(year)
+    return render(request, 'src/index.html')
 
-    return render(request, 'src/frontPage.html')
+
+"""
+*On this page:
+->User Login
+    -Username Exist or not 
+    - Username and Password Matches with any data of Database
+    -If yes than login else Render the same page
+->Can use Forget Password
+    - User should write correct username and Email of his/her(as these are Unique)
+    - Send Otp on Email
+    - For verification purpose
+
+*Return :
+-> Previous visit:
+    - Check If user already visited college, Then send him Feedback form(feedback Function)
+-> No visit:
+    -Check If user have already generated a Pass for his future visit
+-> No pass :
+    -Render to User Dash board such that one can create Gatpass
+
+ """
 
 
 def userLogin(request):
-    logout()
+    logout()  # Logout of all type of users
     gateLogout()
     superLogout()
-    if request.method == "POST":
+    if request.method == "POST":                                            # If Got response from Login Form
         username = request.POST.get('username')
         password = request.POST.get('password')
         print(username)
         try:
+            # Try fetch data from table with same username
             user_admin_obj = User.objects.get(username=username)
         except:
+            # Username not Found!!
             user_admin_obj = None
-        # user_admin_obj = UserAdmin.objects.get(username=username)
+
         if user_admin_obj is None:
             error = "*Username you entered doesn't exist"
+            # Username not found and render the same page
             return render(request, "src/userLogin.html", {"error": error})
         elif not user_admin_obj.password == password:
             errors = "*Invalid password"
+            # Given Username and password Field doesn't match with any data
             return render(request, "src/userLogin.html", {"errors": errors})
+            # render the same page
 
+        # Else user successfully loggedIn. Make Id as per one's Id
         login(user_admin_obj.id)
-        # Visitor.objects.filter(checkin=None).delete()
         try:
             visitor_obj = Visitor.objects.all().filter(userId=user_admin_obj.id,
                                                        feedback=None).exclude(Q(checkin=None) | Q(checkout=None))
+            # Check Previous visit whose feedback field is null
+            # So set feedback screen
         except:
             visitor_obj = None
-        # print(visitor_obj[0].checkout)
+
+        # No previous record found....
         if visitor_obj is None or len(visitor_obj) == 0:
             try:
                 visitor_obj = Visitor.objects.all().filter(
                     Q(checkin=None) | Q(checkout=None), userId=user_admin_obj.id)
+                # Try to fetch Already created Gatepass
             except:
                 visitor_obj = None
             obj = -1
-            # print(visitor_obj)
+
+            # No gate pass found
             if visitor_obj is None or len(visitor_obj) == 0:
                 context = {
                     'username': username,
                     'obj': obj,
                     'user_admin_obj': user_admin_obj,
                 }
+                # Simply render Dash Board
                 return render(request, 'src/userDash.html', context)
-            else:
+            else:                                                           # GatePass found
                 obj = 1
                 context = {
                     'username': username,
@@ -129,11 +174,21 @@ def userLogin(request):
                     'user_admin_obj': user_admin_obj,
                 }
 
+                # Show Gatepass on user Dashboard screen
                 return render(request, 'src/userDash.html', context)
         else:
-            return HttpResponseRedirect('/feedback/')
+            return HttpResponseRedirect('/feedback/')  # Render Feedback form
 
+    # No response of userLogin form
     return render(request, "src/userLogin.html")
+
+
+"""
+*On this page:
+-Feedback form
+*return:
+-Gatepass screen
+"""
 
 
 def feedback(request):
@@ -160,42 +215,146 @@ def feedback(request):
     return render(request, 'src/feedback.html', context)
 
 
+"""
+User enters His email and username
+    - if match, send OTP
+    -otherwise render on login
+
+"""
+
+
+def forgotPassword(request):
+    if request.method == 'POST':
+        mail = request.POST.get('mail')
+        uname = request.POST.get('username')
+
+        try:
+            user = User.objects.get(username=uname)
+
+            if mail == user.mail:
+                otp = random.randint(1000, 9999)
+                print(otp)
+                send_mail('Forgot Password', "OTP for Changing your password is {}".format(otp),
+                          "visitormanage10@gmail.com",
+                          [mail],  # "list of recpetenets",
+                          fail_silently=False
+                          )
+                supermail(mail, otp)
+                return HttpResponseRedirect('/forgotPassword/otpForgot')
+            else:
+                context = {
+                    'errors': "Email is Not registered"
+                }
+                return render(request, 'src/emailSendForgot.html', context)
+        except User.DoesNotExist:
+            context = {
+                'errors': "Username is Not registered"
+            }
+            return render(request, 'src/emailSendForgot.html', context)
+    return render(request, 'src/emailSendForgot.html')
+
+
+"""
+Alloe user to enter otp , if match so allow him to reset password
+                        else  shows an error
+"""
+
+
+def otpForgot(request):
+
+    if request.method == 'POST':
+        otp = request.POST.get('otpConfirm')
+        print(otp_f)
+        if otp_f == int(otp):
+            return HttpResponseRedirect('/forgotPassword/setNewPassword')
+        else:
+            context = {
+                'errors': "Wrong OTP Entered!!!"
+            }
+            return render(request, 'src/otpForgot.html', context)
+
+    return render(request, 'src/otpForgot.html')
+
+
+def setNewPassword(request):
+
+    if request.method == 'POST':
+        passw = request.POST.get('password')
+        cpassw = request.POST.get('cpassword')
+
+        if passw == cpassw:
+            user = User.objects.get(mail=e_mail)
+            print(user.name)
+            user.password = passw
+            user.save()
+            return HttpResponseRedirect('/userLogin/')
+        else:
+            context = {
+                'errors': "Password Doesn't Match"
+            }
+            return render(request, 'src/setNewPassword.html', context)
+
+    return render(request, 'src/setNewPassword.html')
+
+
+"""
+*On this Page:
+->UserRegister:
+    -Fetch the data from register form
+->Both password:
+    -Both not match ... render same page by showing the error
+->Confirm Mail:
+    -Send OTP to verify the email address. If entered OTP matches than only user
+     will able to create an account
+
+*Return:
+->Both password Or data:
+    - Wrong type of data enter, so render the same page with error
+->Email :
+    -If data entered varified then send OTP to verify email
+
+"""
+
+
 def userRegister(request):
-    logout()
+    logout()  # logout all kind og users
     gateLogout()
     superLogout()
+    # Got response from register form
     if request.method == 'POST':
         username = request.POST.get('username')
         name = request.POST.get('name')
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
+        # Both passwords matches
         if cpassword == password:
             mail = request.POST.get('mail')
+            # Create an OTP and send on given email
             otp = random.randint(1000, 9999)
             send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
                       "visitormanage10@gmail.com",
                       [mail],
                       fail_silently=False
                       )
-            print(mail)
-            print(otp)
+
             supermail(mail, otp)
             contact = request.POST.get('contact')
             gender = request.POST.get('gender')
-            # print(gender)
             photo = request.FILES['photo']
             fs = FileSystemStorage()
             fs.save(photo.name, photo)
-            #print(username, name,password,mail,contact)
-            user = User(username=username, name=name, password=password,
+
+            user = User(username=username, name=name, password=password,                        # Create object of table to store the data
                         mail=mail, contact=contact, gender=gender, photo=photo)
-            try:
+            try:  # If form successfully verified.. Then goto OTP
+                # Function to verify email
                 obj = -1
                 user.save()
                 login(user.id)
 
                 return HttpResponseRedirect('/userRegister/userConfirmation')
                 # return render(request, 'src/userDash.html', context)
+            # Form not verified. So some error show on same page
             except Exception as e:
                 print(e)
                 errors = "*We found the same username or email id in our data. These should be unique. Try some new"
@@ -203,6 +362,7 @@ def userRegister(request):
                     'errors': errors,
                 }
                 return render(request, 'src/userRegister.html', context)
+        # Both passwords doesn't match
         else:
             context = {
                 'errors': "Password Doesn't Matches!!. Please Try Again.",
@@ -211,58 +371,61 @@ def userRegister(request):
     return render(request, 'src/userRegister.html')
 
 
+"""
+*On this page:
+->Enter OTP which was sent on your mail.. to verify the mailId
+*Return:
+->OTP match:
+    -render User DashBoard
+    -Succesfully account created
+->Not match:
+    -Account is not created
+    -Goto register page
+"""
+
+
 def userConfirmation(request):
-
-    print(e_mail)
-    print(otp_f)
-    if request.method == "POST":
-        OTP = int(request.POST.get('otpConfirm'))
-
-        if OTP == otp_f:
-            user_admin_obj = User.objects.get(id=userid)
-            username = user_admin_obj.username
-            context = {
-                'username': username,
-                'user_admin_obj': user,
-            }
-
-            return render(request, 'src/userDash.html', context)
-        else:
-            User.objects.get(id=userid).delete()
-            errors = "OTP Confirmation Fails!!. Please Try Again"
-            context = {
-                'errors': errors,
-            }
-            return render(request, 'src/userRegister.html', context)
-
-    return render(request, 'src/userConfirmation.html')
-
-
-def gatepassDelete(request, pk):
     gateLogout()
+    superLogout()
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        visitor_obj = Visitor.objects.get(id=pk).delete()
-        return HttpResponseRedirect('/userLogin/gatepass')
+        if request.method == "POST":  # fetch data from OTP form
+            OTP = int(request.POST.get('otpConfirm'))
+
+            if OTP == otp_f:  # OTP match, goto user dashboard
+                user_admin_obj = User.objects.get(id=userid)
+                username = user_admin_obj.username
+                context = {
+                    'username': username,
+                    'user_admin_obj': user_admin_obj,
+                }
+
+                return render(request, 'src/userDash.html', context)
+            else:  # Delete user object with same Id
+                User.objects.get(id=userid).delete()
+                errors = "OTP Confirmation Fails!!. Please Try Again"
+                context = {
+                    'errors': errors,
+                }
+                return render(request, 'src/userRegister.html', context)
+
+        return render(request, 'src/userConfirmation.html')
 
 
-def userLogoutDone(request):
-    logout()
-    gateLogout()
-    superLogout()
-    return HttpResponseRedirect('/')
+"""
+ Allow user to make gatepass
+"""
 
 
 def gatepass(request):
     gateLogout()
     superLogout()
-    # print(userid)
+
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        gateid = Admin.objects.all()
-        # print(gateid)
+        gateid = Admin.objects.all()  # To fetch available gates
         user_admin_obj = User.objects.get(id=userid)
         context = {
             'gateid': gateid,
@@ -276,8 +439,7 @@ def gatepass(request):
             reason = request.POST.get('reason')
             visit_gate = Admin.objects.get(gate=gateId)
             user_id = User.objects.get(id=userId)
-            # print(visit_gate)
-            #print(username, name,password,mail,contact)
+
             visitor = Visitor(gateId=visit_gate, userId=user_id,
                               visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
             try:
@@ -309,6 +471,32 @@ def gatepass(request):
                 return render(request, 'src/gatepass.html', context)
 
         return render(request, 'src/gatepass.html', context)
+
+
+# Allow user to delete gatepass.. If it is expriered
+
+def gatepassDelete(request, pk):
+    gateLogout()
+    if userid == -1:
+        return render(request, 'src/loginError.html')
+    else:
+        visitor_obj = Visitor.objects.get(id=pk).delete()
+        return HttpResponseRedirect('/userLogin/gatepass')
+
+# User logout
+
+
+def userLogoutDone(request):
+    logout()
+    gateLogout()
+    superLogout()
+    return HttpResponseRedirect('/')
+
+
+"""
+These function is login function for Super Admin 
+
+"""
 
 
 def adminLogin(request):
@@ -344,6 +532,13 @@ def adminLogin(request):
     return render(request, "src/adminLogin.html", context)
 
 
+"""
+*Super Admin's dashboard
+    -can add admin
+    -can view, edit, delete admins
+"""
+
+
 def superAdminDash(request):
     gateLogout()
     logout()
@@ -367,7 +562,7 @@ def superAdminDash(request):
             for i in range(len(adminData)):
 
                 if(int(gate) == int(adminData[i].gate)):
-                    print('g')
+
                     context = {
                         'admin_obj': admin_obj,
                         'error': "*This gateId is already exist",
@@ -393,6 +588,8 @@ def superAdminDash(request):
 
         return render(request, 'src/superAdminDash.html', context)
 
+# fetch number of visitors of last 10 days and from the starting of the year to till now
+
 
 def statistics(request):
     gateLogout()
@@ -409,10 +606,11 @@ def statistics(request):
             day[c] = datetime.strftime(
                 datetime.now() - timedelta(c), '%Y-%m-%d')
             visitor = Visitor.objects.all().filter(
-                visitDate=day[c]).exclude(checkout=None)
+                visitDate=day[c]).exclude(Q(checkin=None) | Q(checkout=None))
+            print(visitor)
             temp_user = TemporaryUser.objects.all().filter(
                 visitDate=day[c]).exclude(checkout=None)
-            # print(len(temp_user))
+
             dayVisitor[c] = len(visitor)+len(temp_user)
             c += 1
         x = 9
@@ -433,7 +631,8 @@ def statistics(request):
         c = 0
         while(1):
             innerList = []
-            visitor = Visitor.objects.all().filter(visitDate=sd).exclude(checkout=None)
+            visitor = Visitor.objects.all().filter(
+                visitDate=sd).exclude(Q(checkin=None) | Q(checkout=None))
             temp_user = TemporaryUser.objects.all().filter(
                 visitDate=sd).exclude(checkout=None)
             innerList.append(str(sd))
@@ -457,6 +656,8 @@ def statistics(request):
         }
         return render(request, 'src/statistics.html', context)
 
+# Super admin can view daily list of visitors
+
 
 def viewVisitor(request):
     logout()
@@ -464,14 +665,14 @@ def viewVisitor(request):
     if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
-        search = ' '
+        search = ''
         if request.method == "POST":
             search = request.POST.get('search')
         obj = -1
         try:
             visitor_obj = Visitor.objects.all().filter(
                 visitDate=datetime.now().date()).exclude(checkout=None)
-            print(visitor_obj)
+
         except:
             visitor_obj = None
         try:
@@ -491,8 +692,6 @@ def viewVisitor(request):
                 for j in range(len(user_obj)):
 
                     if visitor_obj[i].userId == user_obj[j]:
-                        # x=visitor_obj[i].userId
-                        # l[i]=x
                         l.append(visitor_obj[i].userId)
             obj = 1
             context = {
@@ -503,6 +702,8 @@ def viewVisitor(request):
                 'temp_user_obj': temp_user_obj,
             }
             return render(request, 'src/viewVisitor.html', context)
+
+# super admin can add,view, delete image from gallery
 
 
 def imageGallery(request):
@@ -544,6 +745,8 @@ def imageGallery(request):
 
         return render(request, 'src/imageGallery.html', context)
 
+# On Home screen everyone can view it
+
 
 def imageGalleryUser(request):
     img1 = ImageGallery.objects.all()
@@ -555,6 +758,8 @@ def imageGalleryUser(request):
         'basefile': "src/base.html",
     }
     return render(request, 'src/imageGallery.html', context)
+
+# delte image
 
 
 def imageDelete(request, pk):
@@ -577,6 +782,8 @@ def imageDeleteUser(request, pk, us):
         im = ImageUpload.objects.get(id=pk).delete()
 
         return HttpResponseRedirect('/imageGallery/')
+
+# Registered user can only upload the images
 
 
 def imageUpload(request):
@@ -628,6 +835,8 @@ def imageUpload(request):
 
         return render(request, 'src/imageGallery.html', context)
 
+# Super admin can view and delete review
+
 
 def review(request):
     gateLogout()
@@ -649,6 +858,8 @@ def review(request):
         }
         return render(request, 'src/review.html', context)
 
+# On home screen every one can view feedback and who wrote it
+
 
 def reviewHome(request):
     gateLogout()
@@ -665,6 +876,8 @@ def reviewHome(request):
     }
     return render(request, 'src/review.html', context)
 
+# Super admin can delete review means make it None
+
 
 def deleteReview(request, pk):
     gateLogout()
@@ -680,9 +893,13 @@ def deleteReview(request, pk):
             print(e)
     return HttpResponseRedirect('/review')
 
+# home screen map
+
 
 def location(request):
     return render(request, 'src/location.html')
+
+# Super admin can edit gate admin's details
 
 
 def adminEdit(request, pk):
@@ -724,6 +941,8 @@ def adminEdit(request, pk):
 
         return render(request, 'src/adminEdit.html', context)
 
+# Delete gatadmin
+
 
 def adminDelete(request, pk):
     gateLogout()
@@ -758,7 +977,6 @@ def gateAdminLogin(request):
             user_admin_obj = Admin.objects.get(gate=gateId)
         except:
             user_admin_obj = None
-        # user_admin_obj = UserAdmin.objects.get(username=username)
         if user_admin_obj is None:
             error = "Gate ID you entered doesn't exist"
             return render(request, "src/adminLogin.html", {"error": error}, context)
@@ -768,11 +986,16 @@ def gateAdminLogin(request):
 
         gateLogin(gateId)
 
-        #messages.info(request, 'Your password has been changed successfully!')
         return HttpResponseRedirect('gateAdminDash/')
-        # return render(request,'src/superAdminDash.html')
 
     return render(request, "src/adminLogin.html", context)
+
+
+"""
+-Here gate admin can make on the spot pass of visitor
+-Before that if any user's time duration exceeds his/her aproved duration, 
+ it shows list of names of those guys 
+"""
 
 
 def gateAdminDash(request):
@@ -840,14 +1063,29 @@ def gateAdminDash(request):
             checkin = datetime.now()
             user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender,  gateId=visit_gate,
                                  checkin=checkin, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
+
             try:
                 user.save()
+                send_mail("Your Visitor Pass", "Your Visitor Pass has been Successfully Created\n"
+                          + " You can Show this Mail to Enter in the College\n\n"
+                          + "Name : {}\n".format(user.name)
+                          + "Gender : {}\n".format(user.gender)
+                          + "Date of Visit: {}\n".format(user.visitDate)
+                          + "Reason of Visit: {}\n".format(user.reason)
+                          + "Time validity: {} Hour\n".format(user.visiting_hour)
+                          + "Gate Number: {}\n".format(user.gateId),
+                          "visitormanage10@gmail.com",
+                            [user.mail],
+                            fail_silently=False
+                          )
                 return render(request, 'src/gateAdminDash.html', context)
             except Exception as e:
                 print(e)
                 return render(request, 'src/gateAdminDash.html', context)
 
         return render(request, 'src/gateAdminDash.html', context)
+
+# show list of names and overdue time
 
 
 def timeDue(request):
@@ -925,6 +1163,8 @@ def timeDue(request):
         }
         return render(request, 'src/timeDue.html', context)
 
+# shows the list of checkIn pending guys
+
 
 def makeCheckIn(request):
     logout()
@@ -932,7 +1172,7 @@ def makeCheckIn(request):
     if gate_id == -1:
         return render(request, 'src/loginError.html')
     else:
-        search = ' '
+        search = ''
         if request.method == "POST":
             search = request.POST.get('search')
 
@@ -949,14 +1189,10 @@ def makeCheckIn(request):
             return render(request, 'src/makeCheckIn.html', context)
         else:
             l = []
-            # print(search)
             user_obj = User.objects.all().filter(name__contains=search)
             for i in range(len(visitor_obj)):
                 for j in range(len(user_obj)):
-
                     if visitor_obj[i].userId == user_obj[j]:
-                        # x=visitor_obj[i].userId
-                        # l[i]=x
                         l.append(visitor_obj[i].userId)
             obj = 1
             context = {
@@ -966,6 +1202,8 @@ def makeCheckIn(request):
                 'len': len(visitor_obj),
             }
             return render(request, 'src/makeCheckIn.html', context)
+
+# mark as checkin
 
 
 def checkInVisitor(request, pk):
@@ -977,6 +1215,7 @@ def checkInVisitor(request, pk):
         print(pk)
         visitor_obj = Visitor.objects.get(
             id=pk, checkin=None, visitDate=datetime.now().date())
+        print(visitor_obj)
         visitor_obj.checkin = datetime.now()
         try:
             visitor_obj.save()
@@ -985,6 +1224,8 @@ def checkInVisitor(request, pk):
             print(e)
         return HttpResponseRedirect('/makeCheckIn/')
 
+# shows the list of checkOut pending guys, who are in the college
+
 
 def makeCheckOut(request):
     logout()
@@ -992,7 +1233,7 @@ def makeCheckOut(request):
     if gate_id == -1:
         return render(request, 'src/loginError.html')
     else:
-        search = ' '
+        search = ''
         if request.method == "POST":
             search = request.POST.get('search')
 
@@ -1033,6 +1274,8 @@ def makeCheckOut(request):
             }
             return render(request, 'src/makeCheckOut.html', context)
 
+# mark as checkout
+
 
 def checkOutVisitor(request, pk):
     logout()
@@ -1050,6 +1293,8 @@ def checkOutVisitor(request, pk):
         except Exception as e:
             print(e)
         return HttpResponseRedirect('/makeCheckOut/')
+
+# to checkout temporary on the spot visitors
 
 
 def checkOutTempVisitor(request, pk, type):
@@ -1069,6 +1314,8 @@ def checkOutTempVisitor(request, pk, type):
             print(e)
         return HttpResponseRedirect('/makeCheckOut/')
 
+# shows the list of visit done guys
+
 
 def checkOutDone(request):
     logout()
@@ -1076,7 +1323,7 @@ def checkOutDone(request):
     if gate_id == -1:
         return render(request, 'src/loginError.html')
     else:
-        search = ' '
+        search = ''
         if request.method == "POST":
             search = request.POST.get('search')
 
@@ -1084,7 +1331,7 @@ def checkOutDone(request):
         try:
             visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
                                                        gateId=gate_id).exclude(checkout=None)
-            print(visitor_obj)
+
         except:
             visitor_obj = None
         try:
@@ -1130,71 +1377,3 @@ def superAdminLogout(request):
     gateLogout()
     superLogout()
     return HttpResponseRedirect('/')
-
-
-def forgotPassword(request):
-    if request.method == 'POST':
-        mail = request.POST.get('mail')
-        uname = request.POST.get('username')
-
-        try:
-            user = User.objects.get(username=uname)
-
-            if mail == user.mail:
-                otp = random.randint(1000, 9999)
-                print(otp)
-                send_mail('Forgot Password', "OTP for Changing your password is {}".format(otp),
-                          "visitormanage10@gmail.com",
-                          [mail],  # "list of recpetenets",
-                          fail_silently=False
-                          )
-                supermail(mail, otp)
-                return HttpResponseRedirect('/forgotPassword/otpForgot')
-            else:
-                context = {
-                    'errors': "Email is Not registered"
-                }
-                return render(request, 'src/emailSendForgot.html', context)
-        except User.DoesNotExist:
-            context = {
-                'errors': "Username is Not registered"
-            }
-            return render(request, 'src/emailSendForgot.html', context)
-    return render(request, 'src/emailSendForgot.html')
-
-
-def otpForgot(request):
-
-    if request.method == 'POST':
-        otp = request.POST.get('otpConfirm')
-        print(otp_f)
-        if otp_f == int(otp):
-            return HttpResponseRedirect('/forgotPassword/setNewPassword')
-        else:
-            context = {
-                'errors': "Wrong OTP Entered!!!"
-            }
-            return render(request, 'src/otpForgot.html', context)
-
-    return render(request, 'src/otpForgot.html')
-
-
-def setNewPassword(request):
-
-    if request.method == 'POST':
-        passw = request.POST.get('password')
-        cpassw = request.POST.get('cpassword')
-
-        if passw == cpassw:
-            user = User.objects.get(mail=e_mail)
-            print(user.name)
-            user.password = passw
-            user.save()
-            return HttpResponseRedirect('/userLogin/')
-        else:
-            context = {
-                'errors': "Password Doesn't Match"
-            }
-            return render(request, 'src/setNewPassword.html', context)
-
-    return render(request, 'src/setNewPassword.html')

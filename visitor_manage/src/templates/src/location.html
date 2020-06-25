@@ -1,6 +1,6 @@
 {% extends "src/base.html" %} 
 {% block content %}
-
+<br><br>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {
@@ -26,14 +26,12 @@
         var ticketsData = response.getDataTable();
         var chart = new google.visualization.ColumnChart(
             document.getElementById('chart_div'));
-        chart.draw(ticketsData, {'isStacked': true, 'legend': 'bottom',
-            'vAxis': {'title': 'Number of tickets'}});
+        
 
         var geoData = google.visualization.arrayToDataTable([
-          ['Lat', 'Lon', 'Name', 'Food?'],
-          [51.5072, -0.1275, 'Cinematics London', true],
-          [48.8567, 2.3508, 'Cinematics Paris', true],
-          [55.7500, 37.6167, 'Cinematics Moscow', false]]);
+          ['Lat', 'Lon', 'Name'],
+          [23.0392, 72.5561, 'Ahmedabad University'],
+          [23.0373, 72.5522, 'School of engineering and applied science']]);
 
         var geoView = new google.visualization.DataView(geoData);
         geoView.setColumns([0, 1]);
@@ -64,16 +62,16 @@
 
     <table align="center">
       <tr valign="top">
-        <td style="width: 50%;">
-          <div id="map_div" style="width: 400px; height: 300;"></div>
-        </td>
-        <td style="width: 50%;">
-          <div id="table_div"></div>
+        <td style="width: 100%;">
+          <div id="map_div" style="width: 900px; height: 400;"></div><br>
         </td>
       </tr>
       <tr>
+        <td style="width: 10;">
+          <div id="table_div"></div>
+        </td>
         <td colSpan=2>
-          <div id="chart_div" style="align: center; width: 700px; height: 300px;"></div>
+          <div id="chart_div" style="width: 400px; height: 300px;"></div>
         </td>
       </tr>
     </table>

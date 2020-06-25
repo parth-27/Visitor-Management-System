@@ -1,11 +1,11 @@
 html,
 body {
-  background-image: url("https://images.edexlive.com/uploads/user/imagelibrary/2018/7/16/original/ahmedabad_university.jpg");
+  background-image: url(error404.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
   font-family: "Numans", sans-serif;
-  overflow-y: hidden;
+
 }
 
 .container {

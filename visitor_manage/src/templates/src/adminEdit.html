@@ -1,6 +1,6 @@
 {% extends 'src/superAdminBasefile.html' %} {% block content %}
 
-<div class="d-flex justify-content-center h-100">
+<div class="d-flex justify-content-center">
   <div class="card">
     <div class="card-header">
       <h3>Edit Gate Admin</h3>
@@ -10,7 +10,10 @@
         {% csrf_token %}
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <span class="input-group-text">
+              <img
+                src="https://img.icons8.com/ios-glyphs/2x/keypad.png"
+                width="30" /><i class="fas fa-user"></i></span>
           </div>
           <input
             type="number"
@@ -25,7 +28,11 @@
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <span class="input-group-text">
+              <img
+                src="https://img.icons8.com/ios-glyphs/2x/employee-card.png"
+                width="30" />
+                <i class="fas fa-user"></i></span>
           </div>
           <input
             type="text"
@@ -42,7 +49,11 @@
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <span class="input-group-text">
+              <img
+                src="https://img.icons8.com/ios-glyphs/2x/email.png"
+                width="30" />
+                <i class="fas fa-user"></i></span>
           </div>
           <input
             type="email"
@@ -59,7 +70,11 @@
         <small style="color: white;">{{errors}}</small>
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <span class="input-group-text">
+              <img
+                src="https://img.icons8.com/ios-glyphs/2x/contact-card.png"
+                width="30" />
+                <i class="fas fa-user"></i></span>
           </div>
           <input
             type="numer"
@@ -75,9 +90,14 @@
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <span class="input-group-text">
+              <i class="fas fa-user">
+                <img
+                  src="https://img.icons8.com/ios-glyphs/2x/gender.png"
+                  width="26" />
+              </i></span>
           </div>
-          <label class="custom-control-label" for="gender">Gender:</label><br />
+          <!-- <label class="custom-control-label" for="gender">Gender:</label><br /> -->
           <select
             class="form-control"
             id="gender"

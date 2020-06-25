@@ -15,7 +15,7 @@ body {
 }
 
 .card {
-  max-height: 370;
+  max-height: 600;
   overflow: auto;
   margin-top: auto;
   margin-bottom: auto;
