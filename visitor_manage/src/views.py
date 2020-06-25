@@ -74,7 +74,7 @@ def index(request):
     year = now.year
     print(year)
 
-    return render(request, 'src/index.html')
+    return render(request, 'src/frontPage.html')
 
 
 def userLogin(request):
