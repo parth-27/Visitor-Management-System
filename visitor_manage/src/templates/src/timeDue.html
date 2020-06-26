@@ -5,11 +5,15 @@
 <div class="card">
     <div class="card-body">
 {% if obj == 1 %}
-    {% for n in name%}
+    {% for n in namephone%}
         {% for t in time %}
             {% if forloop.counter == forloop.parentloop.counter %}
-                Name :{{n}}<br>
-                Due Time::{{t}} Hours<br><br>
+                Name :
+                {% for x in n %}
+                    {{x}}<br>
+                {% endfor %}
+                Due Time::{{t}} Hours<br>
+                 <br>
             {% endif %}
         {% endfor %}
     {% endfor %}   

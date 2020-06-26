@@ -426,22 +426,21 @@ def gatepass(request):
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        gateid = Admin.objects.all()  # To fetch available gates
+     
         user_admin_obj = User.objects.get(id=userid)
         context = {
-            'gateid': gateid,
             'user_admin_obj': user_admin_obj,
         }
         if request.method == 'POST':
-            gateId = request.POST.get('gateId')
+            
             userId = userid
             visitDate = request.POST.get('visitDate')
             visiting_hour = request.POST.get('visiting_hour')
             reason = request.POST.get('reason')
-            visit_gate = Admin.objects.get(gate=gateId)
+            #visit_gate = Admin.objects.get(gate=gateId)
             user_id = User.objects.get(id=userId)
 
-            visitor = Visitor(gateId=visit_gate, userId=user_id,
+            visitor = Visitor( userId=user_id,
                               visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
             try:
                 visitor.save()
@@ -460,7 +459,7 @@ def gatepass(request):
                           + "Date of Visit: {}\n".format(visitor.visitDate)
                           + "Reason of Visit: {}\n".format(visitor.reason)
                           + "Time validity: {} Hour\n".format(visitor.visiting_hour)
-                          + "Gate Number: {}\n".format(visitor.gateId),
+                          ,
                           EMAIL_HOST_USER,
                           [user_admin_obj.mail],
                           fail_silently=False
@@ -1010,12 +1009,18 @@ def gateAdminDash(request):
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
                                                            checkout=None, gateId=gate_id).exclude(checkin=None)
 
+        print(len(visitor_obj))
         l = []
         for i in range(len(visitor_obj)):
             if visitor_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = now-visitor_obj[i].checkin
-                hour = float(diff.total_seconds()/3600)
+                if(now<visitor_obj[i].checkin):
+                    diff = visitor_obj[i].checkin - now
+                    hour =5.5- float(diff.total_seconds()/3600)
+                else:
+                    diff=now-visitor_obj[i].checkin
+                    hour=float(diff.total_seconds()/3600)
+                  
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
                         user_obj = (visitor_obj[i].userId)
@@ -1031,8 +1036,13 @@ def gateAdminDash(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = now - temp_user_obj[i].checkin
-                hour = float(diff.total_seconds()/3600)
+                if(now<temp_user_obj[i].checkin):
+                    diff = temp_user_obj[i].checkin - now
+                    hour =5.5- float(diff.total_seconds()/3600)
+                else:
+                    diff=now-temp_user_obj[i].checkin
+                    hour=float(diff.total_seconds()/3600)
+                  
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         #user_obj= (visitor_obj[i].userId)
@@ -1101,69 +1111,86 @@ def timeDue(request):
                                                    checkout=None, gateId=gate_id).exclude(checkin=None)
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
                                                            checkout=None, gateId=gate_id).exclude(checkin=None)
-        # print(visitor_obj)
+        print(len(visitor_obj))
         l = []
         timeDue = []
+        contact=[]
         for i in range(len(visitor_obj)):
 
             if visitor_obj[i].visiting_hour != "More Than 3":
-                print(visitor_obj[i].visiting_hour)
+                namePhone=[]
                 now = datetime.utcnow().replace(tzinfo=utc)
-                print(now)
-                diff = now - visitor_obj[i].checkin  # - now
-                print(visitor_obj[i].checkin)
-                hour = float(diff.total_seconds()/3600)
-                print(hour)
+                if(now<visitor_obj[i].checkin):
+                    diff = visitor_obj[i].checkin - now
+                    hour =5.5- float(diff.total_seconds()/3600)
+                else:
+                    diff=now-visitor_obj[i].checkin
+                    hour=float(diff.total_seconds()/3600)
+
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
                         obj = 1
                         user_obj = (visitor_obj[i].userId)
-                        l.append(user_obj.name)
-
+                        namePhone.append(user_obj.name)
+                        namePhone.append(user_obj.contact)
                         timeDue.append(format(hour-1, '.2f'))
+                        l.append(namePhone)
                 if visitor_obj[i].visiting_hour == "2":
                     if hour > 2:
                         obj = 1
                         user_obj = (visitor_obj[i].userId)
-                        l.append(user_obj.name)
+                        namePhone.append(user_obj.name)
+                        namePhone.append(user_obj.contact)
                         timeDue.append(format(hour-2, '.2f'))
+                        l.append(namePhone)
                 if visitor_obj[i].visiting_hour == "3":
                     if hour > 3:
                         obj = 1
                         user_obj = (visitor_obj[i].userId)
-                        l.append(user_obj.name)
+                        namePhone.append(user_obj.name)
+                        namePhone.append(user_obj.contact)
                         timeDue.append(format(hour-3, '.2f'))
+                        l.append(namePhone)
 
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
+                namePhone=[]
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = now - temp_user_obj[i].checkin  # - now
-                # print(visitor_obj[i].checkin)
-                hour = float(diff.total_seconds()/3600)
+                if(now<temp_user_obj[i].checkin):
+                    diff = temp_user_obj[i].checkin - now
+                    hour =5.5- float(diff.total_seconds()/3600)
+                else:
+                    diff=now-temp_user_obj[i].checkin
+                    hour=float(diff.total_seconds()/3600)
+                  
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         obj = 1
-                        #user_obj= (visitor_obj[i].userId)
-                        l.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].contact)
+                        l.append(namePhone)
                         timeDue.append(format(hour-1, '.2f'))
                 if temp_user_obj[i].visiting_hour == "2":
                     if hour > 2:
                         obj = 1
-                       # user_obj=  (visitor_obj[i].userId)
-                        l.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].contact)
+                        l.append(namePhone)
                         timeDue.append(format(hour-2, '.2f'))
                 if temp_user_obj[i].visiting_hour == "3":
                     if hour > 3:
                         obj = 1
-                        #user_obj=  (visitor_obj[i].userId)
-                        l.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].name)
+                        namePhone.append(temp_user_obj[i].contact)
+                        l.append(namePhone)
                         timeDue.append(format(hour-3, '.2f'))
 
         # print(l)
         context = {
-            'name': l,
+            'namephone': l,
             'time': timeDue,
             'obj': obj,
+    
         }
         return render(request, 'src/timeDue.html', context)
 
@@ -1182,7 +1209,7 @@ def makeCheckIn(request):
 
         try:
             visitor_obj = Visitor.objects.all().filter(
-                checkin=None, gateId=gate_id, visitDate=datetime.now().date())
+                checkin=None, visitDate=datetime.now().date())
         except:
             visitor_obj = None
         obj = -1
@@ -1221,6 +1248,8 @@ def checkInVisitor(request, pk):
             id=pk, checkin=None, visitDate=datetime.now().date())
         print(visitor_obj)
         visitor_obj.checkin = datetime.now()
+        visit_gate = Admin.objects.get(gate=gate_id)
+        visitor_obj.gateId=visit_gate
         try:
             visitor_obj.save()
 

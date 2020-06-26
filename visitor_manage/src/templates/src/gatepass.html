@@ -104,23 +104,7 @@
             <div class="card-body">
               <form method="POST">
                 {% csrf_token %}
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user">
-                      <img src="https://img.icons8.com/ios-filled/2x/front-gate-closed.png" width="30">
-                    </i></span>
-                  </div>
-                  <br>
-                  <select class="form-control" id="gateId" name="gateId">
-        
-                    {% for gate in gateid %}
-                    <option>{{gate.gate}}</option>
-                    {% endfor %}
-                    
-                  </select>
-                  <br>
-                </div>
-        
+                
                 
                 <div class="input-group form-group">
                   <div class="input-group-prepend">

@@ -1,11 +1,6 @@
 from django.db import models
 
 # Create your models here.
-GENDER = [
-    ('male', 'Male'),
-    ('female', 'Female'),
-    ('other', 'Other'),
-]
 
 
 class SuperAdmin(models.Model):
@@ -45,7 +40,7 @@ class User(models.Model):
 
 
 class Visitor(models.Model):
-    gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
+    gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT, null=True)
     userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
     checkin = models.DateTimeField(null=True)
