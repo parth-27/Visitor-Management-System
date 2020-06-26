@@ -20,13 +20,14 @@ from datetime import datetime, timedelta, timezone
 import json
 from django.core.files.storage import FileSystemStorage
 import random
-
+from django.conf import settings
 
 userid = -1
 gate_id = -1
 superAdminId = -1
 e_mail = ""
 otp_f = 0
+EMAIL_HOST_USER = settings.EMAIL_HOST_USER
 
 # mail Id change
 
@@ -235,7 +236,7 @@ def forgotPassword(request):
                 otp = random.randint(1000, 9999)
                 print(otp)
                 send_mail('Forgot Password', "OTP for Changing your password is {}".format(otp),
-                          "visitormanage10@gmail.com",
+                          EMAIL_HOST_USER,
                           [mail],  # "list of recpetenets",
                           fail_silently=False
                           )
@@ -332,7 +333,7 @@ def userRegister(request):
             # Create an OTP and send on given email
             otp = random.randint(1000, 9999)
             send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
-                      "visitormanage10@gmail.com",
+                      EMAIL_HOST_USER,
                       [mail],
                       fail_silently=False
                       )
@@ -460,7 +461,7 @@ def gatepass(request):
                           + "Reason of Visit: {}\n".format(visitor.reason)
                           + "Time validity: {} Hour\n".format(visitor.visiting_hour)
                           + "Gate Number: {}\n".format(visitor.gateId),
-                          "visitormanage10@gmail.com",
+                          EMAIL_HOST_USER,
                           [user_admin_obj.mail],
                           fail_silently=False
                           )
@@ -1013,7 +1014,7 @@ def gateAdminDash(request):
         for i in range(len(visitor_obj)):
             if visitor_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff = now-visitor_obj[i].checkin 
+                diff = now-visitor_obj[i].checkin
                 hour = float(diff.total_seconds()/3600)
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
@@ -1030,7 +1031,7 @@ def gateAdminDash(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff =now- temp_user_obj[i].checkin
+                diff = now - temp_user_obj[i].checkin
                 hour = float(diff.total_seconds()/3600)
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
@@ -1044,7 +1045,7 @@ def gateAdminDash(request):
                     if hour > 3:
                         #user_obj=  (visitor_obj[i].userId)
                         l.append(temp_user_obj[i].name)
-        #print(l)
+        # print(l)
 
         dueList = json.dumps(l)
         context = {
@@ -1075,7 +1076,7 @@ def gateAdminDash(request):
                           + "Reason of Visit: {}\n".format(user.reason)
                           + "Time validity: {} Hour\n".format(user.visiting_hour)
                           + "Gate Number: {}\n".format(user.gateId),
-                          "visitormanage10@gmail.com",
+                          EMAIL_HOST_USER,
                             [user.mail],
                             fail_silently=False
                           )
@@ -1100,7 +1101,7 @@ def timeDue(request):
                                                    checkout=None, gateId=gate_id).exclude(checkin=None)
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
                                                            checkout=None, gateId=gate_id).exclude(checkin=None)
-        #print(visitor_obj)
+        # print(visitor_obj)
         l = []
         timeDue = []
         for i in range(len(visitor_obj)):
@@ -1109,9 +1110,9 @@ def timeDue(request):
                 print(visitor_obj[i].visiting_hour)
                 now = datetime.utcnow().replace(tzinfo=utc)
                 print(now)
-                diff =now- visitor_obj[i].checkin #- now
+                diff = now - visitor_obj[i].checkin  # - now
                 print(visitor_obj[i].checkin)
-                hour =float(diff.total_seconds()/3600)
+                hour = float(diff.total_seconds()/3600)
                 print(hour)
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
@@ -1136,7 +1137,7 @@ def timeDue(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                diff =now- temp_user_obj[i].checkin# - now
+                diff = now - temp_user_obj[i].checkin  # - now
                 # print(visitor_obj[i].checkin)
                 hour = float(diff.total_seconds()/3600)
                 if temp_user_obj[i].visiting_hour == "1":
