@@ -23,7 +23,7 @@
 
 ---
 
-Vistior Management System, also known as <strong>VMS</strong>, is a System to guide visitor who are visiting the college.
+Vistior Management System, also known as <strong>VMS</strong>, is a System to guide visitors who are visiting the college.
 This System helps to track the number of visitors who come to your place.
 
 ## Technology Stack
