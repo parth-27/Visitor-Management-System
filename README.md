@@ -47,6 +47,10 @@ This System helps to track the number of visitors who come to your place.
 
 - If you are not going to use Sqlite3 Database, change the DATABASES variable in settings.py file accordingly. You can Refer to [Django documentation](https://docs.djangoproject.com/en/3.0/ref/databases/)
 
+- Please Don't forgot to add the <strong> Email </strong> and <strong>Password </strong> in <strong> settings </strong> file from which you want to send confirmation mail or visitor pass mail. Path to the settings file is <strong> visitor_manage/visitor_manage/settings.py </strong>
+
+- Also add your own API key in the location.html file and path to the file is <strong>visitor_manage/src/templates/src/location.html </strong>
+
 - Make Initial Migrations
 
   ```
