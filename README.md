@@ -63,6 +63,8 @@ This System helps to track the number of visitors who come to your place.
   python3 manage.py runserver
   ```
 
+- Name and Password both for the SuperAdmin of the website is <strong>bunny_rabbit</strong>
+
 ## Contributors
 
 ---
