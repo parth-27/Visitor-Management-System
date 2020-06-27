@@ -41,33 +41,36 @@
             <h2 style="justify-content: center;">Todays Visitors</h2>
             {% if obj == 1 %}
             {% for visitor in visitor_obj %}
-            {% for user in x %}
-            {% if forloop.counter == forloop.parentloop.counter %}
-            Name:{{user.name}}<br>
-            Reason of visit: {{visitor.reason}}<br />
-            Time validity: {{visitor.visiting_hour}} Hour<br />
-            CheckIn Time:{{visitor.checkin}}<br>
-            CheckOut Time:{{visitor.checkout}}<br>
-            Gate Id:{{visitor.gateId}}<br>
-            <img src="{{ user.photo.url }}" width="100" height="100" /><br>
-            <hr>
-            {% endif %}
-            {% endfor %}
+                {% for user in x %}
+                    {% if forloop.counter == forloop.parentloop.counter %}
+                        Name:{{user.name}}<br>
+                        Reason of visit: {{visitor.reason}}<br />
+                        Time validity: {{visitor.visiting_hour}} Hour<br />
+                        CheckIn Time:{{visitor.checkin}}<br>
+                        CheckOut Time:{{visitor.checkout}}<br>
+
+                        CheckIn gate:{{visitor.gateId1}}<br>
+                        CheckOut gate:{{visitor.gateId2}}<br>
+                        <img src="{{ user.photo.url }}" width="100" height="100" /><br>
+                        <hr>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
 
-            {% for tp in temp_user_obj %}
-            Name:{{tp.name}}<br>
-            Reason of visit: {{tp.reason}}<br />
-            Time validity: {{tp.visiting_hour}}<br />
-            CheckIn Time:{{tp.checkin}}<br>
-            CheckOut Time:{{tp.checkout}}<br>
-            Gate Id:{{tp.gateId}}<br>
-            <img src="{{tp.photo.url }}" width="100" height="100"/><br>
+                {% for tp in temp_user_obj %}
+                    Name:{{tp.name}}<br>
+                    Reason of visit: {{tp.reason}}<br />
+                    Time validity: {{tp.visiting_hour}}<br />
+                    CheckIn Time:{{tp.checkin}}<br>
+                    CheckOut Time:{{tp.checkout}}<br>
+                    CheckIn gate:{{tp.gateId1}}<br>
+                    CheckOut gate:{{tp.gateId2}}<br>
+                    <img src="{{tp.photo.url }}" width="100" height="100"/><br>
 
-            <hr>
-            {% endfor %}
+                    <hr>
+                {% endfor %}
             {% else %}
-            No vistor today....
+                No vistor today....
             {% endif %}
         </div>
     </div>

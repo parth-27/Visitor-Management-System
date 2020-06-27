@@ -168,9 +168,30 @@ def userLogin(request):
                 return render(request, 'src/userDash.html', context)
             else:                                                           # GatePass found
                 obj = 1
+                timeDue=''
+                vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None),userId=user_admin_obj)
+                if vs.visiting_hour != "More Than 3":
+                    now = datetime.utcnow().replace(tzinfo=utc)
+                    if(now<vs.checkin):
+                        diff = vs.checkin - now
+                        hour =5.5- float(diff.total_seconds()/3600)
+                    else:
+                        diff=now-vs.checkin
+                        hour=float(diff.total_seconds()/3600)
+
+                    if vs.visiting_hour == "1":
+                        if hour > 1:
+                            timeDue ='Your granted time expired. You are dued by '+format(hour-1, '.2f')+' hours.'
+                    elif vs.visiting_hour == "2":
+                        if hour > 2:
+                            timeDue ='Your granted time expired. You are dued by '+format(hour-2, '.2f')+' hours.'
+                    else:
+                        if hour > 3:
+                            timeDue ='Your granted time expired. You are dued by '+format(hour-3, '.2f')+' hours.'
                 context = {
                     'username': username,
                     'obj': obj,
+                    'timeDue': timeDue,
                     'visiter_obj': visitor_obj[0],
                     'user_admin_obj': user_admin_obj,
                 }
@@ -893,7 +914,8 @@ def deleteReview(request, pk):
             print(e)
     return HttpResponseRedirect('/review')
 
-# home screen map
+
+# home screen map, location of AU and SEAS , but you have to use your API to see the map
 
 
 def location(request):
@@ -1005,9 +1027,9 @@ def gateAdminDash(request):
         return render(request, 'src/loginError.html')
     else:
         visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                   checkout=None, gateId=gate_id).exclude(checkin=None)
+                                                   checkout=None, gateId1=gate_id).exclude(checkin=None)
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
-                                                           checkout=None, gateId=gate_id).exclude(checkin=None)
+                                                           checkout=None, gateId1=gate_id).exclude(checkin=None)
 
         print(len(visitor_obj))
         l = []
@@ -1067,13 +1089,13 @@ def gateAdminDash(request):
             contact = request.POST.get('contact')
             gender = request.POST.get('gender')
             #photo = request.POST.get('photo')
-            gateId = gate_id
-            visit_gate = Admin.objects.get(gate=gateId)
+            gateId1 = gate_id
+            #visit_gate = Admin.objects.get(gate=gateId1)
             visitDate = datetime.now().date()
             visiting_hour = request.POST.get('visiting_hour')
             reason = request.POST.get('reason')
             checkin = datetime.now()
-            user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender,  gateId=visit_gate,
+            user = TemporaryUser(name=name, mail=mail, contact=contact, gender=gender,  gateId1=gateId1,
                                  checkin=checkin, visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
 
             try:
@@ -1085,7 +1107,7 @@ def gateAdminDash(request):
                           + "Date of Visit: {}\n".format(user.visitDate)
                           + "Reason of Visit: {}\n".format(user.reason)
                           + "Time validity: {} Hour\n".format(user.visiting_hour)
-                          + "Gate Number: {}\n".format(user.gateId),
+                          + "Entry Gate Number: {}\n".format(user.gateId1),
                           EMAIL_HOST_USER,
                             [user.mail],
                             fail_silently=False
@@ -1108,15 +1130,15 @@ def timeDue(request):
     else:
         obj = -1
         visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                   checkout=None, gateId=gate_id).exclude(checkin=None)
+                                                   checkout=None, gateId1=gate_id).exclude(checkin=None)
         temp_user_obj = TemporaryUser.objects.all().filter(visitDate=datetime.now().date(),
-                                                           checkout=None, gateId=gate_id).exclude(checkin=None)
+                                                           checkout=None, gateId1=gate_id).exclude(checkin=None)
         print(len(visitor_obj))
         l = []
         timeDue = []
         contact=[]
         for i in range(len(visitor_obj)):
-
+            print(visitor_obj[i].checkin)
             if visitor_obj[i].visiting_hour != "More Than 3":
                 namePhone=[]
                 now = datetime.utcnow().replace(tzinfo=utc)
@@ -1248,8 +1270,8 @@ def checkInVisitor(request, pk):
             id=pk, checkin=None, visitDate=datetime.now().date())
         print(visitor_obj)
         visitor_obj.checkin = datetime.now()
-        visit_gate = Admin.objects.get(gate=gate_id)
-        visitor_obj.gateId=visit_gate
+        #visit_gate = Admin.objects.get(gate=gate_id)
+        visitor_obj.gateId1=gate_id
         try:
             visitor_obj.save()
 
@@ -1272,14 +1294,14 @@ def makeCheckOut(request):
 
         obj = -1
         try:
-            visitor_obj = Visitor.objects.all().filter(checkout=None, gateId=gate_id,
+            visitor_obj = Visitor.objects.all().filter(checkout=None,
                                                        visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             visitor_obj = None
 
         try:
             temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search, checkout=None,
-                                                               gateId=gate_id, visitDate=datetime.now().date()).exclude(checkin=None)
+                                                                visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
@@ -1320,6 +1342,7 @@ def checkOutVisitor(request, pk):
         visitor_obj = Visitor.objects.get(
             id=pk, checkout=None, visitDate=datetime.now().date())
         visitor_obj.checkout = datetime.now()
+        visitor_obj.gateId2=gate_id
         try:
             visitor_obj.save()
 
@@ -1340,6 +1363,7 @@ def checkOutTempVisitor(request, pk, type):
         tp_obj = TemporaryUser.objects.get(
             id=pk, checkout=None, visitDate=datetime.now().date())
         tp_obj.checkout = datetime.now()
+        tp_obj.gateId2= gate_id
         try:
             tp_obj.save()
 
@@ -1363,13 +1387,13 @@ def checkOutDone(request):
         obj = -1
         try:
             visitor_obj = Visitor.objects.all().filter(visitDate=datetime.now().date(),
-                                                       gateId=gate_id).exclude(checkout=None)
+                                                       gateId2=gate_id).exclude(checkout=None)
 
         except:
             visitor_obj = None
         try:
             temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search,
-                                                               gateId=gate_id, visitDate=datetime.now().date()).exclude(checkout=None)
+                                                               gateId2=gate_id, visitDate=datetime.now().date()).exclude(checkout=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
