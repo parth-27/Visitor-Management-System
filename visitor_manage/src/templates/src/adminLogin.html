@@ -30,7 +30,20 @@
             />
           {% endifequal %}
         </div>
-        <small style="color:white">{{error}}</small>
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success'%}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'info' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'warning' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'error' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        <!-- <small style="color:white">{{error}}</small> -->
         <div class="input-group form-group">
           <div class="input-group-prepend">
             <span class="input-group-text"
@@ -47,7 +60,7 @@
             name="password"
           />
         </div>
-        <small style="color:white">{{errors}}</small>
+        <!-- <small style="color:white">{{errors}}</small> -->
         <div class="form-group">
           <input
             type="submit"
