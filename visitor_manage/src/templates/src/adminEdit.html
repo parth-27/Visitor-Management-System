@@ -1,5 +1,5 @@
 {% extends 'src/superAdminBasefile.html' %} {% block content %}
-
+{%load static%}
 <div class="d-flex justify-content-center">
   <div class="card">
     <div class="card-header">
@@ -67,7 +67,20 @@
             required
           />
         </div>
-        <small style="color: white;">{{errors}}</small>
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success'%}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'info' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'warning' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'error' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        
         <div class="input-group form-group">
           <div class="input-group-prepend">
             <span class="input-group-text">

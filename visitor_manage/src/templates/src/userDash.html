@@ -2,6 +2,9 @@
 
 <head>
   {% load static %}
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/toastr.css' %}" media="all">
+  <script type="text/javascript" src="{% static 'js/toastr.min.js' %}"></script>
   <link rel="stylesheet" href="{% static '/css/adminDelete.css' %}" />
   <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
   <link rel="stylesheet" href="{% static '/css/userDash.css' %}" />
@@ -26,7 +29,7 @@
         <div class="media-body">
           <h4 class="m-0" style="color: white;">{{username}}</h4>
           <p class="font-weight-light text-muted mb-0">
-            <h6 style="color: white;">School of Engineering and Applied Science</h6>
+          <h6 style="color: white;">School of Engineering and Applied Science</h6>
           </p>
         </div>
       </div>
@@ -63,7 +66,7 @@
           </i>
           Logout
         </a>
-        
+
       </li>
 
 
@@ -76,11 +79,25 @@
         <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
       </i>
     </button>
-    <h3 >{{timeDue}}<br></h3>
+    <h3>{{timeDue}}<br></h3>
     <div class="container">
       <div class="d-flex justify-content-center">
         {% if obj == 1 %}
-             
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success'%}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'info' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'warning' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% elif message.tags == 'error' %}
+        <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-center">
@@ -105,7 +122,7 @@
               <button style="background-color: white;">
                 <a href="/gatepassDelete/{{visiter_obj.pk}}">Delete
                   <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-              </button>               
+              </button>
             </div>
             <hr>
             <hr>

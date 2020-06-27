@@ -1,243 +1,155 @@
 <html>
-  <head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static '/css/Registerform.css' %}" />
-    <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    {% include "src/navbar.html" %}
 
-    <div class="page-content p-5" id="content">
-      <button id="sidebarCollapse" type="button">
-        <i class="fa fa-bars mr-2">
-          <img
-            src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png"
-            width="30"
-            height="30"
-          />
-        </i>
-      </button>
-      <div class="container">
-        <div class="d-flex justify-content-center">
-          <div class="card">
-            <div class="card-header">
-              <h3>Sign Up</h3>
-            </div>
-            <div class="card-body">
-              <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <small style="color: white;">{{errors}}</small>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/name.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Name"
-                    id="name"
-                    name="name"
-                    minlength="2"
-                    maxlength="100"
-                    required
-                  />
-                </div>
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static '/css/Registerform.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/nav.css' %}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
 
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/user-male.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Username"
-                    id="username"
-                    name="username"
-                    minlength="2"
-                    maxlength="50"
-                    autocomplete="off"
-                    required
-                  />
-                </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-key"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/password1.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-                    name="password"
-                    minlength="4"
-                    maxlength="20"
-                    required
-                  />
-                </div>
+<body>
+  {% include "src/navbar.html" %}
 
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-key"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/password1.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Confirm Password"
-                    name="cpassword"
-                    minlength="4"
-                    maxlength="20"
-                    required
-                  />
-                </div>
+  <div class="page-content p-5" id="content">
+    <button id="sidebarCollapse" type="button">
+      <i class="fa fa-bars mr-2">
+        <img src="https://img.icons8.com/ios-glyphs/2x/sorting-options.png" width="30" height="30" />
+      </i>
+    </button>
+    <div class="container">
+      <div class="d-flex justify-content-center">
+        <div class="card">
+          <div class="card-header">
+            <h3>Sign Up</h3>
+          </div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% if messages %}
+              {% for message in messages %}
+              {% if message.tags == 'success'%}
+              <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% elif message.tags == 'info' %}
+              <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% elif message.tags == 'warning' %}
+              <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% elif message.tags == 'error' %}
+              <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
 
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/email.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="email"
-                    class="form-control"
-                    placeholder="Mail Id"
-                    id="mail"
-                    name="mail"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                    maxlenght="320"
-                    required
-                  />
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/name.png" width="30" /></i></span>
                 </div>
+                <input type="text" class="form-control" placeholder="Name" id="name" name="name" minlength="2"
+                  maxlength="100" required />
+              </div>
 
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/contact-card.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="numer"
-                    class="form-control"
-                    placeholder="Contact Number"
-                    id="contact"
-                    name="contact"
-                    pattern="[0-9]{10}"
-                    required
-                  />
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/user-male.png" width="30" /></i></span>
                 </div>
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/gender.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <!-- <label class="custom-control-label" for="gender"
+                <input type="text" class="form-control" placeholder="Username" id="username" name="username"
+                  minlength="2" maxlength="50" autocomplete="off" required />
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/password1.png" width="30" /></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Password" name="password" minlength="4"
+                  maxlength="20" required />
+              </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-key"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/password1.png" width="30" /></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Confirm Password" name="cpassword"
+                  minlength="4" maxlength="20" required />
+              </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/email.png" width="30" /></i></span>
+                </div>
+                <input type="email" class="form-control" placeholder="Mail Id" id="mail" name="mail"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" maxlenght="320" required />
+              </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/contact-card.png" width="30" /></i></span>
+                </div>
+                <input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact"
+                  pattern="[0-9]{10}" required />
+              </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/gender.png" width="30" /></i></span>
+                </div>
+                <!-- <label class="custom-control-label" for="gender"
                     >Gender:</label
                   ><br /> -->
-                  <select class="form-control" id="gender" name="gender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="file"
-                    class="form-control"
-                    placeholder="photo"
-                    id="photo"
-                    name="photo"
-                    required
-                  />
-                </div>
-
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    value="SignUp"
-                    class="btn float-right login_btn"
-                    id="lg_bt"
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="card-footer">
-              <div class="d-flex justify-content-center links">
-                Already Have an Account?<a href="/userLogin/">Sign In</a>
+                <select class="form-control" id="gender" name="gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
+
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-user"><img
+                        src="https://img.icons8.com/ios-glyphs/2x/contract-job.png" width="30" /></i></span>
+                </div>
+                <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+              </div>
+
+              <div class="form-group">
+                <input type="submit" value="SignUp" class="btn float-right login_btn" id="lg_bt" />
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-center links">
+              Already Have an Account?<a href="/userLogin/">Sign In</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <script>
-      $(function () {
-        // Sidebar toggle behavior
-        $("#sidebarCollapse").on("click", function () {
-          $("#sidebar, #content").toggleClass("active");
-        });
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <script>
+    $(function () {
+      // Sidebar toggle behavior
+      $("#sidebarCollapse").on("click", function () {
+        $("#sidebar, #content").toggleClass("active");
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

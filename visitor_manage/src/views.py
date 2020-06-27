@@ -15,6 +15,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils.dateparse import parse_date
 from django.core.serializers.json import DjangoJSONEncoder
+import django.contrib.messages
 import datetime
 from datetime import datetime, timedelta, timezone
 import json
@@ -129,14 +130,17 @@ def userLogin(request):
 
         if user_admin_obj is None:
             error = "*Username you entered doesn't exist"
+            messages.error(request, "Entered Username Doesn't Exist!!")
             # Username not found and render the same page
             return render(request, "src/userLogin.html", {"error": error})
         elif not user_admin_obj.password == password:
             errors = "*Invalid password"
+            messages.error(request, "Wrong Password")
             # Given Username and password Field doesn't match with any data
             return render(request, "src/userLogin.html", {"errors": errors})
             # render the same page
 
+        messages.success(request, "Successfully Login into the system")
         # Else user successfully loggedIn. Make Id as per one's Id
         login(user_admin_obj.id)
         try:
@@ -168,26 +172,30 @@ def userLogin(request):
                 return render(request, 'src/userDash.html', context)
             else:                                                           # GatePass found
                 obj = 1
-                timeDue=''
-                vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None),userId=user_admin_obj)
+                timeDue = ''
+                vs = Visitor.objects.get(~Q(checkin=None) & Q(
+                    checkout=None), userId=user_admin_obj)
                 if vs.visiting_hour != "More Than 3":
                     now = datetime.utcnow().replace(tzinfo=utc)
-                    if(now<vs.checkin):
+                    if(now < vs.checkin):
                         diff = vs.checkin - now
-                        hour =5.5- float(diff.total_seconds()/3600)
+                        hour = 5.5 - float(diff.total_seconds()/3600)
                     else:
-                        diff=now-vs.checkin
-                        hour=float(diff.total_seconds()/3600)
+                        diff = now-vs.checkin
+                        hour = float(diff.total_seconds()/3600)
 
                     if vs.visiting_hour == "1":
                         if hour > 1:
-                            timeDue ='Your granted time expired. You are dued by '+format(hour-1, '.2f')+' hours.'
+                            timeDue = 'Your granted time expired. You are dued by ' + \
+                                format(hour-1, '.2f')+' hours.'
                     elif vs.visiting_hour == "2":
                         if hour > 2:
-                            timeDue ='Your granted time expired. You are dued by '+format(hour-2, '.2f')+' hours.'
+                            timeDue = 'Your granted time expired. You are dued by ' + \
+                                format(hour-2, '.2f')+' hours.'
                     else:
                         if hour > 3:
-                            timeDue ='Your granted time expired. You are dued by '+format(hour-3, '.2f')+' hours.'
+                            timeDue = 'Your granted time expired. You are dued by ' + \
+                                format(hour-3, '.2f')+' hours.'
                 context = {
                     'username': username,
                     'obj': obj,
@@ -262,16 +270,20 @@ def forgotPassword(request):
                           fail_silently=False
                           )
                 supermail(mail, otp)
+                messages.info(
+                    request, "OTP has been send to your Registered Email ID")
                 return HttpResponseRedirect('/forgotPassword/otpForgot')
             else:
                 context = {
                     'errors': "Email is Not registered"
                 }
+                messages.error(request, "Email is Not Registered")
                 return render(request, 'src/emailSendForgot.html', context)
         except User.DoesNotExist:
             context = {
                 'errors': "Username is Not registered"
             }
+            messages.error(request, "Username is Not Registered")
             return render(request, 'src/emailSendForgot.html', context)
     return render(request, 'src/emailSendForgot.html')
 
@@ -293,6 +305,7 @@ def otpForgot(request):
             context = {
                 'errors': "Wrong OTP Entered!!!"
             }
+            messages.error(request, "OTP is not Correct")
             return render(request, 'src/otpForgot.html', context)
 
     return render(request, 'src/otpForgot.html')
@@ -309,13 +322,14 @@ def setNewPassword(request):
             print(user.name)
             user.password = passw
             user.save()
+            messages.success(request, "Your Password is updated")
             return HttpResponseRedirect('/userLogin/')
         else:
             context = {
                 'errors': "Password Doesn't Match"
             }
+            messages.error(request, "Password Doesn't Match")
             return render(request, 'src/setNewPassword.html', context)
-
     return render(request, 'src/setNewPassword.html')
 
 
@@ -383,12 +397,15 @@ def userRegister(request):
                 context = {
                     'errors': errors,
                 }
+                messages.error(
+                    request, "Username or Email id is already Registered!")
                 return render(request, 'src/userRegister.html', context)
         # Both passwords doesn't match
         else:
             context = {
                 'errors': "Password Doesn't Matches!!. Please Try Again.",
             }
+            messages.error(request, "Password Doesn't Matches")
             return render(request, 'src/userRegister.html', context)
     return render(request, 'src/userRegister.html')
 
@@ -430,6 +447,8 @@ def userConfirmation(request):
                 context = {
                     'errors': errors,
                 }
+                messages.error(
+                    request, "OTP Confirmation Fails!!. Please Try Again")
                 return render(request, 'src/userRegister.html', context)
 
         return render(request, 'src/userConfirmation.html')
@@ -447,13 +466,13 @@ def gatepass(request):
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-     
+
         user_admin_obj = User.objects.get(id=userid)
         context = {
             'user_admin_obj': user_admin_obj,
         }
         if request.method == 'POST':
-            
+
             userId = userid
             visitDate = request.POST.get('visitDate')
             visiting_hour = request.POST.get('visiting_hour')
@@ -461,7 +480,7 @@ def gatepass(request):
             #visit_gate = Admin.objects.get(gate=gateId)
             user_id = User.objects.get(id=userId)
 
-            visitor = Visitor( userId=user_id,
+            visitor = Visitor(userId=user_id,
                               visitDate=visitDate, visiting_hour=visiting_hour, reason=reason)
             try:
                 visitor.save()
@@ -479,8 +498,7 @@ def gatepass(request):
                           + "Gender : {}\n".format(user_admin_obj.gender)
                           + "Date of Visit: {}\n".format(visitor.visitDate)
                           + "Reason of Visit: {}\n".format(visitor.reason)
-                          + "Time validity: {} Hour\n".format(visitor.visiting_hour)
-                          ,
+                          + "Time validity: {} Hour\n".format(visitor.visiting_hour),
                           EMAIL_HOST_USER,
                           [user_admin_obj.mail],
                           fail_silently=False
@@ -542,11 +560,14 @@ def adminLogin(request):
         # user_admin_obj = UserAdmin.objects.get(username=username)
         if user_admin_obj is None:
             error = "Username you entered doesn't exist"
-            return render(request, "src/adminLogin.html", {"error": error}, context)
+            messages.error(request, "Username doesn't exist")
+            return render(request, "src/adminLogin.html", context)
         elif not user_admin_obj.password == password:
             errors = "Username and password didn't match"
-            return render(request, "src/adminLogin.html", {"errors": errors}, context)
+            messages.error(request, "Username and Password didn't match")
+            return render(request, "src/adminLogin.html", context)
         superLogin(user_admin_obj.id)
+        messages.success(request, "Successfully Log in into the System")
         return HttpResponseRedirect('superAdminDash/')
         # return render(request,'src/superAdminDash.html')
 
@@ -605,6 +626,7 @@ def superAdminDash(request):
                     'admin_obj': admin_obj,
                     'errors': "*We fond the same email id in our data. It should be unique"
                 }
+                messages.error(request, "Email id is already Registered")
                 return render(request, 'src/superAdminDash.html', context)
 
         return render(request, 'src/superAdminDash.html', context)
@@ -959,6 +981,7 @@ def adminEdit(request, pk):
                     'admin_obj': admin_obj,
                     'errors': "*We fond the same email id in our data. It should be unique"
                 }
+                messages.error(request, "Email id is already Registered")
                 return render(request, 'src/adminEdit.html', context)
 
         return render(request, 'src/adminEdit.html', context)
@@ -1000,11 +1023,11 @@ def gateAdminLogin(request):
         except:
             user_admin_obj = None
         if user_admin_obj is None:
-            error = "Gate ID you entered doesn't exist"
-            return render(request, "src/adminLogin.html", {"error": error}, context)
+            messages.error(request, "Entered Gate ID doesn't Exist")
+            return render(request, "src/adminLogin.html", context)
         elif not user_admin_obj.password == password:
-            errors = "Gate Id and password didn't match"
-            return render(request, "src/adminLogin.html", {"errors": errors}, context)
+            messages.error(request, "Wrong Password")
+            return render(request, "src/adminLogin.html", context)
 
         gateLogin(gateId)
 
@@ -1036,13 +1059,13 @@ def gateAdminDash(request):
         for i in range(len(visitor_obj)):
             if visitor_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                if(now<visitor_obj[i].checkin):
+                if(now < visitor_obj[i].checkin):
                     diff = visitor_obj[i].checkin - now
-                    hour =5.5- float(diff.total_seconds()/3600)
+                    hour = 5.5 - float(diff.total_seconds()/3600)
                 else:
-                    diff=now-visitor_obj[i].checkin
-                    hour=float(diff.total_seconds()/3600)
-                  
+                    diff = now-visitor_obj[i].checkin
+                    hour = float(diff.total_seconds()/3600)
+
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
                         user_obj = (visitor_obj[i].userId)
@@ -1058,13 +1081,13 @@ def gateAdminDash(request):
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
                 now = datetime.utcnow().replace(tzinfo=utc)
-                if(now<temp_user_obj[i].checkin):
+                if(now < temp_user_obj[i].checkin):
                     diff = temp_user_obj[i].checkin - now
-                    hour =5.5- float(diff.total_seconds()/3600)
+                    hour = 5.5 - float(diff.total_seconds()/3600)
                 else:
-                    diff=now-temp_user_obj[i].checkin
-                    hour=float(diff.total_seconds()/3600)
-                  
+                    diff = now-temp_user_obj[i].checkin
+                    hour = float(diff.total_seconds()/3600)
+
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         #user_obj= (visitor_obj[i].userId)
@@ -1136,18 +1159,18 @@ def timeDue(request):
         print(len(visitor_obj))
         l = []
         timeDue = []
-        contact=[]
+        contact = []
         for i in range(len(visitor_obj)):
             print(visitor_obj[i].checkin)
             if visitor_obj[i].visiting_hour != "More Than 3":
-                namePhone=[]
+                namePhone = []
                 now = datetime.utcnow().replace(tzinfo=utc)
-                if(now<visitor_obj[i].checkin):
+                if(now < visitor_obj[i].checkin):
                     diff = visitor_obj[i].checkin - now
-                    hour =5.5- float(diff.total_seconds()/3600)
+                    hour = 5.5 - float(diff.total_seconds()/3600)
                 else:
-                    diff=now-visitor_obj[i].checkin
-                    hour=float(diff.total_seconds()/3600)
+                    diff = now-visitor_obj[i].checkin
+                    hour = float(diff.total_seconds()/3600)
 
                 if visitor_obj[i].visiting_hour == "1":
                     if hour > 1:
@@ -1176,15 +1199,15 @@ def timeDue(request):
 
         for i in range(len(temp_user_obj)):
             if temp_user_obj[i].visiting_hour != "More Than 3":
-                namePhone=[]
+                namePhone = []
                 now = datetime.utcnow().replace(tzinfo=utc)
-                if(now<temp_user_obj[i].checkin):
+                if(now < temp_user_obj[i].checkin):
                     diff = temp_user_obj[i].checkin - now
-                    hour =5.5- float(diff.total_seconds()/3600)
+                    hour = 5.5 - float(diff.total_seconds()/3600)
                 else:
-                    diff=now-temp_user_obj[i].checkin
-                    hour=float(diff.total_seconds()/3600)
-                  
+                    diff = now-temp_user_obj[i].checkin
+                    hour = float(diff.total_seconds()/3600)
+
                 if temp_user_obj[i].visiting_hour == "1":
                     if hour > 1:
                         obj = 1
@@ -1212,7 +1235,7 @@ def timeDue(request):
             'namephone': l,
             'time': timeDue,
             'obj': obj,
-    
+
         }
         return render(request, 'src/timeDue.html', context)
 
@@ -1271,7 +1294,7 @@ def checkInVisitor(request, pk):
         print(visitor_obj)
         visitor_obj.checkin = datetime.now()
         #visit_gate = Admin.objects.get(gate=gate_id)
-        visitor_obj.gateId1=gate_id
+        visitor_obj.gateId1 = gate_id
         try:
             visitor_obj.save()
 
@@ -1301,7 +1324,7 @@ def makeCheckOut(request):
 
         try:
             temp_user_obj = TemporaryUser.objects.all().filter(name__contains=search, checkout=None,
-                                                                visitDate=datetime.now().date()).exclude(checkin=None)
+                                                               visitDate=datetime.now().date()).exclude(checkin=None)
         except:
             temp_user_obj = None
         if (visitor_obj is None or len(visitor_obj) == 0) and (temp_user_obj is None or len(temp_user_obj) == 0):
@@ -1342,7 +1365,7 @@ def checkOutVisitor(request, pk):
         visitor_obj = Visitor.objects.get(
             id=pk, checkout=None, visitDate=datetime.now().date())
         visitor_obj.checkout = datetime.now()
-        visitor_obj.gateId2=gate_id
+        visitor_obj.gateId2 = gate_id
         try:
             visitor_obj.save()
 
@@ -1363,7 +1386,7 @@ def checkOutTempVisitor(request, pk, type):
         tp_obj = TemporaryUser.objects.get(
             id=pk, checkout=None, visitDate=datetime.now().date())
         tp_obj.checkout = datetime.now()
-        tp_obj.gateId2= gate_id
+        tp_obj.gateId2 = gate_id
         try:
             tp_obj.save()
 
