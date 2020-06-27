@@ -40,7 +40,8 @@ class User(models.Model):
 
 
 class Visitor(models.Model):
-    gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT, null=True)
+    gateId1 = models.IntegerField(null=True)
+    gateId2 = models.IntegerField(null=True)
     userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
     visitDate = models.DateField()
     checkin = models.DateTimeField(null=True)
@@ -48,6 +49,7 @@ class Visitor(models.Model):
     feedback = models.TextField(null=True)
     visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
+    mailDue = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.id)
@@ -59,14 +61,15 @@ class TemporaryUser(models.Model):
     contact = models.IntegerField()
     gender = models.CharField(max_length=10)
     photo = models.ImageField(upload_to='gallery', default='/tempUser.png')
-    gateId = models.ForeignKey(Admin, default=1, on_delete=models.SET_DEFAULT)
+    gateId1 = models.IntegerField(null=True)
+    gateId2 = models.IntegerField(null=True)
     visitDate = models.DateField()
     checkin = models.DateTimeField(null=True)
     checkout = models.DateTimeField(null=True)
     feedback = models.TextField(null=True)
     visiting_hour = models.CharField(max_length=20, default=1)
     reason = models.TextField(max_length=1000)
-
+    mailDue = models.IntegerField(default=0)
     def __str__(self):
         return str(self.id)
 
