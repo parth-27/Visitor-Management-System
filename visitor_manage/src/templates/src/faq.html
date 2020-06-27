@@ -1,0 +1,71 @@
+{% extends basefile %} 
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <div class="card">
+        <div class="card-header">
+            <h3>Frequently asked questions</h3>
+        </div>
+        <div class="card-body">
+            <br>
+            <h5>1) Where to go for admission realted queries?</h5>
+            <h6>Ans: You can go to AU banglows( location of Ahmedabad Univerity in map)</h6>
+            <hr><br>
+            <h5>2) How to give personal interview for admission due to COVID situation?</h5>
+            <h6>Ans: Ahmedabad Univerity has a way to out.  Due to covid-19, University has been taking online interviews.</h6>
+            <hr><br>
+            <h5>3) Can you tell me about placements in School of engineering and applied science? </h5>
+            <h6>Ans:The highest-paid package was around 15 Lacs and the lowest one was around
+                 4.5 Lacs. The CDC is very helpful for providing internships and placements to the students.</h6>
+            <hr><br>
+            General People questions<br>
+            {% for que in faq %}
+                {% for user in user %}
+                    {% if forloop.counter == forloop.parentloop.counter %}
+                        @{{user.username}}<br>
+                        Question : {{que.question}}<br>
+                        Ans : {{que.answer}}<br>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}<br><br>
+            {% if obj == 1 %}
+                <h5>Your query is not solved yet? </h5>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                
+                    <div class="input-group form-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i class="fas fa-user"
+                            ><img
+                              src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
+                              width="30" /></i
+                        ></span>
+                      </div>
+                      <textarea
+                        
+                        class="form-control"
+                        placeholder="Ask your question here"
+                        id="question"
+                        name="question" maxlength="1000"
+                        required
+                      ></textarea>
+                    </div>
+    
+    
+                    <div class="form-group">
+                      <input
+                        type="submit"
+                        value="Ask"
+                        class="btn float-right login_btn"
+                        id="lg_bt"
+                      />
+                    </div>
+    
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

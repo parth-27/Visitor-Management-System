@@ -522,9 +522,84 @@ def gatepassDelete(request, pk):
         visitor_obj = Visitor.objects.get(id=pk).delete()
         return HttpResponseRedirect('/userLogin/gatepass')
 
+def faq(request):
+    gateLogout()
+    superLogout()
+
+    if userid == -1:
+        return render(request, 'src/loginError.html')
+    else:
+        faq_obj = Faq.objects.all().exclude(answer=None)
+        user=[]
+        for i in range(len(faq_obj)):
+            user.append(faq_obj[i].userId)
+        obj=1
+        context={
+            'faq': faq_obj,
+            'user':user,
+            'basefile':"src/userNav.html",
+            'obj':obj,
+        }
+        if request.method == 'POST':
+            question= request.POST.get('question')
+            user_obj=User.objects.get(id=userid)
+            faq= Faq(question=question, userId= user_obj)
+            try:
+                faq.save()
+            except Exception as e:
+                print(e)
+    return render(request, 'src/faq.html',context)
+
+def faqCommon(request):
+    gateLogout()
+    logout()
+    superLogout()
+    faq_obj = Faq.objects.all().exclude(answer=None)
+    user=[]
+    for i in range(len(faq_obj)):
+        user.append(faq_obj[i].userId)
+    context={
+            'faq': faq_obj,
+            'user':user,
+            'basefile':"src/base.html",
+        }
+    return render(request, 'src/faq.html',context)  
+
+def faqAdmin(request):
+    gateLogout()
+    logout()
+    if superAdminId==-1:
+        return render(request, 'src/loginError.html')
+    else:
+        if request.method == 'POST':
+            ans= request.POST.get('answer')
+            que=request.POST.get('que')
+            faq= Faq.objects.get(id=int(que))
+            faq.answer=ans
+            faq.save()
+        faq_obj = Faq.objects.all().filter(answer=None)
+        user=[]
+        for i in range(len(faq_obj)):
+            user.append(faq_obj[i].userId)
+        context={
+            'faq': faq_obj,
+            'user':user,
+        }
+
+    return render(request, 'src/faqAdmin.html',context)       
+
+
+def faqDelete(request,pk):
+    gateLogout()
+    logout()
+    if superAdminId==-1:
+        return render(request, 'src/loginError.html')
+    else:
+        faq_obj = Faq.objects.get(id=pk).delete()
+    return HttpResponseRedirect('/faqAdmin/')
+
+
 # User logout
-
-
 def userLogoutDone(request):
     logout()
     gateLogout()

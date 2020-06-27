@@ -23,6 +23,8 @@ urlpatterns = [
      path('location/', views.location, name='location'),
      path('feedback/', views.feedback, name='feedback'),
      path ('reviewHome/', views.reviewHome, name='reviewHome'),
+     path('faq/', views.faq, name='faq'),
+     path('faqCommon/', views.faqCommon, name='faqCommon'),
 
      path('adminLogin/', views.adminLogin, name='adminLogin'),
      path('adminEdit/<int:pk>', views.adminEdit, name='adminEdit'),
@@ -36,7 +38,8 @@ urlpatterns = [
      path('imageDelete/<int:pk>', views.imageDelete, name='imageDelete'),
      path('review', views.review, name='review'),
      path('deleteReview/<int:pk>', views.deleteReview, name='deleteReview'),
-
+     path('faqAdmin/', views.faqAdmin, name='faqAdmin'),
+     path('faqDelete/<int:pk>', views.faqDelete, name='faqDelete'),
 
     path('gateAdminLogin/', views.gateAdminLogin, name='gateAdminLogin'),
     path('gateAdminLogin/gateAdminDash/',

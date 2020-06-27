@@ -84,3 +84,11 @@ class ImageUpload( models.Model):
 
     def __str__(self):
         return str(self.id)
+
+class Faq( models.Model):
+    question = models.TextField(max_length=1000)
+    answer = models.TextField(max_length=1000, null=True)
+    userId = models.ForeignKey(User, default=1, on_delete=models.SET_DEFAULT)
+
+    def __str__(self):
+        return str(self.id)
