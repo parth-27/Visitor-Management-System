@@ -114,16 +114,26 @@
         <td>{{admin.contact}}</td>
         <td>{{admin.gender}}</td>
         <td>
-          <button>
+          <div class="form-group">
+            <button value="Edit" class="btn float-right login_btn" id="lg_bt">
+              <a href="/adminEdit/{{admin.pk}}">Edit<img src="https://img.icons8.com/ios/2x/edit-administrator.png" width="30" /></a>
+            </button>
+          </div>
+          <!-- <button>
             <a href="/adminEdit/{{admin.pk}}">Edit<img src="https://img.icons8.com/ios/2x/edit-administrator.png"
                 width="30" /></a>
-          </button>
+          </button> -->
         </td>
         <td>
-          <button>
+          <div class="form-group">
+            <button value="Delete" class="btn float-right login_btn" id="lg_bt">
+              <a href="/adminDelete/{{admin.pk}}">Delete <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /> </a>
+            </button>
+          </div>
+          <!-- <button>
             <a href="/adminDelete/{{admin.pk}}">Delete
               <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-          </button>
+          </button> -->
         </td>
       </tr>
 

@@ -1,10 +1,41 @@
 {% extends basefile %} 
 {% block content %}
 
+<style>
+    #searchContainer {
+        padding: 20px;
+        position: absolute;
+        top: 35px;
+        right: 0;
+    }
+
+    #searchContainer {
+        width: 350px;
+    }
+
+    #searchContainer button {
+        background-color: rgba(1, 159, 198);
+        width: 75px;
+    }
+
+    .searchControl {
+        box-shadow: 2px 2px 5px black;
+        border: none;
+        border-radius: 5px;
+        padding: 5px;
+    }
+</style>
+<form method="POST">
+    {% csrf_token %}
+<div id="searchContainer">
+    <input class="searchControl" type="text" placeholder="Search by Name..." id="searchInput" name="search"><button class="searchControl" type="submit" id="searchBtn">Search</button></div></form>
+<br>
+
+
 <div class="d-flex justify-content-center">
     <div class="card">
-        <div class="card-header">
-            <h3>Frequently asked questions</h3>
+        <div class="card-header" style="text-align: center;">
+            <h3>Frequently asked Questions</h3>
         </div>
         <div class="card-body">
             <br>

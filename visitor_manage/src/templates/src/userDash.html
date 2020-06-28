@@ -61,7 +61,7 @@
       <li class="nav-item">
         <a href="{% url 'faq' %}" class="nav-link text-dark font-italic">
           <i class="fa fa-picture-o mr-3 text-primary fa-fw">
-            <img src="https://img.icons8.com/ios-glyphs/2x/image.png" width="30" />
+            <img src="https://img.icons8.com/ios-filled/2x/faq.png" width="30" />
           </i>
           FAQ
         </a>
@@ -127,10 +127,18 @@
             </div>
 
             <div class="d-flex justify-content-center">
-              <button style="background-color: white;">
+              <br>
+              <div class="form-group">
+                <button value="Delete" class="btn float-right login_btn" id="lg_bt">
+                  <a href="/gatepassDelete/{{visiter_obj.pk}}">Delete
+                  <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+                </button>
+              </div>
+
+              <!-- <button style="background-color: white;">
                 <a href="/gatepassDelete/{{visiter_obj.pk}}">Delete
                   <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-              </button>
+              </button> -->
             </div>
             <hr>
             <hr>

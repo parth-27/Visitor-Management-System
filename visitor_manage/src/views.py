@@ -140,7 +140,6 @@ def userLogin(request):
             return render(request, "src/userLogin.html", {"errors": errors})
             # render the same page
 
-        messages.success(request, "Successfully Login into the system")
         # Else user successfully loggedIn. Make Id as per one's Id
         login(user_admin_obj.id)
         try:
@@ -169,44 +168,51 @@ def userLogin(request):
                     'user_admin_obj': user_admin_obj,
                 }
                 # Simply render Dash Board
+                messages.success(request, "Gate Pass Created!!")
                 return render(request, 'src/userDash.html', context)
             else:                                                           # GatePass found
                 obj = 1
                 timeDue = ''
-                vs = Visitor.objects.get(~Q(checkin=None) & Q(
-                    checkout=None), userId=user_admin_obj)
-                if vs.visiting_hour != "More Than 3":
-                    now = datetime.utcnow().replace(tzinfo=utc)
-                    if(now < vs.checkin):
-                        diff = vs.checkin - now
-                        hour = 5.5 - float(diff.total_seconds()/3600)
-                    else:
-                        diff = now-vs.checkin
-                        hour = float(diff.total_seconds()/3600)
+                try:
+                    vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None), userId=user_admin_obj)    
+                except:
+                    vs == None
+                
+                if vs is not None:
+                    if vs.visiting_hour != "More Than 3":
+                        now = datetime.utcnow().replace(tzinfo=utc)
+                        if(now < vs.checkin):
+                            diff = vs.checkin - now
+                            hour = 5.5 - float(diff.total_seconds()/3600)
+                        else:
+                            diff = now-vs.checkin
+                            hour = float(diff.total_seconds()/3600)
 
-                    if vs.visiting_hour == "1":
-                        if hour > 1:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-1, '.2f')+' hours.'
-                    elif vs.visiting_hour == "2":
-                        if hour > 2:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-2, '.2f')+' hours.'
-                    else:
-                        if hour > 3:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-3, '.2f')+' hours.'
+                        if vs.visiting_hour == "1":
+                            if hour > 1:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-1, '.2f')+' hours.'
+                        elif vs.visiting_hour == "2":
+                            if hour > 2:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-2, '.2f')+' hours.'
+                        else:
+                            if hour > 3:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-3, '.2f')+' hours.'
                 context = {
-                    'username': username,
-                    'obj': obj,
-                    'timeDue': timeDue,
-                    'visiter_obj': visitor_obj[0],
-                    'user_admin_obj': user_admin_obj,
+                'username': username,
+                'obj': obj,
+                'timeDue': timeDue,
+                'visiter_obj': visitor_obj[0],
+                'user_admin_obj': user_admin_obj,
                 }
 
+                messages.success(request, "Successfully Login into the system")
                 # Show Gatepass on user Dashboard screen
                 return render(request, 'src/userDash.html', context)
         else:
+            messages.success(request, "Successfully Login into the system")
             return HttpResponseRedirect('/feedback/')  # Render Feedback form
 
     # No response of userLogin form
