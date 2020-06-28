@@ -596,11 +596,17 @@ def faqAdmin(request):
             faq.save()
         faq_obj = Faq.objects.all().filter(answer=None)
         user=[]
+        faq_obj2 = Faq.objects.all().exclude(answer=None)
+        user2=[]
+        for i in range(len(faq_obj2)):
+            user2.append(faq_obj2[i].userId)
         for i in range(len(faq_obj)):
             user.append(faq_obj[i].userId)
         context={
             'faq': faq_obj,
             'user':user,
+            'faq2': faq_obj2,
+            'user2': user2,
         }
 
     return render(request, 'src/faqAdmin.html',context)       

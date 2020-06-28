@@ -55,7 +55,17 @@
       </div>
       {% endif %}
       {% endfor %}
-      {% endfor %}
+      {% endfor %}<br><br><br>
+      Solved questions<br>
+      {% for que in faq2 %}
+          {% for user in user2 %}
+              {% if forloop.counter == forloop.parentloop.counter %}
+                  @{{user.username}}<br>
+                  Question : {{que.question}}<br>
+                  Ans : {{que.answer}}<br>
+              {% endif %}
+          {% endfor %}
+      {% endfor %}<br><br>
 
     </div>
   </div>
