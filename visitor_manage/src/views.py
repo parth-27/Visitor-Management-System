@@ -173,36 +173,39 @@ def userLogin(request):
             else:                                                           # GatePass found
                 obj = 1
                 timeDue = ''
-                vs = Visitor.objects.get(~Q(checkin=None) & Q(
-                    checkout=None), userId=user_admin_obj)
-                if vs.visiting_hour != "More Than 3":
-                    now = datetime.utcnow().replace(tzinfo=utc)
-                    if(now < vs.checkin):
-                        diff = vs.checkin - now
-                        hour = 5.5 - float(diff.total_seconds()/3600)
-                    else:
-                        diff = now-vs.checkin
-                        hour = float(diff.total_seconds()/3600)
+                try:
+                    vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None), userId=user_admin_obj)
+                except:
+                    vs=None
+                if vs is not None:
+                    if vs.visiting_hour != "More Than 3":
+                        now = datetime.utcnow().replace(tzinfo=utc)
+                        if(now < vs.checkin):
+                            diff = vs.checkin - now
+                            hour = 5.5 - float(diff.total_seconds()/3600)
+                        else:
+                            diff = now-vs.checkin
+                            hour = float(diff.total_seconds()/3600)
 
-                    if vs.visiting_hour == "1":
-                        if hour > 1:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-1, '.2f')+' hours.'
-                    elif vs.visiting_hour == "2":
-                        if hour > 2:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-2, '.2f')+' hours.'
-                    else:
-                        if hour > 3:
-                            timeDue = 'Your granted time expired. You are dued by ' + \
-                                format(hour-3, '.2f')+' hours.'
+                        if vs.visiting_hour == "1":
+                            if hour > 1:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-1, '.2f')+' hours.'
+                        elif vs.visiting_hour == "2":
+                            if hour > 2:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-2, '.2f')+' hours.'
+                        else:
+                            if hour > 3:
+                                timeDue = 'Your granted time expired. You are dued by ' + \
+                                    format(hour-3, '.2f')+' hours.'
                 context = {
-                    'username': username,
-                    'obj': obj,
-                    'timeDue': timeDue,
-                    'visiter_obj': visitor_obj[0],
-                    'user_admin_obj': user_admin_obj,
-                }
+                        'username': username,
+                        'obj': obj,
+                        'timeDue': timeDue,
+                        'visiter_obj': visitor_obj[0],
+                        'user_admin_obj': user_admin_obj,
+                    }
 
                 # Show Gatepass on user Dashboard screen
                 return render(request, 'src/userDash.html', context)
@@ -289,7 +292,7 @@ def forgotPassword(request):
 
 
 """
-Alloe user to enter otp , if match so allow him to reset password
+Allow user to enter otp , if match so allow him to reset password
                         else  shows an error
 """
 
