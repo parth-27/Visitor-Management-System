@@ -53,5 +53,7 @@ urlpatterns = [
     path('checkOutDone', views.checkOutDone, name='checkOutDone'),
     path('timeDue/', views.timeDue, name='timeDue'),
     path('adminLogout/', views.adminLogout, name='adminLogout'),
-
+    path('displayUser/', views.displayUser, name='displayUser'),
+    path('map/',views.map,name="map"),
 ]
+

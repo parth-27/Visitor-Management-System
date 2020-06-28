@@ -168,7 +168,7 @@ def userLogin(request):
                     'user_admin_obj': user_admin_obj,
                 }
                 # Simply render Dash Board
-                messages.success(request, "Gate Pass Created!!")
+                # messages.success(request, "Gate Pass Created!!")
                 return render(request, 'src/userDash.html', context)
             else:                                                           # GatePass found
                 obj = 1
@@ -425,6 +425,7 @@ def userRegister(request):
 
             return render(request, 'src/userRegister.html', context)
     return render(request, 'src/userRegister.html')
+
 
 """
 *On this page:
@@ -1564,3 +1565,35 @@ def superAdminLogout(request):
     gateLogout()
     superLogout()
     return HttpResponseRedirect('/')
+
+
+def displayUser(request):
+    context = {}
+    ob = 0
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        try:
+            user_admin_obj = User.objects.get(username=username)
+            ob = 1
+        except:
+            user_admin_obj = None
+
+        if user_admin_obj is not None:
+            context = {
+                'details': user_admin_obj,
+                'ob':ob
+            }
+        else:
+            messages.error(request, "Username not found")
+        # search = request.POST.get('search')
+    return render(request, 'src/displayUser.html', context)
+
+
+
+def map(request):
+    # user = User.objects.get(id=userid)
+    # context = {
+    #     'user_admin_obj': user,
+    #     'username':username
+    # }
+    return render(request,'src/map.html')

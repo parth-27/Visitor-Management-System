@@ -127,7 +127,7 @@ MEDIA_URL = '/media/'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 # enter your own emaiil id and password.
-EMAIL_HOST_USER = "visitormanage10@gmail.com" # email address
-EMAIL_HOST_PASSWORD = 'VisitorManagementSystem_12_27'#password of email
+EMAIL_HOST_USER = "" # email address
+EMAIL_HOST_PASSWORD = ''#password of email
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
