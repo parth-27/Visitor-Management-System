@@ -69,6 +69,4 @@ This System helps to track the number of visitors who come to your place.
 
 ---
 
-| [![Parth Patel](https://avatars3.githubusercontent.com/u/54990846?s=460&u=5747a950e2be8347631fce1c2a57a9cf356f6746&v=4)](https://github.com/parth-27) | [![Dipika Pawar](https://avatars1.githubusercontent.com/u/55924136?s=460&u=65b79bfc828325fb8d441a1d6c9fcc3adce32c8c&v=4)](https://github.com/DipikaPawar12) |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Parth Patel](https://github.com/parth-27)                                                                                                            | [Dipika Pawar](https://github.com/DipikaPawar12)                                                                                                            |
