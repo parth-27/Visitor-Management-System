@@ -54,24 +54,15 @@
 </style>
 
 <div class="d-flex justify-content-center">
-  <div class="card" style="width: 600px; height: 500px;">
+  <div class="card">
     <div class="card-header" style="text-align: center;">
       <h3>Campus Images</h3>
     </div>
     <div class="card-body">
       <br>
       {% for im in img1%}
-      <style>
-        .box {
-          background: black url("{{ im.photo.url }}") center fixed no-repeat;
-        }
-      </style>
-      <div class="wrap">
-        <div class="box">
-        </div>
-      </div>
 
-      <!-- <img src="{{ im.photo.url }}" width="300" height="250" /><br /> -->
+      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
       {% if obj == 1 %}
       <div class="form-group">
         <button value="Delete" class="btn float-right login_btn" id="lg_bt">
@@ -168,25 +159,5 @@
     </div>
   </div>
 </div>
-
-<script>
-  const box = document.querySelector(".box");
-  
-    box.addEventListener("click", function () {
-      let first = "opening";
-      let second = "open";
-
-      if (this.classList.contains(first)) {
-        [first, second] = [second, first];
-      }
-
-      this.classList.toggle(first);
-      setTimeout(() => {
-        this.classList.toggle(second); // this will inherit the value in the arrow function only.
-      }, 500);
-    });
-  
-
-</script>
 
 {% endblock %}
