@@ -165,8 +165,8 @@
 </div>
 
 <script>
-  const boxes = document.querySelectorAll(".box");
-  boxes.map((box) => {
+  const box = document.querySelector(".box");
+  
     box.addEventListener("click", function () {
       let first = "opening";
       let second = "open";
@@ -180,7 +180,7 @@
         this.classList.toggle(second); // this will inherit the value in the arrow function only.
       }, 500);
     });
-  })
+  
 
 </script>
 

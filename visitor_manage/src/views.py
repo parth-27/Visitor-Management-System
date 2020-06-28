@@ -176,7 +176,7 @@ def userLogin(request):
                 try:
                     vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None), userId=user_admin_obj)    
                 except:
-                    vs == None
+                    vs = None
                 
                 if vs is not None:
                     if vs.visiting_hour != "More Than 3":
@@ -535,7 +535,13 @@ def faq(request):
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        faq_obj = Faq.objects.all().exclude(answer=None)
+        search=''
+        temp=0
+        if request.method =='POST':
+            if(request.POST.get('question')== None):
+                search= request.POST.get('search')
+                temp=1
+        faq_obj = Faq.objects.all().filter(question__contains=search).exclude(answer=None)
         user=[]
         for i in range(len(faq_obj)):
             user.append(faq_obj[i].userId)
@@ -546,21 +552,26 @@ def faq(request):
             'basefile':"src/userNav.html",
             'obj':obj,
         }
+
         if request.method == 'POST':
-            question= request.POST.get('question')
-            user_obj=User.objects.get(id=userid)
-            faq= Faq(question=question, userId= user_obj)
-            try:
-                faq.save()
-            except Exception as e:
-                print(e)
+            if temp==0:
+                question= request.POST.get('question')
+                user_obj=User.objects.get(id=userid)
+                faq= Faq(question=question, userId= user_obj)
+                try:
+                    faq.save()
+                except Exception as e:
+                    print(e)
     return render(request, 'src/faq.html',context)
 
 def faqCommon(request):
     gateLogout()
     logout()
     superLogout()
-    faq_obj = Faq.objects.all().exclude(answer=None)
+    search=''
+    if request.method == 'POST':
+        search = request.POST.get('search')
+    faq_obj = Faq.objects.all().filter(question__contains=search).exclude(answer=None)
     user=[]
     for i in range(len(faq_obj)):
         user.append(faq_obj[i].userId)
