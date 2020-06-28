@@ -1,125 +1,187 @@
 {% extends basefile %}
 {% block content %}
 
+<style>
+  .wrap {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    font-weight: 100;
+    color: white;
+  }
+
+  .box {
+    background: black url(https://unsplash.it/1500/1500?image=560&blur=0.5) center fixed no-repeat;
+    width: 300px;
+    height: 250px;
+    padding: 50px;
+    transition: width 0.2s, height 0.6s;
+    position: relative;
+  }
+
+  .box.opening {
+    width: 500px;
+    height: 500px;
+  }
+
+  .box h2 {
+    position: absolute;
+    width: 100%;
+    font-size: 100px;
+    transform: translateX(-200%);
+    transition: all 0.5s;
+    top: 0;
+  }
+
+  .box p {
+    position: absolute;
+    width: 100%;
+    transform: translateX(200%);
+    transition: all 0.5s;
+    bottom: 0;
+  }
+
+  .box.open>* {
+    transform: translateX(0%);
+  }
+</style>
 
 <div class="d-flex justify-content-center">
-    <div class="card">
-        <div class="card-header">
-            <h3>Campus Images</h3>
-        </div>
-        <div class="card-body">
-            <br>
-            {% for im in img1%}
-            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
-            {% if obj == 1 %}
-            <button style="background-color: white;">
-                <a href="/imageDelete/{{im.pk}}">Delete
-                    <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-            </button>
-            {% endif %}
-            <hr><br>
-
-            {% endfor %}
-            {% if obj == 1 %}
-            {% for im in img2%}
-            {% for us in user%}
-            {% if forloop.counter == forloop.parentloop.counter %}
-            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
-            <p style="color:white"> {{us.name}}<br>{{us.username}}</p>
-            <button style="background-color: white;">
-                <a href="/imageDelete/{{im.pk}}/'user'">Delete
-                    <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
-            </button>
-            <hr><br>
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-            {% else %}
-            {% for im in img2%}
-            <img src="{{ im.photo.url }}" width="300" height="250" /><br />
-            {% endfor %}
-            {% endif %}
-            <hr><br>
-
-
-            {% if obj == 1 %}
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
-                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
-                
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="file"
-                    class="form-control"
-                    placeholder="photo"
-                    id="photo"
-                    name="photo"
-                    required
-                  />
-                </div>
-
-
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    value="Add Pic"
-                    class="btn float-right login_btn"
-                    id="lg_bt"
-                  />
-                </div>
-
-            </form>
-            {% endif %}
-            <hr><br>
-
-            {% if objt == 1 %}
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
-                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
-
-                <div class="input-group form-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"
-                      ><i class="fas fa-user"
-                        ><img
-                          src="https://img.icons8.com/ios-glyphs/2x/contract-job.png"
-                          width="30" /></i
-                    ></span>
-                  </div>
-                  <input
-                    type="file"
-                    class="form-control"
-                    placeholder="photo"
-                    id="photo"
-                    name="photo"
-                    required
-                  />
-                </div>
-
-
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    value="Add Pic"
-                    class="btn float-right login_btn"
-                    id="lg_bt"
-                  />
-                </div>
-
-            </form>
-            {% endif %}
-            <hr><br>
-        </div>
+  <div class="card" style="width: 600px; height: 500px;">
+    <div class="card-header" style="text-align: center;">
+      <h3>Campus Images</h3>
     </div>
+    <div class="card-body">
+      <br>
+      {% for im in img1%}
+      <style>
+        .box {
+          background: black url("{{ im.photo.url }}") center fixed no-repeat;
+        }
+      </style>
+      <div class="wrap">
+        <div class="box">
+        </div>
+      </div>
+
+      <!-- <img src="{{ im.photo.url }}" width="300" height="250" /><br /> -->
+      {% if obj == 1 %}
+      <div class="form-group">
+        <button value="Delete" class="btn float-right login_btn" id="lg_bt">
+          <a href="/imageDelete/{{im.pk}}">Delete
+          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" />
+          </a>
+        </button>
+      </div>
+      <!-- <button style="background-color: white;">
+        <a href="/imageDelete/{{im.pk}}">Delete
+          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+      </button> -->
+      {% endif %}
+      <hr><br>
+
+      {% endfor %}
+      {% if obj == 1 %}
+      {% for im in img2%}
+      {% for us in user%}
+      {% if forloop.counter == forloop.parentloop.counter %}
+      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
+      <p style="color:white"> {{us.name}}<br>{{us.username}}</p>
+
+
+      <div class="form-group">
+        <button value="Delete" class="btn float-right login_btn" id="lg_bt">
+          <a href="/imageDelete/{{im.pk}}/'user'">Delete
+          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+        </button>
+      </div>
+
+      <!-- <button style="background-color: white;">
+        <a href="/imageDelete/{{im.pk}}/'user'">Delete
+          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+      </button>
+       -->
+      <hr><br>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+      {% else %}
+      {% for im in img2%}
+      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
+      {% endfor %}
+      {% endif %}
+      <hr><br>
+
+
+      {% if obj == 1 %}
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"><img
+                  src="https://img.icons8.com/ios-glyphs/2x/contract-job.png" width="30" /></i></span>
+          </div>
+          <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+        </div>
+
+
+        <div class="form-group">
+          <input type="submit" value="Add Pic" class="btn float-right login_btn" id="lg_bt" />
+        </div>
+
+      </form>
+      {% endif %}
+      <hr><br>
+
+      {% if objt == 1 %}
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+                <button style="height:200px;width:200px;background-color: white;" type="submit">Add File+</button> -->
+
+        <div class="input-group form-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"><img
+                  src="https://img.icons8.com/ios-glyphs/2x/contract-job.png" width="30" /></i></span>
+          </div>
+          <input type="file" class="form-control" placeholder="photo" id="photo" name="photo" required />
+        </div>
+
+
+        <div class="form-group">
+          <input type="submit" value="Add Pic" class="btn float-right login_btn" id="lg_bt" />
+        </div>
+
+      </form>
+      {% endif %}
+      <hr><br>
+    </div>
+  </div>
 </div>
+
+<script>
+  const boxes = document.querySelectorAll(".box");
+  boxes.map((box) => {
+    box.addEventListener("click", function () {
+      let first = "opening";
+      let second = "open";
+
+      if (this.classList.contains(first)) {
+        [first, second] = [second, first];
+      }
+
+      this.classList.toggle(first);
+      setTimeout(() => {
+        this.classList.toggle(second); // this will inherit the value in the arrow function only.
+      }, 500);
+    });
+  })
+
+</script>
+
 {% endblock %}
