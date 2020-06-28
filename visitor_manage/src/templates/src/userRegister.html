@@ -55,7 +55,7 @@
                         src="https://img.icons8.com/ios-glyphs/2x/name.png" width="30" /></i></span>
                 </div>
                 <input type="text" class="form-control" placeholder="Name" id="name" name="name" minlength="2"
-                  maxlength="100" required />
+                  maxlength="100" value="{{name}}" required />
               </div>
 
               <div class="input-group form-group">
@@ -64,7 +64,7 @@
                         src="https://img.icons8.com/ios-glyphs/2x/user-male.png" width="30" /></i></span>
                 </div>
                 <input type="text" class="form-control" placeholder="Username" id="username" name="username"
-                  minlength="2" maxlength="50" autocomplete="off" required />
+                  value="{{username}}" minlength="2" maxlength="50" autocomplete="off" required />
               </div>
               <div class="input-group form-group">
                 <div class="input-group-prepend">
@@ -99,7 +99,7 @@
                         src="https://img.icons8.com/ios-glyphs/2x/contact-card.png" width="30" /></i></span>
                 </div>
                 <input type="numer" class="form-control" placeholder="Contact Number" id="contact" name="contact"
-                  pattern="[0-9]{10}" required />
+                  value="{{contact}}" pattern="[0-9]{10}" required />
               </div>
               <div class="input-group form-group">
                 <div class="input-group-prepend">
@@ -109,7 +109,7 @@
                 <!-- <label class="custom-control-label" for="gender"
                     >Gender:</label
                   ><br /> -->
-                <select class="form-control" id="gender" name="gender">
+                <select class="form-control" id="gender" name="gender" value="{{gender}}">
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>

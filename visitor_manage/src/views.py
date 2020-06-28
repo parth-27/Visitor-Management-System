@@ -174,10 +174,11 @@ def userLogin(request):
                 obj = 1
                 timeDue = ''
                 try:
-                    vs = Visitor.objects.get(~Q(checkin=None) & Q(checkout=None), userId=user_admin_obj)    
+                    vs = Visitor.objects.get(~Q(checkin=None) & Q(
+                        checkout=None), userId=user_admin_obj)
                 except:
                     vs = None
-                
+
                 if vs is not None:
                     if vs.visiting_hour != "More Than 3":
                         now = datetime.utcnow().replace(tzinfo=utc)
@@ -201,11 +202,11 @@ def userLogin(request):
                                 timeDue = 'Your granted time expired. You are dued by ' + \
                                     format(hour-3, '.2f')+' hours.'
                 context = {
-                'username': username,
-                'obj': obj,
-                'timeDue': timeDue,
-                'visiter_obj': visitor_obj[0],
-                'user_admin_obj': user_admin_obj,
+                    'username': username,
+                    'obj': obj,
+                    'timeDue': timeDue,
+                    'visiter_obj': visitor_obj[0],
+                    'user_admin_obj': user_admin_obj,
                 }
 
                 messages.success(request, "Successfully Login into the system")
@@ -368,21 +369,13 @@ def userRegister(request):
         name = request.POST.get('name')
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
+        contact = request.POST.get('contact')
+        gender = request.POST.get('gender')
+        photo = request.FILES['photo']
         # Both passwords matches
         if cpassword == password:
             mail = request.POST.get('mail')
-            # Create an OTP and send on given email
-            otp = random.randint(1000, 9999)
-            send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
-                      EMAIL_HOST_USER,
-                      [mail],
-                      fail_silently=False
-                      )
 
-            supermail(mail, otp)
-            contact = request.POST.get('contact')
-            gender = request.POST.get('gender')
-            photo = request.FILES['photo']
             fs = FileSystemStorage()
             fs.save(photo.name, photo)
 
@@ -393,6 +386,15 @@ def userRegister(request):
                 obj = -1
                 user.save()
                 login(user.id)
+                # Create an OTP and send on given email
+                otp = random.randint(1000, 9999)
+                send_mail("Confirmation Mail", "OTP for the User Confirmation is {}".format(otp),
+                          EMAIL_HOST_USER,
+                          [mail],
+                          fail_silently=False
+                          )
+
+                supermail(mail, otp)
 
                 return HttpResponseRedirect('/userRegister/userConfirmation')
                 # return render(request, 'src/userDash.html', context)
@@ -401,6 +403,10 @@ def userRegister(request):
                 print(e)
                 errors = "*We found the same username or email id in our data. These should be unique. Try some new"
                 context = {
+                    'username': username,
+                    'name': name,
+                    'contact': contact,
+                    'gender': gender,
                     'errors': errors,
                 }
                 messages.error(
@@ -408,13 +414,17 @@ def userRegister(request):
                 return render(request, 'src/userRegister.html', context)
         # Both passwords doesn't match
         else:
+            messages.error(request, "Password Doesn't Matches")
             context = {
+                'username': username,
+                'name': name,
+                'contact': contact,
+                'gender': gender,
                 'errors': "Password Doesn't Matches!!. Please Try Again.",
             }
-            messages.error(request, "Password Doesn't Matches")
+
             return render(request, 'src/userRegister.html', context)
     return render(request, 'src/userRegister.html')
-
 
 """
 *On this page:
@@ -528,6 +538,7 @@ def gatepassDelete(request, pk):
         visitor_obj = Visitor.objects.get(id=pk).delete()
         return HttpResponseRedirect('/userLogin/gatepass')
 
+
 def faq(request):
     gateLogout()
     superLogout()
@@ -535,87 +546,85 @@ def faq(request):
     if userid == -1:
         return render(request, 'src/loginError.html')
     else:
-        search=''
-        temp=0
-        if request.method =='POST':
-            if(request.POST.get('question')== None):
-                search= request.POST.get('search')
-                temp=1
-        faq_obj = Faq.objects.all().filter(question__contains=search).exclude(answer=None)
-        user=[]
+        faq_obj = Faq.objects.all().exclude(answer=None)
+        user = []
         for i in range(len(faq_obj)):
             user.append(faq_obj[i].userId)
-        obj=1
-        context={
-            'faq': faq_obj,
-            'user':user,
-            'basefile':"src/userNav.html",
-            'obj':obj,
-        }
 
+        userObj = User.objects.get(id=userid)
+        obj = 1
+        context = {
+            'faq': faq_obj,
+            'user': user,
+            'basefile': "src/userNav.html",
+            'obj': obj,
+            'username': userObj.username,
+            'user_admin_obj': userObj,
+        }
         if request.method == 'POST':
-            if temp==0:
-                question= request.POST.get('question')
-                user_obj=User.objects.get(id=userid)
-                faq= Faq(question=question, userId= user_obj)
-                try:
-                    faq.save()
-                except Exception as e:
-                    print(e)
-    return render(request, 'src/faq.html',context)
+            question = request.POST.get('question')
+            user_obj = User.objects.get(id=userid)
+            faq = Faq(question=question, userId=user_obj)
+            try:
+                faq.save()
+            except Exception as e:
+                print(e)
+    return render(request, 'src/faq.html', context)
+
 
 def faqCommon(request):
     gateLogout()
     logout()
     superLogout()
-    search=''
+    search = ''
     if request.method == 'POST':
         search = request.POST.get('search')
     faq_obj = Faq.objects.all().filter(question__contains=search).exclude(answer=None)
-    user=[]
+    user = []
     for i in range(len(faq_obj)):
         user.append(faq_obj[i].userId)
-    context={
-            'faq': faq_obj,
-            'user':user,
-            'basefile':"src/base.html",
-        }
-    return render(request, 'src/faq.html',context)  
+    context = {
+        'faq': faq_obj,
+        'user': user,
+        'basefile': "src/base.html",
+    }
+    return render(request, 'src/faq.html', context)
+
 
 def faqAdmin(request):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
         if request.method == 'POST':
-            ans= request.POST.get('answer')
-            que=request.POST.get('que')
-            faq= Faq.objects.get(id=int(que))
-            faq.answer=ans
+            ans = request.POST.get('answer')
+            que = request.POST.get('que')
+            faq = Faq.objects.get(id=int(que))
+            faq.answer = ans
             faq.save()
         faq_obj = Faq.objects.all().filter(answer=None)
-        user=[]
+        user = []
         faq_obj2 = Faq.objects.all().exclude(answer=None)
-        user2=[]
+        user2 = []
         for i in range(len(faq_obj2)):
             user2.append(faq_obj2[i].userId)
         for i in range(len(faq_obj)):
             user.append(faq_obj[i].userId)
-        context={
+        context = {
             'faq': faq_obj,
-            'user':user,
+            'user': user,
             'faq2': faq_obj2,
             'user2': user2,
         }
 
-    return render(request, 'src/faqAdmin.html',context)       
+    return render(request, 'src/faqAdmin.html', context)
 
 
-def faqDelete(request,pk):
+def faqDelete(request, pk):
     gateLogout()
     logout()
-    if superAdminId==-1:
+    if superAdminId == -1:
         return render(request, 'src/loginError.html')
     else:
         faq_obj = Faq.objects.get(id=pk).delete()

@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-center">
   <div class="card">
     <div class="card-header">
-      <h3>Frequently asked questions</h3>
+      <h3 style="text-align: center;">Frequently asked questions</h3>
     </div>
     <div class="card-body">
       <br>
@@ -29,7 +29,8 @@
 
         <div class="input-group form-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-user"> <img src="https://img.icons8.com/ios-glyphs/2x/ask-question.png" width="30" /> </i></span>
+            <span class="input-group-text"><i class="fas fa-user"> <img
+                  src="https://img.icons8.com/ios-glyphs/2x/ask-question.png" width="30" /> </i></span>
           </div>
           <input type="text" class="form-control" value="{{que.question}}" name="question" id="question"
             readonly="readonly" />
@@ -56,15 +57,44 @@
       {% endif %}
       {% endfor %}
       {% endfor %}<br><br><br>
-      Solved questions<br>
+      <h3 style="text-align: center;">Solved questions</h3><br>
       {% for que in faq2 %}
-          {% for user in user2 %}
-              {% if forloop.counter == forloop.parentloop.counter %}
-                  @{{user.username}}<br>
-                  Question : {{que.question}}<br>
-                  Ans : {{que.answer}}<br>
-              {% endif %}
-          {% endfor %}
+      {% for user in user2 %}
+      {% if forloop.counter == forloop.parentloop.counter %}
+
+      <div class="input-group form-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-user"><img
+                src="https://img.icons8.com/ios-glyphs/2x/user-male.png" width="30" /></i></span>
+        </div>
+        <input type="text" class="form-control" value="{{user.username}}" name="username" id="username"
+          readonly="readonly" />
+
+      </div>
+
+      <div class="input-group form-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-user"> <img
+                src="https://img.icons8.com/ios-glyphs/2x/ask-question.png" width="30" /> </i></span>
+        </div>
+        <input type="text" class="form-control" value="{{que.question}}" name="question" id="question"
+          readonly="readonly" />
+      </div>
+
+
+      <div class="input-group form-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-user"><img
+                src="https://img.icons8.com/windows/2x/stack-exchange-answer.png" width="30" /></i></span>
+        </div>
+        <input type="text" class="form-control" value="{{que.answer}}" name="answer" id="answer"
+          readonly="readonly" />
+      </div>
+      <!-- @{{user.username}}<br>
+      Question : {{que.question}}<br>
+      Ans : {{que.answer}}<br> -->
+      {% endif %}
+      {% endfor %}
       {% endfor %}<br><br>
 
     </div>
