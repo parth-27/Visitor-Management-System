@@ -2,8 +2,7 @@
 {% block content %}
 
 <style>
-
-  a{
+  a {
     color: black;
   }
 
@@ -18,7 +17,8 @@
   }
 
   .box {
-    background: black url(https://unsplash.it/1500/1500?image=560&blur=0.5) center fixed no-repeat;
+    /* background: black url(https://unsplash.it/1500/1500?image=560&blur=0.5) */
+    background: center fixed no-repeat;
     width: 300px;
     height: 250px;
     padding: 50px;
@@ -27,8 +27,8 @@
   }
 
   .box.opening {
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
   }
 
   .box h2 {
@@ -54,20 +54,26 @@
 </style>
 
 <div class="d-flex justify-content-center">
-  <div class="card">
+  <div class="card" style="height: 600px; width: 650px;">
     <div class="card-header" style="text-align: center;">
       <h3>Campus Images</h3>
     </div>
     <div class="card-body">
       <br>
+
       {% for im in img1%}
 
-      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
+
+      <div class="wrap">
+        <img class="box" src="{{ im.photo.url }}" width="300" height="300" /><br />
+      </div>
+
+
       {% if obj == 1 %}
       <div class="form-group">
         <button value="Delete" class="btn float-right login_btn" id="lg_bt">
           <a href="/imageDelete/{{im.pk}}">Delete
-          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" />
+            <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" />
           </a>
         </button>
       </div>
@@ -83,14 +89,17 @@
       {% for im in img2%}
       {% for us in user%}
       {% if forloop.counter == forloop.parentloop.counter %}
-      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
+      <div class="wrap">
+        <img class="box" src="{{ im.photo.url }}" width="300" height="300" /><br />
+      </div>
+      
       <p style="color:white"> {{us.name}}<br>{{us.username}}</p>
 
 
       <div class="form-group">
         <button value="Delete" class="btn float-right login_btn" id="lg_bt">
           <a href="/imageDelete/{{im.pk}}/'user'">Delete
-          <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
+            <img src="https://img.icons8.com/ios/2x/delete-trash.png" width="30" /></a>
         </button>
       </div>
 
@@ -105,7 +114,10 @@
       {% endfor %}
       {% else %}
       {% for im in img2%}
-      <img src="{{ im.photo.url }}" width="300" height="250" /><br />
+      <div class="wrap">
+        <img class="box" src="{{ im.photo.url }}" width="300" height="300" /><br />
+      </div>
+      
       {% endfor %}
       {% endif %}
       <hr><br>
@@ -159,5 +171,28 @@
     </div>
   </div>
 </div>
+
+
+
+<script>
+  const boxes = document.querySelectorAll(".box");
+
+  for (const box of boxes) {
+    box.addEventListener("click", function () {
+      let first = "opening";
+      let second = "open";
+
+      if (this.classList.contains(first)) {
+        [first, second] = [second, first];
+      }
+
+      this.classList.toggle(first);
+      setTimeout(() => {
+        this.classList.toggle(second); // this will inherit the value in the arrow function only.
+      }, 500);
+    });
+  }
+
+</script>
 
 {% endblock %}
