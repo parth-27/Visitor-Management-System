@@ -65,6 +65,8 @@ This System helps to track the number of visitors who come to your place.
 
 - Name and Password both for the SuperAdmin of the website is <strong>superadmin</strong>
 
+Licensed under the [MIT License](LICENSE).
+
 ## Contributors
 
 ---
