@@ -1,12 +1,26 @@
 {% extends "src/base.html" %}
 {% block content %}
 
+<style>
+  .jump span {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.1s;
+      cursor:url('http://csscursor.info/source/santahand.png'), default;
+    }
+    .jump span:hover {
+      color: #c23f2b;
+      transform:translateY(-20px) scale(2) rotate(10deg);
+      z-index: 1;
+    }
+</style>
+
 <div class="d-flex justify-content-center">
   <div class="card" style="width: 530;">
     <div class="card-header" style="text-align: center;">
       <img src="https://ahduni.edu.in/assets/images/logo-ahmedabad-university.png">
       <HR></HR>
-      <h2>VISITOR MANAGEMENT SYSTEM</h2>
+      <h2 class="jump">VISITOR MANAGEMENT SYSTEM</h2>
     </div>
     <div class="card-body">
       <h3></h3> 
@@ -14,5 +28,13 @@
   </div>
 </div>
 
+<script>
+  const heading = document.querySelector('.jump');
+  heading.innerHTML = sparanWrap(heading.textContent);
+
+  function sparanWrap(word) {
+    return [...word].map(letter => `<span>${letter}</span>`).join('');
+  }
+</script>
 
 {% endblock %}
