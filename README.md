@@ -69,7 +69,5 @@ Licensed under the [MIT License](LICENSE).
 
 ## Contributors
 
----
-
 | [Parth Patel](https://github.com/parth-27)                                                                                                            
 | [Dipika Pawar](https://github.com/DipikaPawar12)
