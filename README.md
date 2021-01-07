@@ -72,4 +72,4 @@ Licensed under the [MIT License](LICENSE).
 ---
 
 | [Parth Patel](https://github.com/parth-27)                                                                                                            
-| [Dipika Pawar](https://github.com/DipikaPawar12)                                                                                                            |
+| [Dipika Pawar](https://github.com/DipikaPawar12)
